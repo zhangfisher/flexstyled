@@ -5,6 +5,7 @@ StyledFc is a simple css-in-js library for react component
 [中文](./readme_CN.md)
 
 - very small, only 1.5kb.
+- runtime css generation.
 - support css variables.
 - support nested css.
 - typescript support.

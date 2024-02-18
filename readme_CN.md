@@ -2,6 +2,12 @@
 
 一个简单的css-in-js库，用于封装`react`组件
 
+- 非常小，仅仅1.5kb.
+- 运行时生成css
+- 支持css变量
+- 支持类似less的嵌套css样式
+- 支持typescript
+
 ## 安装
 
 ```bash
