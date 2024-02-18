@@ -13,13 +13,10 @@
     "module": "dist/index.mjs",
     "types": "dist/index.d.ts"
   },
-  "files": [
-    "dist",
-    "readme.md"
-  ],
   "scripts": {
     "build": "tsup",
-    "changeset": "changeset"
+    "changeset": "changeset",
+    "release":"changeset publish"
   },
   "keywords": [],
   "author": "",

@@ -51,6 +51,7 @@ import { CSSObject } from "./types"
 
 export interface CreateStylesOptions{
     className?:string           // 生成的样式类名，如果没有指定则自动生成
+    styleId:string
 }
 function toCssStyleName(camelCaseString: string): string {  
     return camelCaseString.replace(/([a-z])([A-Z])/g, (match, p1, p2) => p1 + '-' + p2.toLowerCase());  
@@ -58,6 +59,8 @@ function toCssStyleName(camelCaseString: string): string {
 export function createStyles(styles:CSSObject,options?:CreateStylesOptions){
     const { className } = Object.assign({},options) as Required<CreateStylesOptions> 
     const rules:string[] = []
+    const vars:Record<string,string | number> = {}
+
     const parseStyle = (styles:CSSObject,parentRule:string)=>{
         let rule = ""
         let childRules = []
@@ -71,6 +74,10 @@ export function createStyles(styles:CSSObject,options?:CreateStylesOptions){
                 }
             }else{
                 rule += `${toCssStyleName(ruleName)}: ${value};\n`
+                // CSS变量只能在根样式中定义
+                if(ruleName.startsWith("--")){
+                    vars[ruleName] = value
+                }
             }            
         }
         if(rule.endsWith("\n")) rule = rule.substring(0,rule.length-1)
@@ -81,37 +88,10 @@ export function createStyles(styles:CSSObject,options?:CreateStylesOptions){
         }) 
     }
     parseStyle(styles,className)
-    return [className,rules.join("\n")]
-}
-
-
-console.log(createStyles({ 
-    color:"red",
-    backgroundColor:"blue",
-    "--v1":"red",
-    ":hover":{
-        border: "1px solid red",
-        color:"blue"
-    },
-    "&:hover":{
-        outline:'none'
-    },
-    "&[data-loading=true]":{
-        display:"flex"
-    },
-    "& div":{
-        padding:2
-    },
-    "& > div":{
-        padding:4,
-        margin:"8px",
-        ">h1":{
-            color:"red"
-        },
-        ":hover":{
-            outline: "1px solid red"
-        }
+    return {
+        ...options, 
+        vars,
+        css:rules.join("\n")
     }
-},{className:"myclass"})[1])
-
+}
 

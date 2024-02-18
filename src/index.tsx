@@ -42,6 +42,7 @@ useInsertionEffect
 import { CSSObject } from "./types"
 import { createStyles } from "./parse"
 import { insertStylesheet } from "./utils"
+import { useCallback, useEffect,useRef } from "react"
 
 
 export interface StyledOptions{
@@ -58,8 +59,15 @@ export interface StyledOptions{
 function generateStyleId():string{
     return Math.random().toString(36).substring(2, 10)   
 } 
+export type StyledComponentParams ={
+    className:string
+    styleId:string
+    vars:Record<string,string | number>
+    setVar:(name:string,value:string | number)=>void
+    ref:React.RefObject<any>
+}
 
-export type WithStyledComponent<Props> = (props:React.PropsWithChildren<Props>,className:string)=>React.ReactElement
+export type WithStyledComponent<Props> = (props:React.PropsWithChildren<Props>,params:StyledComponentParams)=>React.ReactElement
 
 export function styled<Props>(FC: WithStyledComponent<Props>,styles:CSSObject,options?:StyledOptions){
     const opts = Object.assign({
@@ -68,13 +76,33 @@ export function styled<Props>(FC: WithStyledComponent<Props>,styles:CSSObject,op
     },options) as Required<StyledOptions>
 
     // 1. 创建样式字符串
-    const [className,cssString] = createStyles(styles,{className:opts.className})
+    const style = createStyles(styles,{className:opts.className,styleId:opts.styleId})
     // 2. 生成样式插入到页面中
-    insertStylesheet(cssString,opts.styleId)
+    insertStylesheet(style.css,opts.styleId)
 
     // 3. 返回组件
     return (props:React.PropsWithChildren<Props>)=>{
-        return FC(props,className)
+        const styleParams:StyledComponentParams = {
+            className:opts.className,
+            styleId:opts.styleId,
+            vars:style.vars,
+            ref:useRef<any>(null),
+            setVar:()=>{}
+        } 
+        styleParams.setVar=useCallback((name,value)=>{
+            if(styleParams.ref.current){
+                styleParams.ref.current.style.setProperty(name,value.toString())
+            }else{
+                console.warn("[stylefc] use of setVar failed, ref is not available.")
+            }
+        },[])
+        useEffect(()=>{
+            if(styleParams.ref.current){
+                const classList = styleParams.ref.current.classList
+                if(!classList.contains(styleParams.className)) classList.add(styleParams.className)
+            }
+        },[])
+        return FC(props,styleParams)
     }
 }
 
