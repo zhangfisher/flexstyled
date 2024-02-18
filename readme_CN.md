@@ -1,10 +1,8 @@
 # StyledFc
 
-StyledFc is a simple css-in-js library for react component
+一个简单的css-in-js库，用于封装`react`组件
 
-[中文](./readme_CN.md)
-
-## Installation
+## 安装
 
 ```bash
 pnpm add styledfc
@@ -14,7 +12,7 @@ npm install styledfc
 yarn add styledfc
 ```
 
-## Usage
+## 用法
 
 ```tsx
 import { styled } from "styledfc"
@@ -28,7 +26,7 @@ export type  CardProps = React.PropsWithChildren<{
 export const Card = styled<CardProps>((props,{ref,setVar,className,styleId,vars})=>{
     const { title } =props
     return (
-      <div ref={ref} >
+      <div ref={ref} > 
         <div className="title">            
             <span>{title}</span>
             <span className="tools"><button onClick={()=>setVar('--title-color',getRandColor())}>Change</button></span>
@@ -91,33 +89,32 @@ export const Card = styled<CardProps>((props,{ref,setVar,className,styleId,vars}
 
 ```
  
-- generate css stylesheet and class append to the head of the document. stylesheet id is generated automatically, if you want to specify the id, you can pass it as `styleId` option.
-- generate css class name, if you want to specify the class name, you can pass it as `className` option. `className` will be added to the `dom` element referenced by `ref`.
-- support css variables, you can use `setVar` method to update the css variable value on the component.
-- support nested css, you can use `&` to reference the parent css class.
-- default, the component use `ref` to reference the dom element, eg. `<div ref={ref}>`.
-- you can use `vars` to access the css variables, eg. `vars['--title-color']`.
- 
+- 以下代码将会自动生成样式表插入到当前文档的头部`head`,`stylesheet id`是自动生成的，也可以通过`styleId`选项指定。
+- 自动生成`css`类名，如果要指定类名，可以通过`className`选项指定。类名将被添加到`ref`指定的`dom`元素上。
+- 支持`css`变量，可以使用`setVar`方法在组件上更新`css`变量的值。
+- 支持嵌套`css`，可以使用`&`引用父`css`类。
+- 默认情况下，组件使用`ref`引用`dom`元素，例如`<div ref={ref}>`。
+- `vars`可以用来访问`css`变量，例如`vars['--title-color']`。 
 
 ## API
 
 ```tsx
 export interface StyledOptions{
-    // stylesheet id, if not provided, it will be generated automatically
+    // 生成的样式表id，如果没有指定则自动生成
     styleId?:string                          
-    // generated className, if not provided, it will be generated automatically
+    // 生成的css类名，如果没有指定则自动生成
     className?:string                       
 }
 export type StyledComponentParams ={
-    // generated css class name
+    // 生成的css类名
     className:string
-    // generated css style id
+    // 生成的样式表id
     styleId:string
-    // css variables
+    // css变量
     vars:Record<string,string | number>
-    // update css variable value on the component
+    // 更新css变量
     setVar:(name:string,value:string | number)=>void
-    // ref of the component
+    // 用来引用组件的dom元素的ref
     ref:React.RefObject<any>
 }
 
