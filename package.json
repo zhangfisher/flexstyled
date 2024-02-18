@@ -1,0 +1,43 @@
+{
+  "name": "styledfc",
+  "version": "1.0.0",
+  "description": "sample css-in-js for react component",
+  "homepage": "https://github.com/zhangfisher/styledfc",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:zhangfisher/styledfc.git"
+  },
+  "main": "src/index.tsx",
+  "publishConfig": {
+    "main": "dist/index.js",
+    "module": "dist/index.mjs",
+    "types": "dist/index.d.ts"
+  },
+  "files": [
+    "dist",
+    "readme.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "changeset": "changeset"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/react": "^18.2.42",
+    "@vitejs/plugin-react": "^4.2.1",
+    "tsup": "^8.0.2",
+    "type-fest": "^4.8.3",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.6"
+  },
+  "peerDependencies": {
+    "@types/react": "^18.2.40",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "dependencies": {
+    "@changesets/cli": "^2.27.1"
+  }
+}
