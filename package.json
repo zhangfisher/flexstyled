@@ -17,7 +17,7 @@
   "scripts": {
     "build": "tsup",
     "changeset": "changeset",
-    "release": "npm version patch && pnpm build && pnpm publish"
+    "release": "npm version patch && pnpm build && npm publish"
   },
   "keywords": [],
   "author": "",
