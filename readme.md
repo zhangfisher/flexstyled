@@ -23,97 +23,234 @@ yarn add styledfc
 
 ## Usage
 
+We plan to develop a `Card` component, which has a `title` attribute for displaying titles, a `footer`' attribute for displaying bottom content, and a `children` attribute as the content area of the card.
+
+
+### Basic Usage
+ 
+
 ```tsx
-import { styled } from "styledfc"
-import { getRandColor } from "./utils"
+import { styled } from "styledfc" 
 
 export type  CardProps = React.PropsWithChildren<{
-    title:string
-    footer:string
-    bgColor?:string
+    title:string 
+    footer?:string
   }>
 
-export const Card = styled<CardProps>((props,{ref,setVar,className,getStyle,vars})=>{
-    const { title } =props
+export const Card = styled<CardProps>((props,{className})=>{
+    const { title,children,footer} =props
     return (
-      {/**  use ref to reference the dom element  */}
-      <div ref={ref} className={className} style={getStyle()}>
+      <div  className={className}>
         <div className="title">            
-            <span>{title}</span>
-            <span className="tools">
-              {/* update css var */}
-              <button onClick={()=>setVar('--title-color',getRandColor())}>Change</button>
-            </span>
+            {title}
         </div>
-        <div className="content">{props.children}</div>
-        <div className="footer">{props.footer}</div>
+        <div className="content">{children}</div>
+        <div className="footer">{footer}</div>
       </div>
     )
-  },{
+  },{  
     position:"relative",
-    display:"block",
     width:"100%",
-    fontSize:"16px",
     border:"1px solid #ccc",
-    textAlign:"left",
-    borderRadius:"4px",
-    "--title-color":"blue",
-    "&:hover":{
-        border:"1px solid #1698e4",
-    },
-    "& > .title":{
-      padding:"8px",
-      background:"#eee",
-      fontSize:"18px",
-      fontWeight:"bold",
-      borderBottom:"1px solid #ccc",
-      display:"flex",
-      flexDirection:"row",
-      "& :first-child" : {
-        flex:1,        
-        color:"var(--title-color)",
-      },
-      "& > .tools":{
-        "& > button":{
-            padding:"4px",
-            background:"#ebebeb",
-            color:"#666",
-            border:"1px solid #555",
-            borderRadius:"4px",
-            cursor:"pointer",
-            "&:hover":{
-                background:"#64a7ff",
-                color:"white"
-            }
-        }   
-       }
-    },
-    "& > .content":{
-        minHeight:"100px",
-        padding:"8px",
-        boxSizing:"border-box"
-        // access the component props
-        background:(props:Required<CardProps>)=>props.bgColor || "white"
-    },
-    "& > .footer":{
-        padding:"8px",
-        background:"var(--title-color)",
-        borderTop:"1px solid #ccc",
-        textAlign:"right"
-    }
+    borderRadius:"4px" 
   })
 
 ```
- 
-- generate css stylesheet and class append to the head of the document. stylesheet id is generated automatically, if you want to specify the id, you can pass it as `styleId` option.
-- generate css class name, if you want to specify the class name, you can pass it as `className` option. `className` will be added to the `dom` element referenced by `ref`.
-- support css variables, you can use `setVar` method to update the css variable value on the component.
-- support nested css, you can use `&` to reference the parent css class.
-- default, the component use `ref` to reference the dom element, eg. `<div ref={ref}>`.
-- you can use `vars` to access the css variables, eg. `vars['--title-color']`.
-- when use props dynamic css, `background:(props:Required<CardProps>)=>props.bgColor || "white"`. you need use `getStyle` to inject css style object, eg. `style={getStyle()}`.
-- if you don't use `setVar` to dynamic update css variable, you don't need to pass `ref`, just use `<div className={className}}>`.
- 
+  
+-The above code will create a `Card` component, generate a style class (with a randomly generated name) for the style, and insert it into the `head` tag.
+-Then pass the `className` prop to the component, which will use this class name to apply the style.
+
+You can find a CSS style similar to this in the `head`, where the `className` and `style.id` are both automatically generated. You can also specify `styleId` and `className` through the `options` parameter.
+
+```html
+<style id="6rxqfu">
+.sw6y3s4{
+    position:relative;
+    width:100%;
+    border:1px solid #ccc;
+    border-radius:4px;
+}
+</style>
+```
+
+### Nested Style 
+
+Next, let's add styles to the `title` and `footer` of the `Card` component
+
+
+```tsx
+export const Card = styled<CardProps>((props,{className})=>{
+    const { title,children,footer} =props
+    return (
+      <div  className={className}>
+        <div className="title">            
+            {title}
+        </div>
+        <div className="content">{children}</div>
+        <div className="footer">{footer}</div>
+      </div>
+    )},{  
+      position:"relative",
+      width:"100%",
+      border:"1px solid #ccc",
+      borderRadius:"4px",
+      "& > .title":{
+        fontSize:"20px",
+        fontWeight:"bold",
+      },
+      "& > .footer":{
+        borderTop:"1px solid #ccc",
+        padding:"8px",
+        textAlign:"right"
+      }
+  })
+```
+
+-We have added styles to the `title` and `footer` above.
+-Use the `&` symbol to represent the current parent element, similar to the syntax of nested CSS such as `less` and `sass`.
+
+
+The style generated in `head` is as follows:
+
+```html
+<style id="6rxqfu">
+.sw6y3s4{
+    position:relative;
+    width:100%;
+    border:1px solid #ccc;
+    border-radius:4px;
+}
+.sw6y3s4 > .title{
+    font-size:20px;
+    font-weight:bold;
+}
+.sw6y3s4 > .footer{
+    border-top:1px solid #ccc;
+    padding:8px;
+    text-align:right;
+}
+</style>
+```
+
+### Dynamic Style
+
+`styledfc` supports using `props` to dynamically set styles.
+
+For example, we want the background color of the `content` card to be specified by the `props.bgColor` attribute.
+
+
+```tsx
+
+export const Card = styled<CardProps>((props,{className,getStyle})=>{
+    const { title,children,footer} =props
+    return (
+      <div  className={className} style={getStyle()}>
+        <div className="title">            
+            {title}
+        </div>
+        <div className="content">{children}</div>
+        <div className="footer">{footer}</div>
+      </div>
+    )},{ 
+      position:"relative",
+      width:"100%",
+      border:"1px solid #ccc",
+      borderRadius:"4px",
+      "& > .title":{
+        fontSize:"20px",
+        fontWeight:"bold",
+      },
+      "& > .footer":{
+        borderTop:"1px solid #ccc",
+        padding:"8px",
+        textAlign:"right"
+      },
+      "& > .content":{
+        padding:"8px",
+        backgroundColor:(props)=>props.bgColor
+      }
+  })
+```
+
+- The above code uses `props.bgColor` to dynamically set the background color of the `content` card.
+- In order to support dynamic properties, we need to use the `getStyle` function to get the dynamic style and inject it into the root element of the component.
+- The `getStyle` function returns a `css` style object that can be passed directly to the `style` attribute.
+- Any `css` property can use `(props)=>{....}` to dynamically generate CSS property values.
+
+### CSS Variables
+
+`styledfc` supports using `css` variables.
+
+We can use `css` variables in the root style declaration, and then use the `setVar` function to dynamically modify the `css` variable in the component.
+
+
+```tsx
+
+export const Card = styled<CardProps>((props,{className,getStyle,ref,setVar})=>{
+    const { title,children,footer} =props
+    return (
+      <div ref={ref} className={className} style={getStyle()}>
+        <div className="title">            
+            {title}<button onClick={()=>setVar("----primary-color",'red')}>
+        </div>
+        <div className="content">{children}</div>
+        <div className="footer">{footer}</div>
+      </div>
+    )},{ 
+      position:"relative",
+      width:"100%",
+      border:"1px solid #ccc",
+      borderRadius:"4px",
+      "--primary-color":"blue",
+      "& > .title":{
+        fontSize:"20px",
+        fontWeight:"bold",
+        color:"var(--primary-color)"
+      },
+      "& > .footer":{
+        borderTop:"1px solid #ccc",
+        padding:"8px",
+        textAlign:"right"
+      },
+      "& > .content":{
+        padding:"8px",
+        backgroundColor:(props)=>props.bgColor
+      }
+  })
+```
+
+
+- The above code uses `css` variables.
+- We declare a `--primary-color` `css` variable in the root style.
+- Then we use the `--primary-color` variable in the `title` style.
+- In order to modify the `css` variable, we need to introduce `ref` and pass `ref` to the root element, and then use the `setVar` function to modify the `css` variable.
+
+### Summary
+
+`styledfc` is a very simple `css-in-js` library that can help you quickly encapsulate `react` components and support `css` variables and dynamic `css` properties.
+
+- By default, you only need to reference `className` in the component.
+- If you need to dynamically modify `css` variables, you need to introduce `ref`, pass `ref` to the root element, and then use the `setVar` function to modify `css` variables.
+- If you need to use `props` dynamic `css` properties, you need to use the `getStyle` function to get the dynamic css style and inject it into the root element.
+
+
+## Options
+
+
+```tsx
+
+// styled(<React.FC>,<styles>,<options>)
+
+export interface StyledOptions{
+    // The ID of the style sheet, if not specified, will be automatically generated
+    styleId?:string                          
+    // The generated class name, if not specified, will be automatically generated
+    className?:string                        
+}
+
+
+```
+
 
 ## API
 

@@ -49,7 +49,6 @@ import React from "react"
 export interface StyledOptions{
     styleId?:string                          // 样式表的ID
     className?:string                        // 生成的样式类名，如果没有指定则自动生成 
-    depends?:string[]                        // 依赖的props名称列表
 }
 
 /**
