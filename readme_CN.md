@@ -103,12 +103,11 @@ export const Card = styled<CardProps>((props,{ref,setVar,className,getStyle,vars
 
 ```
  
-- 以下代码将会自动生成样式表插入到当前文档的头部`head`,`stylesheet id`是自动生成的，也可以通过`styleId`选项指定。
+- 以上代码将会自动生成样式表插入到当前文档的头部`head`,`stylesheet id`是自动生成的，也可以通过`styleId`选项指定。
 - 自动生成`css`类名，如果要指定类名，可以通过`className`选项指定。类名将被添加到`ref`指定的`dom`元素上。
 - 支持`css`变量，可以使用`setVar`方法在组件上更新`css`变量的值。
 - 支持嵌套`css`，可以使用`&`引用父`css`类。
 - 默认情况下，组件使用`ref`引用`dom`元素，例如`<div ref={ref}>`。
-- `vars`可以用来访问`css`变量，例如`vars['--title-color']`。 
 - 如果没有使用`props`作为动态样式值，则不需要传入`style={getStyle()}`，只需要`<div ref={ref} className={className}}>`
 - 如果没有使用没有用到`setVar`动态修改css变量，则不需要传入`ref`,只需要`<div className={className}}>`
 

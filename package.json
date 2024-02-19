@@ -1,6 +1,6 @@
 {
   "name": "styledfc",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "sample css-in-js for react component",
   "homepage": "https://github.com/zhangfisher/styledfc",
   "publisher": "zhangfisher",
@@ -19,6 +19,13 @@
     "changeset": "changeset",
     "release": "pnpm build && changeset version && changeset publish"
   },
+  "files": [
+    "dist",
+    "src",
+    "LICENSE",
+    "readme.md",
+    "readme_CN.md"
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC",
