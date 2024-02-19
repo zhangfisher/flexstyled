@@ -1,11 +1,12 @@
 # StyledFc
 
-一个简单的css-in-js库，用于封装`react`组件
+一个简单的`css-in-js`库，用于封装`react`组件
 
-- 非常小，仅仅1.5kb.
+- 非常小，仅`2.26`kb.
 - 运行时生成css
 - 支持css变量
 - 支持类似less的嵌套css样式
+- 支持props动态css
 - 支持typescript
 
 ## 安装
@@ -27,14 +28,19 @@ import { getRandColor } from "./utils"
 export type  CardProps = React.PropsWithChildren<{
     title:string
     footer:string
+    bgColor?:string
   }>
 
-export const Card = styled<CardProps>((props,{ref,setVar,className,styleId,vars})=>{
+export const Card = styled<CardProps>((props,{ref,setVar,className,getStyle,vars})=>{
     const { title } =props
     return (
-      <div ref={ref} > 
+     // 如果没有使用props作为动态样式值，则不需要传入 style={getStyle()，只需要<div ref={ref} className={className}}>
+     // 如果没有使用没有用到setVar动态修改css变量，则则不需要传入ref,只需要<div className={className}}>
+      {/** 使用ref引用dom元素 */}
+      <div ref={ref} className={className} style={getStyle()}>
         <div className="title">            
             <span>{title}</span>
+            {/** 更新css变量值 */}
             <span className="tools"><button onClick={()=>setVar('--title-color',getRandColor())}>Change</button></span>
         </div>
         <div className="content">{props.children}</div>
@@ -83,7 +89,9 @@ export const Card = styled<CardProps>((props,{ref,setVar,className,styleId,vars}
     "& > .content":{
         minHeight:"100px",
         padding:"8px",
-        boxSizing:"border-box"
+        boxSizing:"border-box",
+        // 使用props.bgColor作为背景色
+        background:(props:Required<CardProps>)=>props.bgColor || "white"
     },
     "& > .footer":{
         padding:"8px",
@@ -101,6 +109,8 @@ export const Card = styled<CardProps>((props,{ref,setVar,className,styleId,vars}
 - 支持嵌套`css`，可以使用`&`引用父`css`类。
 - 默认情况下，组件使用`ref`引用`dom`元素，例如`<div ref={ref}>`。
 - `vars`可以用来访问`css`变量，例如`vars['--title-color']`。 
+- 如果没有使用`props`作为动态样式值，则不需要传入`style={getStyle()}`，只需要`<div ref={ref} className={className}}>`
+- 如果没有使用没有用到`setVar`动态修改css变量，则不需要传入`ref`,只需要`<div className={className}}>`
 
 ## API
 
@@ -109,7 +119,7 @@ export interface StyledOptions{
     // 生成的样式表id，如果没有指定则自动生成
     styleId?:string                          
     // 生成的css类名，如果没有指定则自动生成
-    className?:string                       
+    className?:string                
 }
 export type StyledComponentParams ={
     // 生成的css类名
@@ -120,12 +130,14 @@ export type StyledComponentParams ={
     vars:Record<string,string | number>
     // 更新css变量
     setVar:(name:string,value:string | number)=>void
-    // 用来引用组件的dom元素的ref
+    // 用来引用组件的dom元素的ref，仅当使用setVar动态修改css变量时需要引到dom元素
     ref:React.RefObject<any>
+    // 获取动态css样式，当使用props动态css时需要使用getStyle注入css样式对象，例如style={getStyle()}
+    getStyle : ()=>Record<string,string | number>
 }
 
-export type WithStyledComponent<Props> = (props:React.PropsWithChildren<Props>,params:StyledComponentParams)=>React.ReactElement
+export type StyledComponent<Props> = (props:React.PropsWithChildren<Props>,params:StyledComponentParams)=>React.ReactElement
 
-styled<Props>(FC: WithStyledComponent<Props>,styles:CSSObject,options?:StyledOptions)
+styled<Props>(FC: StyledComponent<Props>,styles:CSSObject,options?:StyledOptions)
 
 ```

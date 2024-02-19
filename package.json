@@ -1,6 +1,6 @@
 {
   "name": "styledfc",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "sample css-in-js for react component",
   "homepage": "https://github.com/zhangfisher/styledfc",
   "publisher": "zhangfisher",
@@ -17,7 +17,7 @@
   "scripts": {
     "build": "tsup",
     "changeset": "changeset",
-    "release": "npm version patch && pnpm build && npm publish"
+    "release": "pnpm build && changeset version && changeset publish"
   },
   "keywords": [],
   "author": "",

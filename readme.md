@@ -4,10 +4,11 @@ StyledFc is a simple css-in-js library for react component
 
 [中文](./readme_CN.md)
 
-- very small, only 1.5kb.
+- very small, only `2.26`kb.
 - runtime css generation.
 - support css variables.
 - support nested css.
+- support props dynamic css.
 - typescript support.
 
 ## Installation
@@ -29,15 +30,20 @@ import { getRandColor } from "./utils"
 export type  CardProps = React.PropsWithChildren<{
     title:string
     footer:string
+    bgColor?:string
   }>
 
-export const Card = styled<CardProps>((props,{ref,setVar,className,styleId,vars})=>{
+export const Card = styled<CardProps>((props,{ref,setVar,className,getStyle,vars})=>{
     const { title } =props
     return (
-      <div ref={ref} >
+      {/**  use ref to reference the dom element  */}
+      <div ref={ref} className={className} style={getStyle()}>
         <div className="title">            
             <span>{title}</span>
-            <span className="tools"><button onClick={()=>setVar('--title-color',getRandColor())}>Change</button></span>
+            <span className="tools">
+              {/* update css var */}
+              <button onClick={()=>setVar('--title-color',getRandColor())}>Change</button>
+            </span>
         </div>
         <div className="content">{props.children}</div>
         <div className="footer">{props.footer}</div>
@@ -86,6 +92,8 @@ export const Card = styled<CardProps>((props,{ref,setVar,className,styleId,vars}
         minHeight:"100px",
         padding:"8px",
         boxSizing:"border-box"
+        // access the component props
+        background:(props:Required<CardProps>)=>props.bgColor || "white"
     },
     "& > .footer":{
         padding:"8px",
@@ -103,6 +111,8 @@ export const Card = styled<CardProps>((props,{ref,setVar,className,styleId,vars}
 - support nested css, you can use `&` to reference the parent css class.
 - default, the component use `ref` to reference the dom element, eg. `<div ref={ref}>`.
 - you can use `vars` to access the css variables, eg. `vars['--title-color']`.
+- when use props dynamic css, `background:(props:Required<CardProps>)=>props.bgColor || "white"`. you need use `getStyle` to inject css style object, eg. `style={getStyle()}`.
+- if you don't use `setVar` to dynamic update css variable, you don't need to pass `ref`, just use `<div className={className}}>`.
  
 
 ## API
@@ -123,12 +133,14 @@ export type StyledComponentParams ={
     vars:Record<string,string | number>
     // update css variable value on the component
     setVar:(name:string,value:string | number)=>void
-    // ref of the component
+    // ref of the component, only use when use setVar to update css variable
     ref:React.RefObject<any>
+    // get the css style object，only use when use props dynamic css
+    getStyle : ()=>Record<string,string | number>
 }
 
-export type WithStyledComponent<Props> = (props:React.PropsWithChildren<Props>,params:StyledComponentParams)=>React.ReactElement
+export type StyledComponent<Props> = (props:React.PropsWithChildren<Props>,params:StyledComponentParams)=>React.ReactElement
 
-styled<Props>(FC: WithStyledComponent<Props>,styles:CSSObject,options?:StyledOptions)
+styled<Props>(FC: StyledComponent<Props>,styles:CSSObject,options?:StyledOptions)
 
 ```

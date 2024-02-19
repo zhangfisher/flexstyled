@@ -5,8 +5,13 @@ export type CSSSelector = `:${string}` | `&${string}` | `>${string}` | `:${strin
 export type CSSVar = `--${string}`;
 
 
-export type CSSObject = CSSProperties & {
-    [selector: CSSSelector]: CSSObject     
+export type CSSObject<P=any> = CSSProperties & {
+    [selector: CSSSelector]: CSSObject<P>     
 } & {
-    [varName: CSSVar]: string | number
+    [varName: CSSVar]: string | number 
+} & {
+    [key in keyof CSSProperties]: ComputedStyledProp<P>  
 }
+
+
+export type ComputedStyledProp<T=Record<string,any>> = (props:T)=>string | number
