@@ -46,7 +46,7 @@
  * 
  */
 
-import { CSSObject } from "./types"
+import { CSSRuleObject } from "./types"
 import { shortHash } from "./hash"
 
 
@@ -63,7 +63,7 @@ function toCssStyleName(camelCaseString: string): string {
     return camelCaseString.replace(/([a-z])([A-Z])/g, (match, p1, p2) => p1 + '-' + p2.toLowerCase());  
 }  
 
-export function createStyles(styles:CSSObject,options?:CreateStylesOptions){
+export function createStyles(styles:CSSRuleObject,options?:CreateStylesOptions){
     const opts = Object.assign({},options) as Required<CreateStylesOptions> 
     const { className } = opts
     const rules:string[] = []
@@ -71,9 +71,9 @@ export function createStyles(styles:CSSObject,options?:CreateStylesOptions){
     const computedStyles:Record<string,Function> = {}
     const rooRules:string[] = []  // 动态样式变量均声明在根样式中
 
-    const parseStyle = (styles:CSSObject,parentRule:string)=>{
+    const parseStyle = (styles:CSSRuleObject,parentRule:string)=>{
         let rule = ""
-        let childRules = []
+        let childRules:[string,CSSRuleObject][] = []
         for(const [ruleName,value] of Object.entries(styles)){
             if(typeof(value)=='object'){
                 const pKey = ruleName.trim().startsWith("&") ? ruleName.substring(1) : ruleName

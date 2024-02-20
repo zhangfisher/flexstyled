@@ -10,6 +10,8 @@
 - 支持props动态css
 - 支持typescript
 
+[演示](https://codesandbox.io/p/sandbox/styledfc-demo-x7w94w?layout=%257B%2522sidebarPanel%2522%253A%2522EXPLORER%2522%252C%2522rootPanelGroup%2522%253A%257B%2522direction%2522%253A%2522horizontal%2522%252C%2522contentType%2522%253A%2522UNKNOWN%2522%252C%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522id%2522%253A%2522ROOT_LAYOUT%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522UNKNOWN%2522%252C%2522direction%2522%253A%2522vertical%2522%252C%2522id%2522%253A%2522clstzj2mg0006356lkdcmsv3s%2522%252C%2522sizes%2522%253A%255B70%252C30%255D%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522EDITOR%2522%252C%2522direction%2522%253A%2522horizontal%2522%252C%2522id%2522%253A%2522EDITOR%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL%2522%252C%2522contentType%2522%253A%2522EDITOR%2522%252C%2522id%2522%253A%2522clstzj2mg0002356lq7y9whne%2522%257D%255D%257D%252C%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522SHELLS%2522%252C%2522direction%2522%253A%2522horizontal%2522%252C%2522id%2522%253A%2522SHELLS%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL%2522%252C%2522contentType%2522%253A%2522SHELLS%2522%252C%2522id%2522%253A%2522clstzj2mg0003356lip4fhd1w%2522%257D%255D%252C%2522sizes%2522%253A%255B100%255D%257D%255D%257D%252C%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522DEVTOOLS%2522%252C%2522direction%2522%253A%2522vertical%2522%252C%2522id%2522%253A%2522DEVTOOLS%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL%2522%252C%2522contentType%2522%253A%2522DEVTOOLS%2522%252C%2522id%2522%253A%2522clstzj2mg0005356l6vsjkkfr%2522%257D%255D%252C%2522sizes%2522%253A%255B100%255D%257D%255D%252C%2522sizes%2522%253A%255B50%252C50%255D%257D%252C%2522tabbedPanels%2522%253A%257B%2522clstzj2mg0002356lq7y9whne%2522%253A%257B%2522id%2522%253A%2522clstzj2mg0002356lq7y9whne%2522%252C%2522tabs%2522%253A%255B%255D%257D%252C%2522clstzj2mg0005356l6vsjkkfr%2522%253A%257B%2522tabs%2522%253A%255B%257B%2522id%2522%253A%2522clstzj2mg0004356l6rts8s1f%2522%252C%2522mode%2522%253A%2522permanent%2522%252C%2522type%2522%253A%2522UNASSIGNED_PORT%2522%252C%2522port%2522%253A0%252C%2522path%2522%253A%2522%252F%2522%257D%255D%252C%2522id%2522%253A%2522clstzj2mg0005356l6vsjkkfr%2522%252C%2522activeTabId%2522%253A%2522clstzj2mg0004356l6rts8s1f%2522%257D%252C%2522clstzj2mg0003356lip4fhd1w%2522%253A%257B%2522tabs%2522%253A%255B%255D%252C%2522id%2522%253A%2522clstzj2mg0003356lip4fhd1w%2522%257D%257D%252C%2522showDevtools%2522%253Atrue%252C%2522showShells%2522%253Atrue%252C%2522showSidebar%2522%253Atrue%252C%2522sidebarPanelSize%2522%253A15%257D)
+
 ## 安装
 
 ```bash
@@ -173,17 +175,17 @@ export const Card = styled<CardProps>((props,{className,getStyle})=>{
 
 ### CSS变量
 
-`styledfc`支持使用`css`变量。
-我们可以在根样式声明中使用`css`变量，然后在组件中使用`setVar`函数来动态修改`css`变量。
+`styledfc`支持使用`css`变量。可以在`getStyle`函数中传入更新后的`css`变量。
 
 ```tsx
 
-export const Card = styled<CardProps>((props,{className,getStyle,ref,setVar})=>{
+export const Card = styled<CardProps>((props,{className,getStyle})=>{
     const { title,children,footer} =props
+    const [primaryColor,setPrimaryColor] = React.useState("blue")
     return (
-      <div ref={ref} className={className} style={getStyle()}>
+      <div className={className} style={getStyle({"--primary-color":primaryColor})}>
         <div className="title">            
-            {title}<button onClick={()=>setVar("----primary-color",'red')}>
+            {title}<button onClick={()=>setPrimaryColor('red')}>
         </div>
         <div className="content">{children}</div>
         <div className="footer">{footer}</div>
@@ -213,13 +215,49 @@ export const Card = styled<CardProps>((props,{className,getStyle,ref,setVar})=>{
 
 - 以上我们在根样式中声明了一个`--primary-color`的`css`变量。
 - 然后我们在`title`样式中使用了`--primary-color`变量。
-- 为了修改`css`变量，需要在参数中引入`ref`，让根元素指向`ref`,然后使用`setVar`函数来修改`css`变量。
+- `getStyle`函数支持传入更新`css`变量。
+
+
 
 ### 小结
 
 - 默认只需要在组件引用`className`即可。
-- 如果需要动态修改`css`变量，需要引入`ref`，并且将`ref`传递给根元素，然后使用`setVar`函数来修改`css`变量。
-- 如果需要使用`props`动态`css`属性，需要使用`getStyle`函数来获取动态css样式并注入到根元素中。
+- 如果需要使用`props`动态`css`属性，需要使用`getStyle`函数来获取动态`css`样式并注入到根元素中。
+- `getStyle`函数支持传入更新`css`变量。
+
+## Hook
+
+`styledfc`还提供了一个`useStyle`钩子，用于在函数组件中使用。
+
+同样功能的`Card`组件可以使用`useStyle`钩子来实现。
+
+```tsx
+import { useStyle } from "styledfc"
+export const Card2:React.FC<React.PropsWithChildren<CardProps>> = ((props:CardProps)=>{
+    const { title } = props
+    const [titleColor,setTitleColor] = useState("blue")
+    const {className,getStyle } =  useStyle({
+        // 此处是组件样式
+    })
+    return (
+      <div className={className} style={getStyle({"--title-color":titleColor},props)}>
+        <div className="title">            
+            <span>{title}</span>
+            <span className="tools"><button onClick={()=>setTitleColor(getRandColor())}>Change</button></span>
+        </div>
+        <div className="content">          
+            {props.children}
+        </div>
+        <div className="footer">{props.footer}</div>
+      </div>
+    )
+  })
+```
+
+- `useStyle`钩子返回`className`和`getStyle`,用来注入样式类名和动态样式。
+- `getStyle`函数支持传入更新`css`变量。如果使用到`props`动态样式，则需要传入`props`参数。
+- `useStyle`钩子支持传入`options`参数来配置`styleId`和`className`。
+- `useStyle`与`styled`函数功能一样，唯一的区别是`useStyle`在`head`注入的样式表在组件卸载时会自动移除。
 
 ## 配置
 
@@ -250,11 +288,7 @@ export type StyledComponentParams ={
     // 生成的样式表id
     styleId:string
     // css变量
-    vars:Record<string,string | number>
-    // 更新css变量
-    setVar:(name:string,value:string | number)=>void
-    // 用来引用组件的dom元素的ref，仅当使用setVar动态修改css变量时需要引到dom元素
-    ref:React.RefObject<any>
+    vars:Record<string,string | number> 
     // 获取动态css样式，当使用props动态css时需要使用getStyle注入css样式对象，例如style={getStyle()}
     getStyle : ()=>Record<string,string | number>
 }

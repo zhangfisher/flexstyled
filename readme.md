@@ -11,6 +11,8 @@ StyledFc is a simple css-in-js library for react component
 - support props dynamic css.
 - typescript support.
 
+[Open demo on CodeSandbox](https://codesandbox.io/p/sandbox/styledfc-demo-x7w94w?layout=%257B%2522sidebarPanel%2522%253A%2522EXPLORER%2522%252C%2522rootPanelGroup%2522%253A%257B%2522direction%2522%253A%2522horizontal%2522%252C%2522contentType%2522%253A%2522UNKNOWN%2522%252C%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522id%2522%253A%2522ROOT_LAYOUT%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522UNKNOWN%2522%252C%2522direction%2522%253A%2522vertical%2522%252C%2522id%2522%253A%2522clstzj2mg0006356lkdcmsv3s%2522%252C%2522sizes%2522%253A%255B70%252C30%255D%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522EDITOR%2522%252C%2522direction%2522%253A%2522horizontal%2522%252C%2522id%2522%253A%2522EDITOR%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL%2522%252C%2522contentType%2522%253A%2522EDITOR%2522%252C%2522id%2522%253A%2522clstzj2mg0002356lq7y9whne%2522%257D%255D%257D%252C%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522SHELLS%2522%252C%2522direction%2522%253A%2522horizontal%2522%252C%2522id%2522%253A%2522SHELLS%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL%2522%252C%2522contentType%2522%253A%2522SHELLS%2522%252C%2522id%2522%253A%2522clstzj2mg0003356lip4fhd1w%2522%257D%255D%252C%2522sizes%2522%253A%255B100%255D%257D%255D%257D%252C%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522DEVTOOLS%2522%252C%2522direction%2522%253A%2522vertical%2522%252C%2522id%2522%253A%2522DEVTOOLS%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL%2522%252C%2522contentType%2522%253A%2522DEVTOOLS%2522%252C%2522id%2522%253A%2522clstzj2mg0005356l6vsjkkfr%2522%257D%255D%252C%2522sizes%2522%253A%255B100%255D%257D%255D%252C%2522sizes%2522%253A%255B50%252C50%255D%257D%252C%2522tabbedPanels%2522%253A%257B%2522clstzj2mg0002356lq7y9whne%2522%253A%257B%2522id%2522%253A%2522clstzj2mg0002356lq7y9whne%2522%252C%2522tabs%2522%253A%255B%255D%257D%252C%2522clstzj2mg0005356l6vsjkkfr%2522%253A%257B%2522tabs%2522%253A%255B%257B%2522id%2522%253A%2522clstzj2mg0004356l6rts8s1f%2522%252C%2522mode%2522%253A%2522permanent%2522%252C%2522type%2522%253A%2522UNASSIGNED_PORT%2522%252C%2522port%2522%253A0%252C%2522path%2522%253A%2522%252F%2522%257D%255D%252C%2522id%2522%253A%2522clstzj2mg0005356l6vsjkkfr%2522%252C%2522activeTabId%2522%253A%2522clstzj2mg0004356l6rts8s1f%2522%257D%252C%2522clstzj2mg0003356lip4fhd1w%2522%253A%257B%2522tabs%2522%253A%255B%255D%252C%2522id%2522%253A%2522clstzj2mg0003356lip4fhd1w%2522%257D%257D%252C%2522showDevtools%2522%253Atrue%252C%2522showShells%2522%253Atrue%252C%2522showSidebar%2522%253Atrue%252C%2522sidebarPanelSize%2522%253A15%257D)
+
 ## Installation
 
 ```bash
@@ -186,12 +188,11 @@ We can use `css` variables in the root style declaration, and then use the `setV
 
 ```tsx
 
-export const Card = styled<CardProps>((props,{className,getStyle,ref,setVar})=>{
+export const Card = styled<CardProps>((props,{className,getStyle})=>{
     const { title,children,footer} =props
+    const [primaryColor,setPrimaryColor] = React.useState("blue")
     return (
-      <div ref={ref} className={className} style={getStyle()}>
-        <div className="title">            
-            {title}<button onClick={()=>setVar("----primary-color",'red')}>
+      <div className={className} style={getStyle({"--primary-color":primaryColor})}>
         </div>
         <div className="content">{children}</div>
         <div className="footer">{footer}</div>
@@ -233,6 +234,39 @@ export const Card = styled<CardProps>((props,{className,getStyle,ref,setVar})=>{
 - If you need to dynamically modify `css` variables, you need to introduce `ref`, pass `ref` to the root element, and then use the `setVar` function to modify `css` variables.
 - If you need to use `props` dynamic `css` properties, you need to use the `getStyle` function to get the dynamic css style and inject it into the root element.
 
+
+## Hook
+
+`styledfc` also provides a hook `useStyled` to help you quickly encapsulate `react` components.
+
+ 
+```tsx
+import { useStyle } from "styledfc"
+export const Card2:React.FC<React.PropsWithChildren<CardProps>> = ((props:CardProps)=>{
+    const { title } = props
+    const [titleColor,setTitleColor] = useState("blue")
+    const {className,getStyle } =  useStyle({
+        // style 
+    })
+    return (
+      <div className={className} style={getStyle({"--title-color":titleColor},props)}>
+        <div className="title">            
+            <span>{title}</span>
+            <span className="tools"><button onClick={()=>setTitleColor(getRandColor())}>Change</button></span>
+        </div>
+        <div className="content">          
+            {props.children}
+        </div>
+        <div className="footer">{props.footer}</div>
+      </div>
+    )
+  })
+```
+
+- The `useStyle` hook returns `className` and `getStyle`, which are used to inject style class names and dynamic styles.
+- The `getStyle` function returns a `css` style object that can be passed directly to the `style` attribute.
+- The `useStyle` hook supports passing `options` parameters to configure `styleId` and `className`.
+- The `useStyle` hook is the same as the `styled` function, the only difference is that the `style` sheet injected into the `head` will be automatically removed when the component is uninstalled.
 
 ## Options
 
