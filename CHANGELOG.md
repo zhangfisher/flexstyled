@@ -1,5 +1,11 @@
 # styledfc
 
+## 1.0.5
+
+### Patch Changes
+
+- 13cf5d4: add useStyle
+
 ## 1.0.4
 
 ### Patch Changes

@@ -1,5 +1,0 @@
----
-"styledfc": patch
----
-
-add useStyle
