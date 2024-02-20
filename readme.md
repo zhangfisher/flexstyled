@@ -1,6 +1,6 @@
 # StyledFc
 
-StyledFc is a simple css-in-js library for react component
+StyledFc is a simple runtime `css-in-js` library for react component
 
 [中文](./readme_CN.md)
 
@@ -301,12 +301,7 @@ export type StyledComponentParams ={
     className:string
     // generated css style id
     styleId:string
-    // css variables
-    vars:Record<string,string | number>
-    // update css variable value on the component
-    setVar:(name:string,value:string | number)=>void
-    // ref of the component, only use when use setVar to update css variable
-    ref:React.RefObject<any>
+    vars:Record<string,string | number> 
     // get the css style object，only use when use props dynamic css
     getStyle : ()=>Record<string,string | number>
 }
