@@ -39,7 +39,7 @@ useInsertionEffect
  * 
  */
 
-import { CSSRuleObject } from './types';
+import type { CSSRuleObject } from './types';
 import { createStyles } from "./parse"
 import { generateClassName, generateStyleId, getComputedStyles, insertStylesheet } from "./utils"
 import type { CSSProperties,ReactElement } from "react"
@@ -64,7 +64,7 @@ export type StyledComponentProps<Props> = Props & {
     className: string
     styleId  : string
 }
-export type StyledComponent<Props> = (props:Props,params:StyledComponentParams)=>ReactElement
+export type StyledComponent<Props> = (props:Props,params:StyledComponentParams)=> ReactElement
 
 
 

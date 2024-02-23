@@ -46,7 +46,7 @@
  * 
  */
 
-import { CSSRuleObject } from "./types"
+import type { CSSRuleObject } from "./types"
 import { shortHash } from "./hash"
 
 
