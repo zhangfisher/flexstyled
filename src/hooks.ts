@@ -1,4 +1,4 @@
-import { CSSProperties, useCallback, useEffect, useRef, useState } from "react";
+import { type CSSProperties, useCallback, useEffect, useRef, useState } from "react";
 import { createStyles } from "./parse";
 import { generateClassName, generateStyleId, getComputedStyles, insertStylesheet, removeStylesheet } from "./utils";
 import type { CSSRuleObject } from "./types";
