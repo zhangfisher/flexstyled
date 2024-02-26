@@ -1,6 +1,6 @@
 {
   "name": "styledfc",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "sample css-in-js for react component",
   "homepage": "https://github.com/zhangfisher/styledfc",
   "publisher": "zhangfisher",
@@ -32,6 +32,7 @@
   "devDependencies": {
     "@types/react": "^18.2.42",
     "@vitejs/plugin-react": "^4.2.1",
+    "esbuild-plugin-umd-wrapper": "^2.0.0",
     "tsup": "^8.0.2",
     "type-fest": "^4.8.3",
     "typescript": "^5.3.3",

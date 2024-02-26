@@ -1,5 +1,11 @@
 # styledfc
 
+## 1.0.6
+
+### Patch Changes
+
+- d12f8b0: add umd & iife
+
 ## 1.0.5
 
 ### Patch Changes
