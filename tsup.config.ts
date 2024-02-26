@@ -24,17 +24,37 @@ export default defineConfig([{
     },
     esbuildPlugins: [
         umdWrapper({
-          libraryName: 'library-name',
+          libraryName: 'StyledFC'       
         })
       ],
     //@ts-ignore
-    format: ['iife', 'umd'],
+    format: [ 'umd'],
     dts: true,
     splitting: false,
     sourcemap: true,
     clean: true,
     treeshake:true,  
-    minify: true ,
-    globalName:'styledfc' 
-}]
+    minify: false ,
+    globalName:'StyledFC',
+    external:['react','react-dom'],  
+  },{
+    entry: [
+        'src/index.tsx'
+    ],
+    outExtension: ({ format,options })=>{
+        return {
+          js: `.${format}.js`
+        }
+    },  
+    format: ['iife'],
+    dts: false,
+    splitting: false,
+    sourcemap: true,
+    clean: true,
+    treeshake:false,  
+    minify: false ,
+    globalName:'StyledFC',
+    external:['react']
+  }
+]
 ) 
