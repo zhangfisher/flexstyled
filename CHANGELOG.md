@@ -1,5 +1,11 @@
 # styledfc
 
+## 1.0.7
+
+### Patch Changes
+
+- f8a9f20: update main->dist/index.umd.js
+
 ## 1.0.6
 
 ### Patch Changes
