@@ -1,5 +1,11 @@
 # styledfc
 
+## 1.0.9
+
+### Patch Changes
+
+- 3e6ca3d: 修复 styled 返回的类型组件的类型错误
+
 ## 1.0.8
 
 ### Patch Changes
