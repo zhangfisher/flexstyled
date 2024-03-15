@@ -1,5 +1,11 @@
 # styledfc
 
+## 1.0.8
+
+### Patch Changes
+
+- 42d52dc: feat: add styled(css)
+
 ## 1.0.7
 
 ### Patch Changes
