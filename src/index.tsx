@@ -68,7 +68,7 @@ export type StyledComponent<Props> = (props:Props,params:StyledComponentParams)=
 
 
 export function styled<Props=any>(styles:CSSRuleObject<Props>,options?:StyledOptions):StyledComponentParams
-export function styled<Props=any>(FC: StyledComponent<Props>,styles:CSSRuleObject<Props>,options?:StyledOptions):ReactElement
+export function styled<Props=any>(FC: StyledComponent<Props>,styles:CSSRuleObject<Props>,options?:StyledOptions):(props:Props)=>ReactElement
 export function styled<Props=any>(FC: any,styles:any,options?:StyledOptions):any{
     let component:StyledComponent<Props> | undefined=undefined,styleData:CSSRuleObject<Props>
     let opts:Required<StyledOptions> = {
