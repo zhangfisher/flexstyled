@@ -2,6 +2,8 @@ import {  useState } from 'react'
 import './App.css'
 import { Card } from "./Card"
 import { Card2 } from "./Card2"
+import { Card3 } from "./Card3"
+
 
 function App() { 
   const [size,setSize] = useState<"small" | "middle" | "large">("middle")
@@ -36,6 +38,19 @@ function App() {
         <button onClick={()=>setBgColor("gray")}>gray</button>       
 
       </Card2>}
+
+      <Card3 title="Styled" footer="Copyright 2024" size={size} bgColor={bgColor}>
+        StyledFc is a simple css-in-js library for react component 
+        <p>Size={size}</p>
+        <button onClick={()=>setSize("small")}>Small</button>
+        <button onClick={()=>setSize("middle")}>Middle</button>
+        <button onClick={()=>setSize("large")}>Large</button>
+        <p>BgColor={bgColor}</p>
+        <button onClick={()=>setBgColor("red")}>red</button>
+        <button onClick={()=>setBgColor("yellow")}>yellow</button>
+        <button onClick={()=>setBgColor("gray")}>gray</button>       
+      </Card3>
+
     </div>
   )
 }

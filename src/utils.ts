@@ -25,6 +25,17 @@ export function removeStylesheet(id:string){
     }
 }
 
+export function isPlainObject(obj:any){
+    if (typeof obj !== 'object' || obj === null) return false;
+    var proto = Object.getPrototypeOf(obj);
+    if (proto === null) return true;
+    var baseProto = proto;
+    while (Object.getPrototypeOf(baseProto) !== null) {
+        baseProto = Object.getPrototypeOf(baseProto);
+    }
+    return proto === baseProto;
+}
+
  /**
  * 生成一个样式表id
  * 
@@ -45,7 +56,7 @@ export function generateClassName():string{
 
 export function getComputedStyles(styles:Record<string,Function>,props:any){
     const computedStyles:Record<string,string | number> = {}
-    for(const [varName,fn] of Object.entries(styles|| {})){
+    for(const [varName,fn] of Object.entries(styles || {})){
         computedStyles[varName] = fn(props)
     }
     return computedStyles

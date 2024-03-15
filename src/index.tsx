@@ -41,7 +41,7 @@ useInsertionEffect
 
 import { CSSRuleObject } from './types';
 import { createStyles } from "./parse"
-import { generateClassName, generateStyleId, getComputedStyles, insertStylesheet } from "./utils"
+import { generateClassName, generateStyleId, getComputedStyles, insertStylesheet, isPlainObject } from "./utils"
 import type { CSSProperties,ReactElement } from "react"
  
  
@@ -57,7 +57,7 @@ export type StyledComponentParams<RefType=any> ={
     className: string
     styleId  : string
     vars     : Record<string,string | number> 
-    getStyle : (css?:CSSRuleObject)=>CSSProperties
+    getStyle : (css?:CSSRuleObject,props?:any)=>CSSProperties
 }
 
 export type StyledComponentProps<Props> = Props & {
@@ -67,31 +67,56 @@ export type StyledComponentProps<Props> = Props & {
 export type StyledComponent<Props> = (props:Props,params:StyledComponentParams)=>ReactElement
 
 
-
-
-export function styled<Props=any>(FC: StyledComponent<Props>,styles:CSSRuleObject<Props>,options?:StyledOptions){
-    const opts = Object.assign({
-        className:generateClassName() , 
+export function styled<Props=any>(styles:CSSRuleObject<Props>,options?:StyledOptions):StyledComponentParams
+export function styled<Props=any>(FC: StyledComponent<Props>,styles:CSSRuleObject<Props>,options?:StyledOptions):ReactElement
+export function styled<Props=any>(FC: any,styles:any,options?:StyledOptions):any{
+    let component:StyledComponent<Props> | undefined=undefined,styleData:CSSRuleObject<Props>
+    let opts:Required<StyledOptions> = {
+        className:generateClassName(), 
         styleId:generateStyleId()
-    },options) as Required<StyledOptions>
+    }
+    // 参数处理
+    if(arguments.length==0){
+        throw new Error("params error")
+    }else{
+        if(isPlainObject(arguments[0])){
+            styleData = arguments[0]
+            Object.assign(opts,arguments[1])
+        }else{
+            component = arguments[0]
+            styleData = arguments[1]
+            Object.assign(opts,arguments[2])        
+        }        
+    } 
 
     // 1. 创建样式字符串
-    const style = createStyles(styles,{className:opts.className,styleId:opts.styleId})
+    const style = createStyles(styleData,{className:opts.className,styleId:opts.styleId})
     // 2. 生成样式插入到页面中
-    insertStylesheet(style.css,opts.styleId)
+    insertStylesheet(style.css,opts.styleId) 
 
-    // 4. 返回组件
-    return (props:Props)=>{
-        const params:StyledComponentParams = {
-            className: opts.className,
+    if(component==undefined){
+        //返回参数
+        return {
+            className: style.className,
             styleId  : opts.styleId,
             vars     : style.vars,  
-            getStyle : (css)=>{
-                return Object.assign({},getComputedStyles(style.computedStyles,props),css) as CSSProperties
-            }
-        }  
-        return FC(props,params)
-    }
+            getStyle : (css?:CSSRuleObject,props?:any)=>Object.assign({},getComputedStyles(style.computedStyles,props),css) as CSSProperties
+        }
+    }else{
+        //返回组件
+        return (props:Props)=>{
+            const params:StyledComponentParams = {
+                className: style.className,
+                styleId  : style.styleId,
+                vars     : style.vars,  
+                getStyle : (css)=>{
+                    return Object.assign({},getComputedStyles(style.computedStyles,props),css) as CSSProperties
+                }
+            }  
+            return FC(props,params)
+        }
+    } 
+    
 }
 
 

@@ -236,6 +236,55 @@ export const Card = styled<CardProps>((props,{className,getStyle})=>{
 - If you need to use `props` dynamic `css` properties, you need to use the `getStyle` function to get the dynamic css style and inject it into the root element.
 
 
+## creteStyle
+
+`styled` function can also be used to create styles only and insert into head.
+
+```tsx
+// card.style.ts
+
+import { styled } from "styledfc"
+
+// create style and insert into head
+export default styled({ // 组件样式
+      position:"relative",
+      width:"100%",
+      border:"1px solid #ccc",
+      borderRadius:"4px",
+      "--primary-color":"blue",
+      "& > .title":{
+        fontSize:"20px",
+        fontWeight:"bold",
+        color:"var(--primary-color)"
+      },
+      "& > .footer":{
+        borderTop:"1px solid #ccc",
+        padding:"8px",
+        textAlign:"right"
+      },
+      "& > .content":{
+        padding:"8px",
+        backgroundColor:(props)=>props.bgColor
+      }
+  })
+
+// card.tsx
+import cardStyle from "./card.style"
+
+export default (props:CardProps)=>{
+    return (
+      <div className={cardStyle.className} style={cardStyle.getStyle({"--title-color":titleColor},props)}>
+        <div className="title">            
+            {props.title}
+        </div>
+        <div className="content">{props.children}</div>
+        <div className="footer">{props.footer}</div>
+      </div>
+    )
+  }
+```
+
+
 ## Hook
 
 `styledfc` also provides a hook `useStyled` to help you quickly encapsulate `react` components.

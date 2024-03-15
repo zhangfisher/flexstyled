@@ -8,6 +8,7 @@
 - 支持css变量
 - 支持类似less的嵌套css样式
 - 支持props动态css
+- 支持三种使用方式
 - 支持typescript
 
 [演示](https://codesandbox.io/p/sandbox/styledfc-demo-x7w94w?layout=%257B%2522sidebarPanel%2522%253A%2522EXPLORER%2522%252C%2522rootPanelGroup%2522%253A%257B%2522direction%2522%253A%2522horizontal%2522%252C%2522contentType%2522%253A%2522UNKNOWN%2522%252C%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522id%2522%253A%2522ROOT_LAYOUT%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522UNKNOWN%2522%252C%2522direction%2522%253A%2522vertical%2522%252C%2522id%2522%253A%2522clstzj2mg0006356lkdcmsv3s%2522%252C%2522sizes%2522%253A%255B70%252C30%255D%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522EDITOR%2522%252C%2522direction%2522%253A%2522horizontal%2522%252C%2522id%2522%253A%2522EDITOR%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL%2522%252C%2522contentType%2522%253A%2522EDITOR%2522%252C%2522id%2522%253A%2522clstzj2mg0002356lq7y9whne%2522%257D%255D%257D%252C%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522SHELLS%2522%252C%2522direction%2522%253A%2522horizontal%2522%252C%2522id%2522%253A%2522SHELLS%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL%2522%252C%2522contentType%2522%253A%2522SHELLS%2522%252C%2522id%2522%253A%2522clstzj2mg0003356lip4fhd1w%2522%257D%255D%252C%2522sizes%2522%253A%255B100%255D%257D%255D%257D%252C%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522DEVTOOLS%2522%252C%2522direction%2522%253A%2522vertical%2522%252C%2522id%2522%253A%2522DEVTOOLS%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL%2522%252C%2522contentType%2522%253A%2522DEVTOOLS%2522%252C%2522id%2522%253A%2522clstzj2mg0005356l6vsjkkfr%2522%257D%255D%252C%2522sizes%2522%253A%255B100%255D%257D%255D%252C%2522sizes%2522%253A%255B50%252C50%255D%257D%252C%2522tabbedPanels%2522%253A%257B%2522clstzj2mg0002356lq7y9whne%2522%253A%257B%2522id%2522%253A%2522clstzj2mg0002356lq7y9whne%2522%252C%2522tabs%2522%253A%255B%255D%257D%252C%2522clstzj2mg0005356l6vsjkkfr%2522%253A%257B%2522tabs%2522%253A%255B%257B%2522id%2522%253A%2522clstzj2mg0004356l6rts8s1f%2522%252C%2522mode%2522%253A%2522permanent%2522%252C%2522type%2522%253A%2522UNASSIGNED_PORT%2522%252C%2522port%2522%253A0%252C%2522path%2522%253A%2522%252F%2522%257D%255D%252C%2522id%2522%253A%2522clstzj2mg0005356l6vsjkkfr%2522%252C%2522activeTabId%2522%253A%2522clstzj2mg0004356l6rts8s1f%2522%257D%252C%2522clstzj2mg0003356lip4fhd1w%2522%253A%257B%2522tabs%2522%253A%255B%255D%252C%2522id%2522%253A%2522clstzj2mg0003356lip4fhd1w%2522%257D%257D%252C%2522showDevtools%2522%253Atrue%252C%2522showShells%2522%253Atrue%252C%2522showSidebar%2522%253Atrue%252C%2522sidebarPanelSize%2522%253A15%257D)
@@ -216,14 +217,60 @@ export const Card = styled<CardProps>((props,{className,getStyle})=>{
 - 以上我们在根样式中声明了一个`--primary-color`的`css`变量。
 - 然后我们在`title`样式中使用了`--primary-color`变量。
 - `getStyle`函数支持传入更新`css`变量。
-
-
-
+ 
 ### 小结
 
 - 默认只需要在组件引用`className`即可。
 - 如果需要使用`props`动态`css`属性，需要使用`getStyle`函数来获取动态`css`样式并注入到根元素中。
 - `getStyle`函数支持传入更新`css`变量。
+
+## 创建样式
+
+`styled`函数也可以只用来创建样式并插入到`HEAD`。
+
+```tsx
+// card.style.ts
+
+import { styled } from "styledfc"
+
+// 创建样式并插入到head
+export default styled({ // 组件样式
+      position:"relative",
+      width:"100%",
+      border:"1px solid #ccc",
+      borderRadius:"4px",
+      "--primary-color":"blue",
+      "& > .title":{
+        fontSize:"20px",
+        fontWeight:"bold",
+        color:"var(--primary-color)"
+      },
+      "& > .footer":{
+        borderTop:"1px solid #ccc",
+        padding:"8px",
+        textAlign:"right"
+      },
+      "& > .content":{
+        padding:"8px",
+        backgroundColor:(props)=>props.bgColor
+      }
+  })
+
+// card.tsx
+import cardStyle from "./card.style"
+
+export default (props:CardProps)=>{
+    return (
+      <div className={cardStyle.className} style={cardStyle.getStyle({"--title-color":titleColor},props)}>
+        <div className="title">            
+            {props.title}
+        </div>
+        <div className="content">{props.children}</div>
+        <div className="footer">{props.footer}</div>
+      </div>
+    )
+  }
+```
 
 ## Hook
 
@@ -295,6 +342,8 @@ export type StyledComponentParams ={
 
 export type StyledComponent<Props> = (props:React.PropsWithChildren<Props>,params:StyledComponentParams)=>React.ReactElement
 
+//
 styled<Props>(FC: StyledComponent<Props>,styles:CSSObject,options?:StyledOptions)
+styled<Props>(styles:CSSObject,options?:StyledOptions)
 
 ```
