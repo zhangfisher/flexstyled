@@ -1,5 +1,11 @@
 # styledfc
 
+## 1.1.0
+
+### Minor Changes
+
+- 6b7c001: add `styled.[html tagName]` create component
+
 ## 1.0.9
 
 ### Patch Changes
