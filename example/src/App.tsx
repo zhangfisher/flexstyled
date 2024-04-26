@@ -3,6 +3,7 @@ import './App.css'
 import { Card } from "./Card"
 import { Card2 } from "./Card2"
 import { Card3 } from "./Card3"
+import { MyButton } from './MyButton'
 
 
 function App() { 
@@ -11,6 +12,7 @@ function App() {
   const [showCard2,setShowCard2] = useState(true)
   return (
     <div style={{width:"100%"}}>
+      <MyButton>Styled</MyButton>
       <Card title="Styled" footer="Copyright 2024" size={size} bgColor={bgColor}>
         StyledFc is a simple css-in-js library for react component 
         <p>Size={size}</p>

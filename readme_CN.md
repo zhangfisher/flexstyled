@@ -73,7 +73,6 @@ export const Card = styled<CardProps>((props,{className})=>{
 </style>
 ```
 
-
 ### 嵌套样式
 
 接下来我们来为`Card`组件的`title`和`footer`添加样式.
@@ -217,12 +216,6 @@ export const Card = styled<CardProps>((props,{className,getStyle})=>{
 - 以上我们在根样式中声明了一个`--primary-color`的`css`变量。
 - 然后我们在`title`样式中使用了`--primary-color`变量。
 - `getStyle`函数支持传入更新`css`变量。
- 
-### 小结
-
-- 默认只需要在组件引用`className`即可。
-- 如果需要使用`props`动态`css`属性，需要使用`getStyle`函数来获取动态`css`样式并注入到根元素中。
-- `getStyle`函数支持传入更新`css`变量。
 
 ## 创建样式
 
@@ -305,6 +298,25 @@ export const Card2:React.FC<React.PropsWithChildren<CardProps>> = ((props:CardPr
 - `getStyle`函数支持传入更新`css`变量。如果使用到`props`动态样式，则需要传入`props`参数。
 - `useStyle`钩子支持传入`options`参数来配置`styleId`和`className`。
 - `useStyle`与`styled`函数功能一样，唯一的区别是`useStyle`在`head`注入的样式表在组件卸载时会自动移除。
+
+### 创建样式组件
+
+从`1.1.0`版本开始，`styledfc`支持创建样式组件。
+
+```tsx
+
+import { styled } from "styledfc"
+
+const MyButton = styled.div({
+    color:"red",
+    "&:hover":{
+        color:"blue"
+    }
+})
+
+// 其他如styled.span,styled.button等任意有效的HTML tag
+
+```
 
 ## 配置
 

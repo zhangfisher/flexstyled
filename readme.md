@@ -266,7 +266,7 @@ export default styled({ // 组件样式
         padding:"8px",
         backgroundColor:(props)=>props.bgColor
       }
-  })
+})
 
 // card.tsx
 import cardStyle from "./card.style"
@@ -318,6 +318,26 @@ export const Card2:React.FC<React.PropsWithChildren<CardProps>> = ((props:CardPr
 - The `useStyle` hook supports passing `options` parameters to configure `styleId` and `className`.
 - The `useStyle` hook is the same as the `styled` function, the only difference is that the `style` sheet injected into the `head` will be automatically removed when the component is uninstalled.
 
+### Create Styled component
+
+`styledfc` supports creating styled components, use html tag name.
+
+```tsx
+
+import { styled } from "styledfc"
+
+const MyButton = styled.div({
+    color:"red",
+    "&:hover":{
+        color:"blue"
+    }
+})
+
+```
+- You can also create other HTML tags, such as `span`, `button`, etc.
+
+
+
 ## Options
 
 
@@ -331,8 +351,6 @@ export interface StyledOptions{
     // The generated class name, if not specified, will be automatically generated
     className?:string                        
 }
-
-
 ```
 
 
