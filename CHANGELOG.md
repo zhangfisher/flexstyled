@@ -1,5 +1,12 @@
 # styledfc
 
+## 1.2.0
+
+### Minor Changes
+
+- ebf34d0: add props method
+- 68bd059: add props method
+
 ## 1.1.1
 
 ### Patch Changes
