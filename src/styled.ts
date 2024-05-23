@@ -33,11 +33,14 @@
 
     styled.div
 
-
-
-
  
 useInsertionEffect
+
+ myStyle = styled({},{classNames})
+
+ <MyComponent className={myStyle.className} style={myStyle.getStyle()}></MyComponent>
+ <MyComponent {...myStyle.props({额外的样式或CSS变量},{props,className:"额外的类名"})} ></MyComponent>
+
  * 
  */
 
@@ -76,24 +79,38 @@ export function createStyled<Props=any>(FC: any,styles:any,options?:StyledOption
     insertStylesheet(style.css,opts.styleId) 
 
     if(component==undefined){
+        const getStyle = (css?:CSSRuleObject,props?:any)=>Object.assign({},getComputedStyles(style.computedStyles,props),css) as CSSProperties
         //返回参数
         return {
             className: style.className,
             styleId  : opts.styleId,
             vars     : style.vars,  
-            getStyle : (css?:CSSRuleObject,props?:any)=>Object.assign({},getComputedStyles(style.computedStyles,props),css) as CSSProperties
-        }
+            getStyle,
+            props:(css,options) =>{
+                return {
+                    className: options?.className  + ' ' + style.className,
+                    style:getStyle(css,options?.props)
+                }
+            }
+        } as StyledComponentParams
     }else{
         //返回组件
         return (props:Props)=>{
+            const getStyle = (css?:CSSRuleObject)=>{
+                return Object.assign({},getComputedStyles(style.computedStyles,props),css) as CSSProperties
+            }
             const params:StyledComponentParams = {
                 className: style.className,
                 styleId  : style.styleId,
                 vars     : style.vars,  
-                getStyle : (css)=>{
-                    return Object.assign({},getComputedStyles(style.computedStyles,props),css) as CSSProperties
+                getStyle, 
+                props:(css,options) =>{
+                    return {
+                        className: options?.className + ' '+ style.className,
+                        style:getStyle(css)
+                    }
                 }
-            }  
+            }  as StyledComponentParams
             return FC(props,params)
         }
     } 

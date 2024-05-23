@@ -285,6 +285,24 @@ export default (props:CardProps)=>{
 ```
 
 
+using `createStyle.props` to simplify the parameter passing, as follows:
+
+```tsx
+ 
+export default (props:CardProps)=>{
+    return (
+      <div {...cardStyle.props()}>
+          ...
+      </div>
+    )
+  }
+
+<div {...cardStyle.props({"--title-color":titleColor})}/>
+<div {...cardStyle.props({"--title-color":titleColor},{props})}/>
+<div {...cardStyle.props({"--title-color":titleColor},{props,className:"xxxxx xxxx"})}/>
+
+```
+  
 ## Hook
 
 `styledfc` also provides a hook `useStyled` to help you quickly encapsulate `react` components.

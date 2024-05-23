@@ -265,6 +265,34 @@ export default (props:CardProps)=>{
   }
 ```
 
+也可以使用 `cardStyle.props`简化参数传递，如下:
+
+```tsx
+ 
+export default (props:CardProps)=>{
+    return (
+      <div {...cardStyle.props()}>
+          ...
+      </div>
+    )
+  }
+
+// 当样式中包含css变量或者需要额外的样式时，可以使用如下方式传入
+
+<div {...cardStyle.props({"--title-color":titleColor})}/>
+
+// 如果使用了动态样式，则需要传入props参数
+<div {...cardStyle.props({"--title-color":titleColor},{props})}/>
+// 也可以传入额外的样式类名
+
+<div {...cardStyle.props({"--title-color":titleColor},{props,className:"xxxxx xxxx"})}/>
+
+```
+
+
+
+- 注意，如果使用到`props`动态样式，则`getStyle`需要传入`props`参数。
+
 ## Hook
 
 `styledfc`还提供了一个`useStyle`钩子，用于在函数组件中使用。

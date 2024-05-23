@@ -6,11 +6,12 @@ export interface StyledOptions{
     className?:string                        // 生成的样式类名，如果没有指定则自动生成 
 }
 
-export type StyledComponentParams<RefType=any> ={
+export type StyledComponentParams ={
     className: string
     styleId  : string
     vars     : Record<string,string | number> 
     getStyle : (css?:CSSRuleObject,props?:any)=>CSSProperties
+    props    : (css?:CSSRuleObject,options?:{props?:any,className?:string})=>{ className:string,style  : CSSProperties}
 }
 
 export type StyledComponentProps<Props> = Props & {

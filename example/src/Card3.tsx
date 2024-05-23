@@ -10,7 +10,7 @@ export const Card3:React.FC<React.PropsWithChildren<CardProps>> = ((props:CardPr
     const { title } = props
     const [titleColor,setTitleColor] = useState("blue")
     return (
-      <div className={style.className} style={style.getStyle({"--title-color":titleColor},props)}>
+      <div {...style.props({"--title-color":titleColor},{props,className:"xxx"})}>
         <div className="title">            
             <span>{title}</span>
             <span className="tools"><button onClick={()=>setTitleColor(getRandColor())}>Change</button></span>
