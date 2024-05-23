@@ -46,14 +46,9 @@
  * 
  */
 
-import { CSSRuleObject } from "./types"
+import { CSSRuleObject, StyledOptions } from "./types"
 import { shortHash } from "./hash"
-
-
-export interface CreateStylesOptions{
-    className?:string           // 生成的样式类名，如果没有指定则自动生成
-    styleId:string
-}
+ 
 /**
  * 将驼峰命名转换为css样式命名
  * @param camelCaseString 
@@ -63,8 +58,8 @@ function toCssStyleName(camelCaseString: string): string {
     return camelCaseString.replace(/([a-z])([A-Z])/g, (match, p1, p2) => p1 + '-' + p2.toLowerCase());  
 }  
 
-export function createStyles(styles:CSSRuleObject,options?:CreateStylesOptions){
-    const opts = Object.assign({},options) as Required<CreateStylesOptions> 
+export function createStyles(styles:CSSRuleObject,options?:Required<StyledOptions>){
+    const opts = Object.assign({},options) as Required<StyledOptions> 
     const { className } = opts
     const rules:string[] = []
     const vars:Record<string,string | number> = {}

@@ -70,7 +70,8 @@ export function createStyled<Props=any>(FC: any,styles:any,options?:StyledOption
     } 
 
     // 1. 创建样式字符串
-    const style = createStyles(styleData,{className:opts.className,styleId:opts.styleId})
+    const style = createStyles(styleData,opts)
+
     // 2. 生成样式插入到页面中
     insertStylesheet(style.css,opts.styleId) 
 

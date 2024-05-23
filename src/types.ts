@@ -6,8 +6,6 @@ export interface StyledOptions{
     className?:string                        // 生成的样式类名，如果没有指定则自动生成 
 }
 
-
-
 export type StyledComponentParams<RefType=any> ={
     className: string
     styleId  : string
