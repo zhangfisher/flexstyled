@@ -1,5 +1,11 @@
 # styledfc
 
+## 1.1.1
+
+### Patch Changes
+
+- 3ce9ea0: fix style error
+
 ## 1.1.0
 
 ### Minor Changes

@@ -72,11 +72,7 @@ export function createStyles(styles:CSSRuleObject,options?:Required<StyledOption
         for(const [ruleName,value] of Object.entries(styles)){
             if(typeof(value)=='object'){
                 const pKey = ruleName.trim().startsWith("&") ? ruleName.substring(1) : ruleName
-                if(pKey.startsWith(":") || pKey.startsWith("[")){
-                    childRules.push([`${parentRule}${pKey}`,value])
-                }else{
-                    childRules.push([`${parentRule} ${pKey}`,value])
-                }
+                childRules.push([`${parentRule}${pKey}`,value])
             }else if(typeof(value)=='function'){
                 // 处理动态样式，即通过(props)=>{}的方式生成样式，这种样式需要在组件渲染时动态计算，因此将之生成对应的组件级别的css变量
                 // 比如{border:(props)=>`1px solid ${props.borderColor}`}, 会生成一个名为--border的css变量

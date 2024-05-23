@@ -27,6 +27,9 @@ export const cardStyle:CSSRuleObject = {
     "&:hover":{
         border:"1px solid #1698e4",
     },
+    "&.submit":{
+      color:"red"
+    },
     "& > .title":{
       padding      : "8px",
       background   : "#f9f9f9",

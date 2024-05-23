@@ -337,6 +337,17 @@ const MyButton = styled.div({
 - You can also create other HTML tags, such as `span`, `button`, etc.
 
 
+## Performance
+
+Due to the limitations of `css-in-js`, there may be performance issues. A recommended performance optimization method is to create all styles at once during the application's startup phase and insert them into the `head`, and then reference the styles in the component.
+
+```tsx
+// styles.tsx
+import { styled } from "styledfc"
+export style1 = styled({...})
+export style2 = styled({...})
+export style3 = styled({...})
+```
 
 ## Options
 

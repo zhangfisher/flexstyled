@@ -332,6 +332,19 @@ export interface StyledOptions{
 }
 ```
 
+
+## 性能
+
+由于`css-in-js`的限制，可能会存在性能问题，一个推荐的性能优化方式是：在应用的启动阶段，将所有的样式一次性创建并插入到`head`中，然后在组件中来引用样式。
+
+```tsx
+// styles.tsx
+import { styled } from "styledfc"
+export style1 = styled({...})
+export style2 = styled({...})
+export style3 = styled({...})
+```
+
 ## API
 
 ```tsx
