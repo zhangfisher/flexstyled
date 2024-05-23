@@ -7,7 +7,7 @@
 - `children`属性作为卡片的内容区。
 
 
-### 第1步：创建样式组件
+## 第1步：创建样式组件
 
 `flexstyled`提供`styled`高阶函数用来创建一个支持`CSS-IN-JS`样式的组件。
 
@@ -60,7 +60,7 @@ export const Card = styled<CardProps>((props,{className})=>{
 **注**：`类名`和`style.id`也可以通过`options`参数来指定`styleId`和`className`。
 :::
 
-### 第2步：嵌套样式
+## 第2步：嵌套样式
 
 接下来我们为`Card`组件的`header`、`body`和`footer`添加样式，并且使用`嵌套样式`。
 
@@ -103,7 +103,7 @@ export const Card = styled<CardProps>((props,{className})=>{
 :::
 
 
-### 第3步：动态样式
+## 第3步：动态样式
 
 接下来我们为`Card`组件提供一个`headerBgColor`属性，用来配置卡片头部的背景色。
 
@@ -150,3 +150,12 @@ export const Card = styled<CardProps>((props,{className,getStyle})=>{
 
 - 首先可以在样式中使用`(props)=>props.headerBgColor`来动态获取`headerBgColor`属性。
 - 接着需要在根元素上使用`style={getStyle({},props)}`来注入动态样式，`getStyle`返回的是一个样式对象。
+
+
+## 小结
+
+- 使用`styled`高阶函数创建一个支持`CSS-IN-JS`样式的组件，组件的`CSS`将被自动插入到`head`标签中。
+- 支持类似`less/sass/scss`的方式来为组件的子元素指定样式。
+- 所有的样式均支持通过`(props)=>{}`来提供组件的动态属性值。
+
+更完整的卡片组件示例可以参考[这里](https://github.com/zhangfisher/styledfc/tree/master/example)。
