@@ -295,16 +295,16 @@ export default (props:CardProps)=>{
 
 ## Hook
 
-`styledfc`还提供了一个`useStyle`钩子，用于在函数组件中使用。
+`styledfc`还提供了一个`useStyled`钩子，用于在函数组件中使用。
 
-同样功能的`Card`组件可以使用`useStyle`钩子来实现。
+同样功能的`Card`组件可以使用`useStyled`钩子来实现。
 
 ```tsx
-import { useStyle } from "styledfc"
+import { useStyled } from "styledfc"
 export const Card2:React.FC<React.PropsWithChildren<CardProps>> = ((props:CardProps)=>{
     const { title } = props
     const [titleColor,setTitleColor] = useState("blue")
-    const {className,getStyle } =  useStyle({
+    const {className,getStyle } =  useStyled({
         // 此处是组件样式
     })
     return (
@@ -322,10 +322,10 @@ export const Card2:React.FC<React.PropsWithChildren<CardProps>> = ((props:CardPr
   })
 ```
 
-- `useStyle`钩子返回`className`和`getStyle`,用来注入样式类名和动态样式。
+- `useStyled`钩子返回`className`和`getStyle`,用来注入样式类名和动态样式。
 - `getStyle`函数支持传入更新`css`变量。如果使用到`props`动态样式，则需要传入`props`参数。
-- `useStyle`钩子支持传入`options`参数来配置`styleId`和`className`。
-- `useStyle`与`styled`函数功能一样，唯一的区别是`useStyle`在`head`注入的样式表在组件卸载时会自动移除。
+- `useStyled`钩子支持传入`options`参数来配置`styleId`和`className`。
+- `useStyled`与`styled`函数功能一样，唯一的区别是`useStyled`在`head`注入的样式表在组件卸载时会自动移除。
 
 ### 创建样式组件
 

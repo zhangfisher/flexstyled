@@ -46,7 +46,7 @@
  * 
  */
 
-import { CSSRuleObject, StyledOptions } from "./types"
+import { CSSRuleObject, ComputedStyles, StyledOptions } from "./types"
 import { shortHash } from "./hash"
  
 /**
@@ -63,7 +63,7 @@ export function createStyles(styles:CSSRuleObject,options?:Required<StyledOption
     const { className } = opts
     const rules:string[] = []
     const vars:Record<string,string | number> = {}
-    const computedStyles:Record<string,Function> = {}
+    const computedStyles:ComputedStyles = {}
     const rooRules:string[] = []  // 动态样式变量均声明在根样式中
 
     const parseStyle = (styles:CSSRuleObject,parentRule:string)=>{
@@ -87,7 +87,7 @@ export function createStyles(styles:CSSRuleObject,options?:Required<StyledOption
                 computedStyles[varName] = value
             }else{
                 rule += `${toCssStyleName(ruleName)}: ${value};\n`
-                // CSS变量只能在根样式中定义
+                //注意： CSS变量只能在根样式中定义
                 if(ruleName.startsWith("--")){
                     vars[ruleName] = value
                 }
@@ -100,7 +100,9 @@ export function createStyles(styles:CSSRuleObject,options?:Required<StyledOption
             parseStyle(value,rule)
         }) 
     }
+
     parseStyle(styles,className)    
+
     return {
         ...opts, 
         vars,

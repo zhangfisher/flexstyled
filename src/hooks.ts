@@ -1,8 +1,8 @@
-import { type CSSProperties, useCallback, useEffect, useRef, useState,useInsertionEffect, useLayoutEffect } from "react";
+import { type CSSProperties, useCallback,  useRef, useState,useInsertionEffect } from "react";
 import { createStyles } from "./parse";
 import { generateClassName, generateStyleId, getComputedStyles, insertStylesheet, removeStylesheet } from "./utils";
-import type { CSSRuleObject, StyledComponentParams } from "./types";
-import type { StyledOptions } from ".";
+import type { CSSRuleObject, StyledObject } from "./types";
+import { createStyled, type StyledOptions } from ".";
 
 
 /**
@@ -15,34 +15,20 @@ import type { StyledOptions } from ".";
  * @param name 
  * @param value 
  */
-export function useStyle<Props=any>(styles: CSSRuleObject<Props> | (()=>CSSRuleObject<Props>),options?:StyledOptions):StyledComponentParams {
+export function useStyled<Props=any>(styles: CSSRuleObject<Props> | (()=>CSSRuleObject<Props>),options?:StyledOptions):StyledObject {
     const firstRef = useRef<boolean>(false);
     const computedStyles = useRef<any>(null);
 
-    const getStyle = useCallback((css?:CSSRuleObject,props?:any)=>{
-        return Object.assign({},getComputedStyles(computedStyles.current,props),css) as CSSProperties
-    },[])
-
-    const [styleContext] = useState(()=>{
-        const opts = Object.assign({
-            className:generateClassName(), 
-            styleId:generateStyleId()
-        },options) as Required<StyledOptions>
-        return {
-            className:opts.className,
-            styleId:opts.styleId,
-            getStyle,
-            props:(css,options)=>{
-                return {className:opts.className,style:getStyle(css,options?.props)}
-            }
-        } as StyledComponentParams
+    const [styledObj] = useState(()=>{
+        const findStyles = typeof(styles)=='function' ? styles() : styles
+        return createStyled(findStyles,options)
     });
     const updateStyle = useCallback(()=>{
         // 1. 创建样式字符串
-        const style = createStyles(typeof(styles)=='function' ? styles() : styles,{className:styleContext.className,styleId:styleContext.styleId})
+        const style = createStyles(typeof(styles)=='function' ? styles() : styles,{className:styledObj.className,styleId:styledObj.styleId})
         computedStyles.current = style.computedStyles
         // 2. 生成样式插入到页面中
-        insertStylesheet(style.css,styleContext.styleId)
+        insertStylesheet(style.css,styledObj.styleId)
     },[styles])
 
 
@@ -54,8 +40,8 @@ export function useStyle<Props=any>(styles: CSSRuleObject<Props> | (()=>CSSRuleO
     useInsertionEffect(() => {   
         return ()=>{
             firstRef.current =false 
-            removeStylesheet(styleContext.styleId)
+            removeStylesheet(styledObj.styleId)
         }
     }, []);
-    return styleContext
+    return styledObj
 }

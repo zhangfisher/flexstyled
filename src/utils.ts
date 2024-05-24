@@ -1,3 +1,4 @@
+import { ComputedStyles } from "./types"
 
 
 /**
@@ -54,12 +55,20 @@ export function generateClassName():string{
     return 'c'+Math.random().toString(36).substring(2, 8)  
 } 
 
-export function getComputedStyles(styles:Record<string,Function>,props:any){
-    const computedStyles:Record<string,string | number> = {}
-    for(const [varName,fn] of Object.entries(styles || {})){
-        computedStyles[varName] = fn(props)
-    }
-    return computedStyles
+export function getComputedStyles(computedStyles:ComputedStyles[],props:any){
+    const result:ComputedStyles = {}
+    computedStyles.forEach((styles)=>{
+        for(const [varName,fn] of Object.entries(styles || {})){
+            result[varName] = fn(props)
+        }
+    })
+    return result
 }
 
+ 
+
+export function joinClassNames(...classNames:(string|undefined)[]):string{
+    return classNames.join(" ").trim()
+}
+ 
  

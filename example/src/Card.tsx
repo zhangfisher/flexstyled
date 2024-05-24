@@ -5,6 +5,11 @@ import { CardProps, cardStyle } from "./cardStyle"
 
 
 
+export const Card1 = styled<CardProps>((props,params)=>{
+  console.log(params,props)
+  return <div {...params.props()}></div>
+},{})
+
 export const Card = styled<CardProps>((props,{className,getStyle})=>{
     const { title } = props
     const [titleColor,setTitleColor] = useState("blue")

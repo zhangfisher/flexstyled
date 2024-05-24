@@ -1,4 +1,4 @@
-# styledfc
+# flexstyled
 
 ## 1.2.0
 

@@ -1,3 +1,11 @@
+/**
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+
 import { UnpluginFactory,createUnplugin } from 'unplugin'
 
 export interface Options {
@@ -5,7 +13,7 @@ export interface Options {
 }
 
 export const unpluginFactory: UnpluginFactory<Options | undefined> = options => ({
-  name: 'unplugin-styledfc', 
+  name: 'unplugin-flexstyled', 
   enforce: 'post',
   transformInclude(id) {
     const extRegex = /(\.(ts|js|tsx|jsx))(?!=\?)$/
@@ -27,9 +35,9 @@ export const unplugin = /* #__PURE__ */ createUnplugin(unpluginFactory)
 
 export default unplugin
 
-export const vitePlugin = unplugin.vite
-export const rollupPlugin = unplugin.rollup
+export const vitePlugin    = unplugin.vite
+export const rollupPlugin  = unplugin.rollup
 export const webpackPlugin = unplugin.webpack
-export const rspackPlugin = unplugin.rspack
+export const rspackPlugin  = unplugin.rspack
 export const esbuildPlugin = unplugin.esbuild
-export const farmPlugin = unplugin.farm
+export const farmPlugin    = unplugin.farm

@@ -43,6 +43,6 @@ useInsertionEffect
 
 export * from "./styled"
 export * from "./types"
-export { useStyle } from "./hooks"
+export { useStyled as useStyle } from "./hooks"
 export { insertStylesheet } from "./utils"
 export * from "./element"

@@ -1,24 +1,34 @@
-
- 
-
 export interface StyledOptions{
     styleId?:string                          // 样式表的ID
     className?:string                        // 生成的样式类名，如果没有指定则自动生成 
 }
 
-export type StyledComponentParams ={
+export type StyledResult = { className:string,style:CSSProperties}
+
+export type ComputedStyles  = Record<string,(props?:any)=>any>
+
+export type StyledObject={
     className: string
     styleId  : string
-    vars     : Record<string,string | number> 
+    vars     : Record<string,string | number>     
+    computedStyles:ComputedStyles
     getStyle : (css?:CSSRuleObject,props?:any)=>CSSProperties
-    props    : (css?:CSSRuleObject,options?:{props?:any,className?:string})=>{ className:string,style  : CSSProperties}
+    props    : (params?:{style?:CSSRuleObject,props?:any,className?:string})=>StyledResult
 }
+
+// 当创建高阶样式组件时，不需要额外传递props
+export type ComponentStyledObject = Omit<StyledObject,'props' | 'getStyle'> & {
+    getStyle : (css?:CSSRuleObject)=>CSSProperties
+    props    :(params?:{style?:CSSRuleObject,className?:string})=>StyledResult
+}
+
 
 export type StyledComponentProps<Props> = Props & {
     className: string
     styleId  : string
 }
-export type StyledComponent<Props> = (props:Props,params:StyledComponentParams)=>ReactElement
+
+export type StyledComponent<Props> = (props:Props,params:ComponentStyledObject)=>ReactElement
 
 
 import type { CSSProperties, ReactElement } from "react";
@@ -28,7 +38,6 @@ export type CSSSelector = `${'&' | ':' | '>' | '~' | '+' | '.' | '^' | '#' | '*'
 export type CSSVar = `--${string}`;
 
 export type ComputedStyledAttr<P=any> = (props:P)=> string | number
-
 
 
 export type CSSRuleObject<P=any> ={

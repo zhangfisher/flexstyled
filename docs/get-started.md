@@ -94,7 +94,7 @@ export const Card = styled<CardProps>((props,{className})=>{
         borderTop:"1px solid #ccc"          // [!code ++]
     }                                       // [!code ++]
   })    
-  ```
+```
 
 可以看到`flexstyled`支持类似`less/sass/scss`的`嵌套样式`的写法来为组件的子元素指定嵌套样式。
 
@@ -117,7 +117,7 @@ export type  CardProps = React.PropsWithChildren<{
 export const Card = styled<CardProps>((props,{className,getStyle})=>{
     const { title,children,footer} =props
     return (
-      <div className={className} style={getStyle({},props)}>  // [!code ++]
+      <div className={className} style={getStyle()}>  // [!code ++]
         <div className="header">             
             {title}
         </div>
@@ -149,7 +149,11 @@ export const Card = styled<CardProps>((props,{className,getStyle})=>{
  
 
 - 首先可以在样式中使用`(props)=>props.headerBgColor`来动态获取`headerBgColor`属性。
-- 接着需要在根元素上使用`style={getStyle({},props)}`来注入动态样式，`getStyle`返回的是一个样式对象。
+- 接着需要在根元素上使用`style={getStyle()}`来注入动态样式，`getStyle`返回的是一个样式对象。
+
+::: warning 提示
+由于上例中我们使用了`props=>props.headerBgColor`来动态获取`headerBgColor`属性，所以需要通过 `getStyle`函数来注入动态样式。如果样式中没有使用到任何CSS变量或动态样式，那么可以省略`style={getStyle()}`。
+:::
 
 
 ## 小结
