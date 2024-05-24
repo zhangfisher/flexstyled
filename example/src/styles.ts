@@ -14,7 +14,7 @@ export const BorderRadius = styled({
 })
 
 export const Outline = styled({
-    outline: '5px solid #0a8afb'
+    outline: (props)=>`8px solid ${props.bgColor}`
 })
 
 
