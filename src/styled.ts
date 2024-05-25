@@ -41,7 +41,7 @@
  */
 
 import { CSSRuleObject, ComponentStyledObject, StyledComponent, StyledObject, StyledOptions } from './types';
-import { createStyles } from "./parse"
+import { parseStyles } from "./parse"
 import { generateClassName, generateStyleId, getComputedStyles, insertStylesheet, isPlainObject, joinClassNames } from "./utils"
 import type { CSSProperties,ReactElement } from "react"
 
@@ -81,7 +81,7 @@ export function createStyled<Props=any>():any{
     } 
 
     // 1. 创建样式字符串
-    const style = createStyles(styleData,opts)
+    const style = parseStyles(styleData,opts)
 
     // 2. 生成样式插入到页面中
     insertStylesheet(style.css,opts.styleId) 

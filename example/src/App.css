@@ -40,3 +40,13 @@ button{
 button:focus{
   outline: none;
 }
+
+  @keyframes myani {  
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  
+  }

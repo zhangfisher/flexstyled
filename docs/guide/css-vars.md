@@ -12,9 +12,9 @@ const Card = styled<CardProps>((props,{className,getStyle})=>{
     const { title,children,footer} =props
     return (
       <div className={className} style={getStyle({
-        "--padding":props.padding   //   [!code ++]     // 重载css变量
-        color:'red'                 //  [!code ++]   // 额外的内联样式
-},props)}>  
+          "--padding":props.padding   //   [!code ++]   // 重载css变量
+          color:'red'                 //  [!code ++]    // 额外的内联样式
+        },props)}>  
         <div className="header">  {title} </div>
         <div className="body">{children}</div>
         <div className="footer">{footer}</div>
@@ -43,9 +43,9 @@ const Card = styled<CardProps>((props,{className,getStyle})=>{
 styled({ 
     position:"relative",
     width:"100%",
-    "--padding": '4px',       //   [!code warning]   声明在根，有效
+    "--padding": '4px',       //   [!code warning]  ✔️ 有效, 声明在根，
     "& > .header":{
-        "--padding": '4px',  //   [!code error]  无效，声明在子元素上
+        "--padding": '4px',  //   [!code error]  ❌ 无效, 声明在子元素上
     }
     // ... 
   }

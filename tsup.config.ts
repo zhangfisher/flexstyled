@@ -24,7 +24,7 @@ export default defineConfig([{
     },
     esbuildPlugins: [
         umdWrapper({
-          libraryName: 'StyledFC'       
+          libraryName: 'FlexStyled'       
         })
       ],
     //@ts-ignore
@@ -35,7 +35,7 @@ export default defineConfig([{
     clean: true,
     treeshake:true,  
     minify: false ,
-    globalName:'StyledFC',
+    globalName:'FlexStyled',
     external:['react','react-dom'],  
   },{
     entry: [
@@ -53,7 +53,7 @@ export default defineConfig([{
     clean: true,
     treeshake:false,  
     minify: false ,
-    globalName:'StyledFC',
+    globalName:'FlexStyled',
     external:['react']
   }
 ]

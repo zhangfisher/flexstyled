@@ -5,7 +5,8 @@ export interface StyledOptions{
 
 export type StyledResult = { className:string,style:CSSProperties}
 
-export type ComputedStyles  = Record<string,(props?:any)=>any>
+export type ComputedStyleDefine  = (props?:any)=>any
+export type ComputedStyles  = Record<string,ComputedStyleDefine>
 
 export type StyledObject={
     className: string
@@ -34,18 +35,46 @@ export type StyledComponent<Props> = (props:Props,params:ComponentStyledObject)=
 import type { CSSProperties, ReactElement } from "react";
 
 // 定义合法的 CSS 选择器类型  
-export type CSSSelector = `${'&' | ':' | '>' | '~' | '+' | '.' | '^' | '#' | '*'}${string}` | `[${string}]`  
-export type CSSVar = `--${string}`;
+export type CSSSelector = `${'@' | '&' | ':' | '>' | '~' | '+' | '.' | '^' | '#' | '*'}${string}` | `[${string}]`  
+export type CSSVarName = `--${string}`;
 
 export type ComputedStyledAttr<P=any> = (props:P)=> string | number
 
 
+
+export type CSSRuleValue<P=any> = ComputedStyledAttr<P> | string | number
+
 export type CSSRuleObject<P=any> ={
-    [selector in CSSSelector]: CSSRuleObject<P> 
+    [selector in CSSSelector]: CSSRuleObject<P>
 } & {
-    [varName: CSSVar]: string | number 
+    [varName: CSSVarName]: string | number 
 } &   {
     [attrName in keyof CSSProperties]: CSSProperties[attrName] | ComputedStyledAttr<P> 
 }  
  
  
+/**
+ * CSS动画Keyframes类型
+ */
+export type CSSKeyframes<P=any> = Record<`${number}%`,CSSRuleObject<P>> & {
+    from?:CSSRuleObject<P>
+    to?: CSSRuleObject<P>
+}
+   
+
+
+/**
+ * 
+ * CSSKeyframes
+ * 
+ * 
+ */
+
+
+const k:CSSKeyframes ={    
+    "50%":{
+    },
+    from:{
+
+    }
+}

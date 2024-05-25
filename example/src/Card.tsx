@@ -3,8 +3,6 @@ import { styled } from "../../"
 import { getRandColor } from "./utils"
 import { CardProps, cardStyle } from "./cardStyle"
 
-
-
 export const Card1 = styled<CardProps>((props,params)=>{
   console.log(params,props)
   return <div {...params.props()}></div>
