@@ -45,10 +45,11 @@ import { parseStyles } from "./parse"
 import { generateClassName, generateStyleId, getComputedStyles, insertStylesheet, isPlainObject, joinClassNames } from "./utils"
 import type { CSSProperties,ReactElement } from "react"
 
-export function createStyled<Props=any>(styles:CSSRuleObject<Props>,options?:StyledOptions):StyledObject
-export function createStyled<Props=any>(styles:CSSRuleObject<Props>,mergeStyles:StyledObject[],options?:StyledOptions):StyledObject
+
+export function createStyled<Props=any>(styles:CSSRuleObject<Props>,options?:StyledOptions):StyledObject 
+export function createStyled<Props=any>(styles:CSSRuleObject<Props>,combindStyles:StyledObject[],options?:StyledOptions):StyledObject
 export function createStyled<Props=any>(FC: StyledComponent<Props>,styles:CSSRuleObject<Props>,options?:StyledOptions):(props:Props)=>ReactElement
-export function createStyled<Props=any>(FC: StyledComponent<Props>,styles:CSSRuleObject<Props>,mergeStyles:StyledObject[],options?:StyledOptions):(props:Props)=>ReactElement
+export function createStyled<Props=any>(FC: StyledComponent<Props>,styles:CSSRuleObject<Props>,combindStyles:StyledObject[],options?:StyledOptions):(props:Props)=>ReactElement
 export function createStyled<Props=any>():any{
     let FC:StyledComponent<Props> | undefined=undefined,styleData:CSSRuleObject<Props>
     let opts:Required<StyledOptions> = {
@@ -62,7 +63,7 @@ export function createStyled<Props=any>():any{
     }else{ 
         if(isPlainObject(arguments[0])){ 
             styleData = arguments[0]
-            if(arguments.length>=2 && Array.isArray(arguments[1])){     // 有传入mergeStyles
+            if(arguments.length>=2 && Array.isArray(arguments[1])){     // 有传入combindStyles
                 mergeComputedStyles = arguments[1]
                 Object.assign(opts,arguments[2])
             }else{
@@ -126,3 +127,24 @@ export function createStyled<Props=any>():any{
 }
 
  
+
+
+
+// type CSS = (
+//     strings: TemplateStringsArray,
+//     ...exprs: Array<string | number | CSSProperties>
+//   ) => string;
+  
+  
+//   function css(strings: TemplateStringsArray, ...exprs: Array<string | number | CSSProperties | ((props:any)=>any)>): string {
+//     let result = '';
+//     strings.forEach((str, i) => {
+//       result += str;
+//       if (exprs[i] !== undefined) {
+//         result += exprs[i];
+//       }
+//     });
+//     return result;
+//   }
+  
+  

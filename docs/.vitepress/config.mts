@@ -22,16 +22,18 @@ export default defineConfig({
       { text: '快速入门', link: '/get-started' },
       {
         text: '指南',
-        items: [                    
-              { text: '创建样式', link: '/guide/createStyle' },
-              { text: '动态样式', link: '/guide/dynamic' },              
-              { text: 'CSS变量', link: '/guide/css-vars' },              
-              { text: '嵌套样式', link: '/guide/nesting' },              
-              { text: '样式组件', link: '/guide/component' },              
-              { text: 'useStyled', link: '/guide/useStyled' },
-              { text: '主题', link: '/guide/theme' },
-              { text: 'StyledObject', link: '/guide/styledObject' },             
- 
+        items: [                                  
+            { text: '封装组件', link: '/guide/wrapperComponent' },      
+            { text: '创建样式', link: '/guide/createStyle' },        
+            { text: '动态样式', link: '/guide/dynamic' },              
+            { text: 'CSS变量', link: '/guide/css-vars' },              
+            { text: '嵌套样式', link: '/guide/nesting' },              
+            { text: '样式组件', link: '/guide/component' },    
+            { text: '组合样式', link: '/guide/combind' },          
+            { text: 'keyframes', link: '/guide/keyframes' },   
+            { text: 'useStyled', link: '/guide/useStyled' },            
+            { text: 'StyledObject', link: '/guide/styledObject' },             
+            // { text: '主题', link: '/guide/theme' }, 
         ]
       },
       { text: '最佳实践', link: '/best-practices' },

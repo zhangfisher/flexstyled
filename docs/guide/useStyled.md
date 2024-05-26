@@ -16,13 +16,22 @@ import { useStyled } from "flexstyled"
 export const Card:React.FC<React.PropsWithChildren<CardProps>> = ((props:CardProps)=>{
     const { title } = props
     const [titleColor,setTitleColor] = useState("blue")
-    const {className,getStyle } =  useStyled({
+    const {className,getStyle } =  useStyled(
+      {
         // 此处是组件样式
-    },{
-        // 此处是配置
-    })
+      },
+      [
+          // 此处是组合样式
+      ],
+      { 
+        // 此处是配置参数 
+      }
+    )
     return (
-      <div className={className} style={getStyle({"--title-color":titleColor},props)}>
+      <div className={className} style={getStyle({
+          style:{"--title-color":titleColor},
+          props
+        )}>
         <div className="title">            
             <span>{title}</span>
             <span className="tools"><button onClick={()=>setTitleColor(getRandColor())}>Change</button></span>

@@ -15,7 +15,7 @@ function App() {
     <div style={{width:"100%"}}>
       <MyButton>Styled</MyButton>
       <Card title="Card1 - Styled" footer="Copyright 2024" size={size} bgColor={bgColor}>
-        StyledFc is a simple css-in-js library for react component 
+        FlexStyled is a simple css-in-js library for react component 
         <p>Size={size}</p>
         <button onClick={()=>setSize("small")}>Small</button>
         <button onClick={()=>setSize("middle")}>Middle</button>
@@ -43,7 +43,7 @@ function App() {
       </Card2>}
 
       <Card3 title="Card3 -  Styled" footer="Copyright 2024" size={size} bgColor={bgColor}>
-        StyledFc is a simple css-in-js library for react component 
+        FlexStyled is a simple css-in-js library for react component 
         <p>Size={size}</p>
         <button onClick={()=>setSize("small")}>Small</button>
         <button onClick={()=>setSize("middle")}>Middle</button>
@@ -55,7 +55,7 @@ function App() {
       </Card3>
 
       <Card4 title="Card4 - 复用样式" footer="Copyright 2024" size={size} bgColor={bgColor}>
-        StyledFc is a simple css-in-js library for react component 
+        FlexStyled is a simple css-in-js library for react component 
         <p>Size={size}</p>
         <button onClick={()=>setSize("small")}>Small</button>
         <button onClick={()=>setSize("middle")}>Middle</button>

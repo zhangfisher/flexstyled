@@ -11,10 +11,12 @@ interface CardProps{
 const Card = styled<CardProps>((props,{className,getStyle})=>{
     const { title,children,footer} =props
     return (
-      <div className={className} style={getStyle({
-          "--padding":props.padding   //   [!code ++]   // 重载css变量
-          color:'red'                 //  [!code ++]    // 额外的内联样式
-        },props)}>  
+      <div className={className} style={getStyle(
+          style:{                       //   [!code ++]
+            "--padding":props.padding   //   [!code ++]   // 重载css变量
+            color:'red'                 //  [!code ++]    // 额外的内联样式
+          }                             //   [!code ++]
+        )}>  
         <div className="header">  {title} </div>
         <div className="body">{children}</div>
         <div className="footer">{footer}</div>
@@ -32,8 +34,7 @@ const Card = styled<CardProps>((props,{className,getStyle})=>{
   })    
 ```
 
-- 可以通过`getStyle` 第一个参数来提供重载`css变量`值。
-- 可以通过`getStyle`的第一个参数也可以提供额外的内联样式。
+- 可以通过`getStyle`来提供重载`css变量`值，也可以提供额外的内联样式。
 
 ## 说明
  
@@ -51,8 +52,6 @@ styled({
   }
 })
 ```
-
-- 使用`css变量`可以解决使用`(props)=>xxx`提供动态样式无法在嵌套子元素上生效的问题。
-
+ 
 
 
