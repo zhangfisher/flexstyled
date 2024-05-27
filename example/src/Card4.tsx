@@ -6,7 +6,7 @@ import { CardProps, cardStyle } from "./cardStyle"
 import {AtomStyles} from "./styles"
 
  // 此处提供styleId只是为了方便调试，实际开发中可以不提供，会自动生成 styleId
-const style = styled(cardStyle,AtomStyles,{styleId:"mycard4"})
+const style = styled(cardStyle,AtomStyles,{id:"mycard4"})
 
 export const Card4:React.FC<React.PropsWithChildren<CardProps>> = ((props:CardProps)=>{
     const { title } = props

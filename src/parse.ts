@@ -49,9 +49,9 @@
  * 
  */
 
-import { CSSRuleObject, ComputedStyleDefine, ComputedStyles, StyledOptions } from "./types"
+import { CSSRuleObject, ComputedStyles, StyledOptions, CSSVars } from './types';
 import { shortHash } from "./hash"
-import { toCssStyleName } from "./utils"
+import { toCssStyleName, fromCssVariableName } from './utils';
  
 
 
@@ -69,11 +69,11 @@ function isIfRule(ruleName:string){
 
 
 
-export function parseStyles(styles:CSSRuleObject,options?:StyledOptions){
+export function parseStyles<T extends CSSRuleObject = CSSRuleObject>(styles:T,options?:StyledOptions){
     const opts = Object.assign({},options) as Required<StyledOptions> 
     const { className } = opts
     const rules:string[] = []
-    const vars:Record<string,string | number> = {}
+    const vars:CSSVars<T> = {}
     const computedStyles:ComputedStyles = {}                // 保存动态样式函数,如(props)=>{}
     const computedVars:string[] = []                        // 动态样式被转换为CSS变量的变量声明
 
@@ -113,7 +113,8 @@ export function parseStyles(styles:CSSRuleObject,options?:StyledOptions){
                 rule += `  ${toCssStyleName(ruleName)}: ${value};\n`
                 //注意： CSS变量只能在根样式中定义
                 if(ruleName.startsWith("--")){
-                    vars[ruleName] = value
+                    // @ts-ignore
+                    vars[fromCssVariableName(ruleName)] = value
                 }
             }   
         }
@@ -144,3 +145,25 @@ export function parseStyles(styles:CSSRuleObject,options?:StyledOptions){
     }
 }
 
+
+
+// const d= parseStyles({
+//     "--primary-color": "red",
+// })
+// d.vars["color1"]
+// d.vars["primaryColor"]
+
+// d.vars.primaryColor
+
+
+
+// function theme<T extends CSSRuleObject = CSSRuleObject>(styles:T){
+//     return parseStyles(styles)
+// }
+
+// const t= theme({
+//     "--primary-color": "red",
+//     "--secondary-color": "blue",
+// })
+// t.vars.primaryColor
+// t.vars.secondaryColor

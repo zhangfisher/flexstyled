@@ -4,7 +4,7 @@ import { getRandColor } from "./utils"
 import { CardProps, cardStyle } from "./cardStyle"
 
 
-const style = styled(cardStyle,{styleId:"mycard3"})
+const style = styled(cardStyle,{id:"mycard3"})
 
 export const Card3:React.FC<React.PropsWithChildren<CardProps>> = ((props:CardProps)=>{
     const { title } = props

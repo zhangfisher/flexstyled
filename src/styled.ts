@@ -40,31 +40,30 @@
  * 
  */
 
-import { CSSRuleObject, ComponentStyledObject, StyledComponent, StyledObject, StyledOptions } from './types';
+import { CSSRuleObject, ComponentStyledObject, StyledComponent, StyledObject, StyledOptions, CSSVars, PickCombindVars } from './types';
 import { parseStyles } from "./parse"
 import { generateClassName, generateStyleId, getComputedStyles, insertStylesheet, isPlainObject, joinClassNames } from "./utils"
-import type { CSSProperties,ReactElement } from "react"
+import type { CSSProperties,ReactElement } from "react" 
 
-
-export function createStyled<Props=any>(styles:CSSRuleObject<Props>,options?:StyledOptions):StyledObject 
-export function createStyled<Props=any>(styles:CSSRuleObject<Props>,combindStyles:StyledObject[],options?:StyledOptions):StyledObject
-export function createStyled<Props=any>(FC: StyledComponent<Props>,styles:CSSRuleObject<Props>,options?:StyledOptions):(props:Props)=>ReactElement
-export function createStyled<Props=any>(FC: StyledComponent<Props>,styles:CSSRuleObject<Props>,combindStyles:StyledObject[],options?:StyledOptions):(props:Props)=>ReactElement
-export function createStyled<Props=any>():any{
+export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSSRuleObject<Props>, CombindStyles extends StyledObject[]=StyledObject[]>(styles:Styles,options?:StyledOptions):StyledObject<CSSVars<Styles>> 
+export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSSRuleObject<Props>, CombindStyles extends StyledObject[]=StyledObject[]>(styles:Styles,combindStyles:CombindStyles,options?:StyledOptions):StyledObject<CSSVars<Styles>>
+export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSSRuleObject<Props>, CombindStyles extends StyledObject[]=StyledObject[]>(FC: StyledComponent<Props>,styles:Styles,options?:StyledOptions):(props:Props)=>ReactElement
+export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSSRuleObject<Props>, CombindStyles extends StyledObject[]=StyledObject[]>(FC: StyledComponent<Props>,styles:Styles,combindStyles:CombindStyles,options?:StyledOptions):(props:Props)=>ReactElement
+export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSSRuleObject<Props>, CombindStyles extends StyledObject[]=StyledObject[]>():any{
     let FC:StyledComponent<Props> | undefined=undefined,styleData:CSSRuleObject<Props>
     let opts:Required<StyledOptions> = {
         className:generateClassName(), 
-        styleId:generateStyleId()
+        id:generateStyleId()
     }    
-    let mergeComputedStyles:StyledObject[] =  []          // 需要合并的样式对象
+    let combindStyledObjects:StyledObject[] =  []          // 需要合并的样式对象
     // 参数处理
     if(arguments.length==0){   
         throw new Error("params error")
     }else{ 
         if(isPlainObject(arguments[0])){ 
             styleData = arguments[0]
-            if(arguments.length>=2 && Array.isArray(arguments[1])){     // 有传入combindStyles
-                mergeComputedStyles = arguments[1]
+            if(arguments.length>=2 && Array.isArray(arguments[1])){     // 有传入combindStyles时进行合并
+                combindStyledObjects = arguments[1]
                 Object.assign(opts,arguments[2])
             }else{
                 Object.assign(opts,arguments[1])
@@ -73,7 +72,7 @@ export function createStyled<Props=any>():any{
             FC = arguments[0]
             styleData = arguments[1]
             if(arguments.length>=3 && Array.isArray(arguments[1])){
-                mergeComputedStyles = arguments[2]
+                combindStyledObjects = arguments[2]
                 Object.assign(opts,arguments[3])      
             }else{
                 Object.assign(opts,arguments[2])      
@@ -85,38 +84,40 @@ export function createStyled<Props=any>():any{
     const style = parseStyles(styleData,opts)
 
     // 2. 生成样式插入到页面中
-    insertStylesheet(style.css,opts.styleId) 
+    insertStylesheet(style.css,opts.id) 
+
+    const combindVars  = Object.assign(style.vars,...combindStyledObjects.map(s=>s.vars))
 
     // 3. 创建样式对象
     const createStyledObject = (fcProps?:any) =>{
-        const computedStyles = [...mergeComputedStyles.map(s=>s.computedStyles), style.computedStyles]
+        const computedStyles = [...combindStyledObjects.map(s=>s.computedStyles), style.computedStyles]
         const getStyle =fcProps ?  (css?:CSSRuleObject)=>{
-            return Object.assign({},getComputedStyles(computedStyles,fcProps),css) as CSSProperties
-        } :
-        (css?:CSSRuleObject,props?:any)=>{
-            return Object.assign({},getComputedStyles(computedStyles,props),css) as CSSProperties
-        }
+                return Object.assign({},getComputedStyles(computedStyles,fcProps,combindVars),css) as CSSProperties
+            } :
+            (css?:CSSRuleObject,props?:any)=>{
+                return Object.assign({},getComputedStyles(computedStyles,props,combindVars),css) as CSSProperties
+            }
 
         // 连接类名，使得合并进来的样式类可以应用到当前组件
-        const className = joinClassNames(style.className,...mergeComputedStyles.map(s=>s.className))
+        const className = joinClassNames(style.className,...combindStyledObjects.map(s=>s.className))
         return {
-            __flexstyled__:true,
-            className, 
-            styleId  : style.styleId,
-            vars     : style.vars,  
-            computedStyles : style.computedStyles,
+            __flexstyled__: true,
+            id            : style.id,
+            vars          : combindVars,  
+            computedStyles: style.computedStyles,
             getStyle, 
+            className, 
             props:(params) =>{
                 return {
                     className: joinClassNames(params?.className,className),
                     style:getStyle(params?.style,fcProps ? fcProps : params?.props)
                 }
             }
-        }  as StyledObject
+        } as StyledObject<CSSVars<typeof combindVars>>
     }
 
     if(FC==undefined){          // 只创建建样式对象
-        return createStyledObject()
+        return createStyledObject() as  StyledObject
     }else{                      // 创建高阶样式组件        
         return (props:Props)=>{ 
             const params:ComponentStyledObject = createStyledObject(props)
@@ -124,27 +125,32 @@ export function createStyled<Props=any>():any{
         }
     } 
     
-}
-
+} 
  
 
+// const theme1 = createStyled({
+//     border:1,
+//     "--primary-color":"red",
+//     "--secondary-color-1":"blue"
+// })  
 
 
-// type CSS = (
-//     strings: TemplateStringsArray,
-//     ...exprs: Array<string | number | CSSProperties>
-//   ) => string;
-  
-  
-//   function css(strings: TemplateStringsArray, ...exprs: Array<string | number | CSSProperties | ((props:any)=>any)>): string {
-//     let result = '';
-//     strings.forEach((str, i) => {
-//       result += str;
-//       if (exprs[i] !== undefined) {
-//         result += exprs[i];
-//       }
-//     });
-//     return result;
-//   }
-  
-  
+// theme1.vars.primaryColor = 'green'
+// theme1.vars['primary-color']
+// theme1.vars.primaryColor
+// theme1.vars
+
+// const theme2 = createStyled({
+//     color:'red',
+//     "--primary-bgcolor":"red",
+//     "--secondary-bgcolor":"blue"
+// }) 
+// theme2.vars
+
+
+// const themes= createStyled({
+//     border:1,
+//     "--theme-color":"red"
+// },[theme1,theme2])
+
+// themes.vars.themeColor

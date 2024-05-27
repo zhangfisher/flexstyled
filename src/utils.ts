@@ -1,4 +1,4 @@
-import { ComputedStyles } from "./types" 
+import { ComputedStyles, Dict } from "./types" 
 
 export type InsertStylesheetOptions ={
     mode?:'append'|'prepend'|'replace',
@@ -70,11 +70,11 @@ export function generateClassName():string{
     return 'c'+Math.random().toString(36).substring(2, 8)  
 } 
 
-export function getComputedStyles(computedStyles:ComputedStyles[],props:any){
+export function getComputedStyles(computedStyles:ComputedStyles[],props:any,vars:Dict){
     const result:ComputedStyles = {}
     computedStyles.forEach((styles)=>{
         for(const [varName,fn] of Object.entries(styles || {})){
-            result[varName] = fn(props)
+            result[varName] = fn(props,vars)
         }
     })
     return result
@@ -142,3 +142,31 @@ export function toCssStyleName(camelCaseString: string): string {
 //     })
 //     return {css:`{\n${rules.join("\n")}\n}`,computedStyles: styles}
 // }
+
+
+
+
+/**
+ * 将一个驼峰命名转换为CSS变量命名样式，如borderRadius => --border-radius
+ * @param name 
+ * @returns 
+ */
+export function toCssVariableName(name:string){
+    return `--${name.replace(/([a-z])([A-Z])/g, (match, p1, p2) => p1 + '-' + p2.toLowerCase())}`
+}
+
+/**
+ *  从 CSS 变量名转换为驼峰命名，比如--border-radius => borderRadius
+ * 
+ *  CSS 变量名形式一般是
+ *   --custom-property-name
+ * 需要转换为驼峰命名 customPropertyName
+ * 
+ * @param name 
+ * @returns 
+ */
+export function fromCssVariableName(name:string){ 
+    return name.replace(/^--([a-z])([A-Z]?)/g, (match, p1, p2) => p1.toLowerCase()+ p2.toLowerCase())
+        .replace(/-([a-z])([A-Z]?)/g, (match, p1, p2) => p1.toUpperCase() + p2)
+}
+ 

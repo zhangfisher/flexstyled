@@ -36,7 +36,9 @@ export default defineConfig({
             // { text: '主题', link: '/guide/theme' }, 
         ]
       },
+      { text: 'API', link: '/api' },
       { text: '最佳实践', link: '/best-practices' },
+      
     ],
 
     socialLinks: [
