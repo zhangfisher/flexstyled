@@ -53,7 +53,8 @@ export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSS
     let FC:StyledComponent<Props> | undefined=undefined,styleData:CSSRuleObject<Props>
     let opts:Required<StyledOptions> = {
         className:generateClassName(), 
-        id:generateStyleId()
+        id:generateStyleId(),
+        rootVars : false
     }    
     let combindStyledObjects:StyledObject[] =  []          // 需要合并的样式对象
     // 参数处理
@@ -84,7 +85,7 @@ export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSS
     const style = parseStyles(styleData,opts)
 
     // 2. 生成样式插入到页面中
-    insertStylesheet(style.css,opts.id) 
+    insertStylesheet(style.css,opts.id)  
 
     const combindVars  = Object.assign(style.vars,...combindStyledObjects.map(s=>s.vars))
 
@@ -110,7 +111,7 @@ export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSS
             props:(params) =>{
                 return {
                     className: joinClassNames(params?.className,className),
-                    style:getStyle(params?.style,fcProps ? fcProps : params?.props)
+                    style    : getStyle(params?.style,fcProps ? fcProps : params?.props)
                 }
             }
         } as StyledObject<CSSVars<typeof combindVars>>
@@ -154,3 +155,4 @@ export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSS
 // },[theme1,theme2])
 
 // themes.vars.themeColor
+

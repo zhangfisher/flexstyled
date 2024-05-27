@@ -13,18 +13,19 @@ import { CSSRuleObject, CSSVars, ComputedStyles, IStyledObject, StyledObject } f
  * const dark = styled({
  *  "--primary-color": "green",
  *  "--secondary-color": "yellow",
- * },{root:true})        
+ * },{rootVars:true})        将css变量提升到全局
  * 
  * 
  * 
  * const theme = new themeManager([light,dark])
- * themeManage
+ * 
  * 
  * 
  * 
  * btn = styled<Button>({
- *      color: (props,{theme})=>theme.primaryColor,
- * },[theme])
+ *     color: (props)=>theme.primaryColor,
+ *     backgroundColor: theme.secondaryColor
+ * })
  
     const theme = new themeManager({
         light:{
@@ -93,4 +94,71 @@ export class ThemeManager implements IStyledObject{
     }
 }
  
+
+
+const dark = createStyled({
+    border:"1px",
+  "--primary-color": "green",
+  "--secondary-color": "yellow",
+},{rootVars:true})      
+
+
+
+  const lignt = createStyled({
+  "--primary-color2": "green",
+  "--secondary-color2": "yellow",
+ },{rootVars:true})      
+
+
+ class ThemeManager1<T extends CSSRuleObject>{
+    private _object:StyledObject<CSSVars<T>>
+    constructor(define:T){
+        this._object= createStyled(define)
+    }
+    get vars(){
+        return this._object.vars
+    }
+
+ }
+
+    const theme = new ThemeManager({ 
+      "--primary-color": "green",
+      "--secondary-color": "yellow",
+    },{id:"voerka-themes"})
+
+/**
+
+theme = createTheme({
+    border:"1px",
+    "--primary-color": "green",
+    "--secondary-color": "yellow",
+})
+
+theme.primaryColor         访问CSS变量值
+theme.primaryColor 
+
+<Theme.Provider value={theme}>
+    <div className={theme.className} style={theme.getStyle()}>
+            useTheme(theme)
+    </div>
+</Theme>
+
+
+ */
+function createTheme(){
+
+}
+
+
+
+    
+/**
+ * 修改DOM head中的:root中指定名称的css变量
+ * @param name 
+ * @param value 
+ */
+function changeRootCssVar(name:string,value:string | number){
+    
+}
+
 

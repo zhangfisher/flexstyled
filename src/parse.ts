@@ -71,11 +71,12 @@ function isIfRule(ruleName:string){
 
 export function parseStyles<T extends CSSRuleObject = CSSRuleObject>(styles:T,options?:StyledOptions){
     const opts = Object.assign({},options) as Required<StyledOptions> 
-    const { className } = opts
+    const { className,rootVars } = opts
     const rules:string[] = []
     const vars:CSSVars<T> = {}
     const computedStyles:ComputedStyles = {}                // 保存动态样式函数,如(props)=>{}
     const computedVars:string[] = []                        // 动态样式被转换为CSS变量的变量声明
+    const rootVarsMap:string[] = []                                 // 根CSS变量
 
     // asClass:  是否将对象解析为类样式
     //  parseStyle({border:1},"xxxx",false) ==> {border:1}
@@ -109,13 +110,19 @@ export function parseStyles<T extends CSSRuleObject = CSSRuleObject>(styles:T,op
                 rule += `${toCssStyleName(ruleName)}: var(${varName});\n`            
                 computedVars.push( `${varName}: unset;\n`)
                 computedStyles[varName] = value                     // 保存动态样式函数                
-            }else{
-                rule += `  ${toCssStyleName(ruleName)}: ${value};\n`
-                //注意： CSS变量只能在根样式中定义
-                if(ruleName.startsWith("--")){
+            }else{                
+                const isCssVar = ruleName.startsWith("--")
+                //注意： CSS变量只能在根样式中定义，将CSS变量转换为JS变量保存起来
+                if(isCssVar){  
                     // @ts-ignore
                     vars[fromCssVariableName(ruleName)] = value
+                    if(rootVars){
+                        rootVarsMap.push(`  ${ruleName}: ${value};`)
+                    }
                 }
+                if(!rootVars || (rootVars && !isCssVar)){
+                    rule += `  ${toCssStyleName(ruleName)}: ${value};\n`
+                }                
             }   
         }
         if(rule.endsWith("\n")) rule = rule.substring(0,rule.length-1)
@@ -137,11 +144,16 @@ export function parseStyles<T extends CSSRuleObject = CSSRuleObject>(styles:T,op
 
     parseStyle(styles,className)    
 
+    let css = rules.join("\n").replace('__COMPUTED_VARS__',computedVars.join("\n"))
+    if(rootVarsMap.length>0){
+        css = `:root {\n${rootVarsMap.join("\n")}\n}\n${css}`
+    }
+
     return {
         ...opts, 
         vars,
         computedStyles,
-        css:rules.join("\n").replace('__COMPUTED_VARS__',computedVars.join("\n"))
+        css
     }
 }
 

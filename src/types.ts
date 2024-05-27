@@ -1,6 +1,7 @@
 export interface StyledOptions{
-    id?       : string                          // 样式表的ID
-    className?: string                        // 生成的样式类名，如果没有指定则自动生成 
+    id?         : string                          // 样式表的ID
+    className?  : string                          // 生成的样式类名，如果没有指定则自动生成 
+    rootVars?   : boolean                         // 使用CSS变量
 }
 
 export type StyledResult = { className:string,style:CSSProperties}
