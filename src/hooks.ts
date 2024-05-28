@@ -18,7 +18,6 @@ import { createStyled, type StyledOptions } from ".";
 export function useStyled<Props=any>(styles: CSSRuleObject<Props> | (()=>CSSRuleObject<Props>),options?:Omit<StyledOptions,'id'>):StyledObject {
     const firstRef = useRef<boolean>(false); 
     const styleId = useRef<string>(''); 
- 
     const createStyle = useCallback(()=>{    
         const styleData = typeof(styles)=='function' ? styles() : styles
         if(styleId.current=='') styleId.current = generateStyleId()
