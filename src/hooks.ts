@@ -1,8 +1,20 @@
-import { useCallback,  useRef, useState,useInsertionEffect, useLayoutEffect, useEffect } from "react";
+import { useCallback,  useRef, useState,useInsertionEffect, useLayoutEffect, useEffect, EffectCallback } from "react";
 import { generateStyleId, insertStylesheet, removeStylesheet } from "./utils";
 import type { CSSRuleObject, StyledObject } from "./types";
 import { createStyled, type StyledOptions } from ".";
 
+
+
+export function useOnMount(effect: EffectCallback) {
+    const initialized = useRef(false)
+  
+    useEffect(() => {
+      if (!initialized.current) {
+        initialized.current = true
+        effect()
+      }
+    }, [])
+  }
 
 
 /**
