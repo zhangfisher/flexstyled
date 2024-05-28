@@ -26,24 +26,22 @@ export function useStyled<Props=any>(styles: CSSRuleObject<Props> | (()=>CSSRule
         return createStyled(styleData,opts)
     },[])
 
-    let styledObj
+    const [ styledObj ,setStyledObj] = useState<StyledObject>(createStyle())
     const injectStyle = useCallback(()=>{    
         insertStylesheet(styledObj!.css,styledObj!.id)
     },[])
     
     if(!firstRef.current) {        
-        styledObj = createStyle()
+        setStyledObj(createStyle())
+        injectStyle()
         firstRef.current = true
     }
     
-    useEffect (() => {    
-        injectStyle() 
-        firstRef.current = true
-        return ()=>{ 
-            firstRef.current =false 
-            removeStylesheet(styledObj!.id)            
+    useInsertionEffect (() => {    
+        injectStyle()   
+        return ()=>{  
+            removeStylesheet(styledObj!.id)       
         }
     }, []);
-
     return styledObj!
 }
