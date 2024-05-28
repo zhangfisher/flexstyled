@@ -51,7 +51,7 @@
 
 import { CSSRuleObject, ComputedStyles, StyledOptions, CSSVars } from './types';
 import { shortHash } from "./hash"
-import { toCssStyleName, fromCssVariableName } from './utils';
+import { toCssVarName, fromCssVarName, toCssRuleName } from './utils';
  
 
 
@@ -71,7 +71,7 @@ function isIfRule(ruleName:string){
 
 export function parseStyles<T extends CSSRuleObject = CSSRuleObject>(styles:T,options?:StyledOptions){
     const opts = Object.assign({},options) as Required<StyledOptions> 
-    const { className,rootVars } = opts
+    const { className,asRoot,varPrefix} = opts
     const rules:string[] = []
     const vars:CSSVars<T> = {}
     const computedStyles:ComputedStyles = {}                // 保存动态样式函数,如(props)=>{}
@@ -107,21 +107,22 @@ export function parseStyles<T extends CSSRuleObject = CSSRuleObject>(styles:T,op
                 let varName = parentRule+"-"+ruleName
                 if(varName.startsWith(className)) varName = varName.substring(className.length)
                 varName = `--p-${shortHash(varName)}`                
-                rule += `${toCssStyleName(ruleName)}: var(${varName});\n`            
+                rule += `${toCssRuleName(ruleName)}: var(${varName});\n`            
                 computedVars.push( `${varName}: unset;\n`)
                 computedStyles[varName] = value                     // 保存动态样式函数                
             }else{                
                 const isCssVar = ruleName.startsWith("--")
                 //注意： CSS变量只能在根样式中定义，将CSS变量转换为JS变量保存起来
                 if(isCssVar){  
+                    const cssVarName = ruleName.replace("--",`--${varPrefix}-`)
                     // @ts-ignore
-                    vars[fromCssVariableName(ruleName)] = value
-                    if(rootVars){
-                        rootVarsMap.push(`  ${ruleName}: ${value};`)
+                    vars[fromCssVarName(ruleName)] = `var(${cssVarName})`
+                    if(asRoot){
+                        rootVarsMap.push(`  ${cssVarName}: ${value};`)
                     }
                 }
-                if(!rootVars || (rootVars && !isCssVar)){
-                    rule += `  ${toCssStyleName(ruleName)}: ${value};\n`
+                if(!asRoot || (asRoot && !isCssVar)){
+                    rule += `  ${toCssRuleName(ruleName)}: ${value};\n`
                 }                
             }   
         }

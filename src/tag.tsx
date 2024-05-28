@@ -26,14 +26,14 @@ export interface StyledComponentCreatorOptions extends StyledOptions{
 
 
 export type StyledComponentCreator =<Props=any>(style:CSSRuleObject,options?:StyledComponentCreatorOptions)=> React.FC<React.PropsWithChildren<
-Pick<React.HTMLAttributes<HTMLElement>,'className' | 'style'> & Props>> 
+React.HTMLAttributes<HTMLElement>> & Props> 
 
-export type StyledFcObject = typeof createStyled & {
+export type FlexStyledObject = typeof createStyled & {
     [K in keyof HTMLElementTagNameMap]: StyledComponentCreator;
   };
 
 
-export const styled = new Proxy<StyledFcObject>(createStyled  as StyledFcObject,{
+export const styled = new Proxy<FlexStyledObject>(createStyled  as FlexStyledObject,{
     get(target: typeof createStyled, key: string | symbol, receiver: any){
         if(typeof(key) == 'string' && VALID_HTML_TAGS.includes(key)){
             return (style:CSSRuleObject,options?:StyledComponentCreatorOptions)=>{
@@ -41,7 +41,7 @@ export const styled = new Proxy<StyledFcObject>(createStyled  as StyledFcObject,
                     return React.createElement(key,{
                         ...props,
                         className,
-                        style:getStyle()
+                        style:getStyle(),                        
                     },props.children)
                 },style,options)
             }

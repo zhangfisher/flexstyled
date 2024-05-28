@@ -1,7 +1,8 @@
 export interface StyledOptions{
     id?         : string                          // 样式表的ID
     className?  : string                          // 生成的样式类名，如果没有指定则自动生成 
-    rootVars?   : boolean                         // 使用CSS变量
+    asRoot?     : boolean                         // 使用CSS变量
+    varPrefix?  : string                          // 为所有css变量指定一个前缀，如varPrefix="v",则--primary-color --v-primary-color
 }
 
 export type StyledResult = { className:string,style:CSSProperties}
@@ -94,8 +95,7 @@ export type CSSVars<Rules extends CSSRuleObject = CSSRuleObject> = {
  
  
 
-
-
-export type PickCombindVars<T> = 
-    T extends [infer F,...infer Rest] ? (F extends StyledObject ? F['vars'] : {}) & (
-        Rest extends  StyledObject[] ? PickCombindVars<Rest> : {}) : {}
+export interface CSSVariables  {
+    [key: string ]: string | number
+}
+ 

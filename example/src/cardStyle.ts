@@ -1,4 +1,5 @@
 import { CSSRuleObject } from "../../src"
+import { theme } from "./theme"
 
 export type  CardProps = React.PropsWithChildren<{
     title:string
@@ -32,7 +33,7 @@ export const cardStyle:CSSRuleObject = {
     },
     "& > .title":{
       padding      : "8px",
-      background   : "#f9f9f9",
+      background   : theme.backgroundColor,
       fontSize     : "18px",
       fontWeight   : "bold",
       borderBottom : "1px solid #ccc",

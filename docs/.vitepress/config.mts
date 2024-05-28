@@ -33,7 +33,7 @@ export default defineConfig({
             { text: 'keyframes', link: '/guide/keyframes' },   
             { text: 'useStyled', link: '/guide/useStyled' },            
             { text: 'StyledObject', link: '/guide/styledObject' },             
-            // { text: '主题', link: '/guide/theme' }, 
+            { text: '主题', link: '/guide/theme' }, 
         ]
       },
       { text: 'API', link: '/api' },

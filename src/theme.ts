@@ -1,164 +1,118 @@
-import { parseStyles } from './parse';
-import { CSSRuleObject, CSSVars, ComputedStyles, IStyledObject, StyledObject } from './types';
+import { styled } from '.';
+import { CSSVariables, Dict  } from './types';
+import { fromCssVarName, toCssVarName } from './utils';
 
 
 /**
  * Create a theme
  * 
- * const light = styled({
- *  "--primary-color": "red",
- *  "--secondary-color": "blue",
- * })
- * 
- * const dark = styled({
- *  "--primary-color": "green",
- *  "--secondary-color": "yellow",
- * },{rootVars:true})        将css变量提升到全局
- * 
- * 
- * 
- * const theme = new themeManager([light,dark])
- * 
- * 
- * 
- * 
- * btn = styled<Button>({
- *     color: (props)=>theme.primaryColor,
- *     backgroundColor: theme.secondaryColor
- * })
- 
-    const theme = new themeManager({
-        light:{
-
-        },
-        dark:{
-
-        }
-    })
-
-    theme.styled({
-        color: (props,{theme})=>{
-            return theme.primaryColor
-        }
-    })
- 
-
-    theme.primary
 
  * 
  * @param styles 
  */
 
 
-export type ThemeManagerOptions = {
-    use?:string                 // 
+
+export type Theme<T extends CSSVariables>  = T & {
+    load(define:Partial<T>):void
+    update(define:Partial<T>):void
+    save(fn:(define:T)=>void):void
+    reset():void
+} 
+
+type ThemeContext<Options=ThemeOptions> = {
+    vars : Map<string,number | string | undefined>          // CSS主题变量，采用驼峰命名形式，移除了前缀
+} & Required<Options>
+
+function loadTheme<Vars extends CSSVariables=CSSVariables>(this:ThemeContext,data:Vars){
+    const { prefix:varPrefix} = this
+    Object.entries(data).forEach( ([key,value])=>{
+        if(value){
+            this.vars.set(key,value)
+            document.documentElement.style.setProperty(toCssVarName(key,varPrefix),String(value))
+        }            
+    })
 }
 
-export class ThemeManager implements IStyledObject{
-    options: ThemeManagerOptions
-    theme:StyledObject 
-    constructor(public themes:StyledObject[],options?:ThemeManagerOptions){
-        this.options = Object.assign({},options)
-        if (this.themes.length === 0){
-            throw new Error("No themes provided")
-        }
-        this.theme = this.getTheme(options?.use)
-    } 
-    private getTheme(id?:string){
-        return this.themes.find(theme=>theme.id === id)!
-    } 
-    change(id:string){
-        this.theme = this.getTheme(id)
-    }
-    get id(){
-        return this.theme.id!
-    }
-    get vars():CSSVars<CSSRuleObject<any>>{
-        return this.theme?.vars!
+function saveTheme(this:ThemeContext,fn:(vars:CSSVariables)=>void){
+    const result:CSSVariables = {}
+    const themeStyle = document.getElementById(this.id) as HTMLStyleElement
+    const { prefix:varPrefix} = this
+    // 解析提取themeStyle中:root下的所有css变量
+    if(themeStyle && themeStyle.sheet){
+        for (let i = 0; i < themeStyle.sheet.cssRules.length; i++) {
+            const rule = themeStyle.sheet.cssRules[i] as CSSStyleRule
+            if(rule.selectorText == ':root'){
+                // 分别提取 :root 下的css变量到result
+                const matched  = rule.style.cssText.match(/--[\w\-]+:\s*([^;]+)/g) || []
+                matched.forEach( (item)=>{
+                    const [key,value] = item.split(':')
+                    if(key && value){
+                        result[fromCssVarName(key.trim(),varPrefix)] = value.trim()
+                    }
+                })
+            }
+        }         
     }
 
-    get className(){
-        return this.theme?.className
+    if(this.vars){
+        this.vars.forEach((value,key)=>{
+            if(value){
+                result[fromCssVarName(String(key),varPrefix)] = value
+            }
+        })
     }
-    get style(){
-        return {}
-    }    
-    get computedStyles():ComputedStyles{
-        return {}
-    }
-    getStyle(css?:CSSRuleObject,props?:any){
-        return this.theme.getStyle(css,props)
-    };
-    props(params?: { style?: CSSRuleObject<any>, props?: any; className?: string  }){
-        return this.theme.props(params)
-    }
+    fn(result)
 }
+
+
+function resetTheme(this:ThemeContext){
+    const { prefix:varPrefix} = this
+    this.vars.forEach( (value,key)=>{
+        this.vars.set(String(key),undefined)
+        document.documentElement.style.removeProperty(toCssVarName(String(key),varPrefix))
+    })
+}
+
+export type ThemeOptions = {
+    id?:string
+    prefix ?: string                // 为css变量自动添加前缀
+}
+
+export function createTheme<T extends CSSVariables = CSSVariables>(define:T,options?:ThemeOptions){
+    const context = Object.assign({
+        vars : new Map<string,number | string | undefined>(Object.entries(define)) ,
+        id:"flexstyled-theme-vars"
+    },options) as Required<ThemeContext<ThemeOptions>>
+    const { prefix:varPrefix} = context
+    // 转换为 css 变量名形式
+    const cssVars:Dict = {} 
+    Object.entries(define).forEach( ([key,value])=>{
+        cssVars[toCssVarName(key)] = value
+    })     
+    const style = styled(cssVars as any,{asRoot:true,id:context.id,varPrefix})        
  
-
-
-const dark = createStyled({
-    border:"1px",
-  "--primary-color": "green",
-  "--secondary-color": "yellow",
-},{rootVars:true})      
-
-
-
-  const lignt = createStyled({
-  "--primary-color2": "green",
-  "--secondary-color2": "yellow",
- },{rootVars:true})      
-
-
- class ThemeManager1<T extends CSSRuleObject>{
-    private _object:StyledObject<CSSVars<T>>
-    constructor(define:T){
-        this._object= createStyled(define)
-    }
-    get vars(){
-        return this._object.vars
-    }
-
- }
-
-    const theme = new ThemeManager({ 
-      "--primary-color": "green",
-      "--secondary-color": "yellow",
-    },{id:"voerka-themes"})
-
-/**
-
-theme = createTheme({
-    border:"1px",
-    "--primary-color": "green",
-    "--secondary-color": "yellow",
-})
-
-theme.primaryColor         访问CSS变量值
-theme.primaryColor 
-
-<Theme.Provider value={theme}>
-    <div className={theme.className} style={theme.getStyle()}>
-            useTheme(theme)
-    </div>
-</Theme>
-
-
- */
-function createTheme(){
-
-}
-
-
-
-    
-/**
- * 修改DOM head中的:root中指定名称的css变量
- * @param name 
- * @param value 
- */
-function changeRootCssVar(name:string,value:string | number){
-    
-}
-
-
+    return new Proxy<Theme<T>>(style.vars as Theme<T>,{
+        get(target: Theme<T>, key: string | symbol, receiver: any){
+            if(key == 'load' || key == 'update'){
+                return loadTheme.bind(context)
+            }else if(key == 'save'){
+                return saveTheme.bind(context)
+            }else if(key == 'reset'){
+                return resetTheme.bind(context)
+            }else{
+                return Reflect.get(target,key,receiver) 
+            }
+        },
+        set(target: Theme<T>, key: string , value: any, receiver: any){
+            if(context.vars.has(key)){
+                context.vars.set(key,value)
+                document.documentElement.style.setProperty(toCssVarName(key,varPrefix),value)
+                return Reflect.set(target,key,value,receiver)
+            }else{
+                return false 
+            }            
+        }
+    }) 
+} 
+ 

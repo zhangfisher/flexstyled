@@ -2,9 +2,10 @@ import {  useState } from 'react'
 import './App.css'
 import { Card } from "./Card"
 import { Card2 } from "./Card2"
-import { Card3 } from "./Card3"
-import { MyButton } from './MyButton'
-import { Card4 } from './Card4'
+import { Card3 } from "./Card3" 
+import { Card4 } from './Card4' 
+import { ColorButton } from './ColorButton'
+import { theme } from "./theme"
 
 
 function App() { 
@@ -13,7 +14,18 @@ function App() {
   const [showCard2,setShowCard2] = useState(true)
   return (
     <div style={{width:"100%"}}>
-      <MyButton>Styled</MyButton>
+      <div style={{display:'flex',flexDirection:"row",alignItems:'center'}}>
+        主题:
+        <ColorButton color="red" onClick={()=>theme.backgroundColor = 'red'}/>        
+        <ColorButton color="#0bcaf0"  onClick={()=>theme.backgroundColor = '#0bcaf0'} />        
+        <ColorButton color="#16ff3d"  onClick={()=>theme.backgroundColor = '#16ff3d'}/>        
+        <ColorButton color="#ff6600" onClick={()=>theme.backgroundColor = '#ff6600'}/>        
+        <ColorButton color="#ff08de" onClick={()=>theme.backgroundColor = '#ff08de'}/>      
+        <button onClick={()=>theme.reset()}>重置</button>
+        <button onClick={()=>theme.save((data)=>console.log("theme=",data))}>保存</button>
+        <button onClick={()=>theme.load({backgroundColor:'#c8ff00'})}>load</button>
+      </div>
+
       <Card title="Card1 - Styled" footer="Copyright 2024" size={size} bgColor={bgColor}>
         FlexStyled is a simple css-in-js library for react component 
         <p>Size={size}</p>

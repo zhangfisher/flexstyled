@@ -40,7 +40,7 @@
  * 
  */
 
-import { CSSRuleObject, ComponentStyledObject, StyledComponent, StyledObject, StyledOptions, CSSVars, PickCombindVars } from './types';
+import { CSSRuleObject, ComponentStyledObject, StyledComponent, StyledObject, StyledOptions, CSSVars } from './types';
 import { parseStyles } from "./parse"
 import { generateClassName, generateStyleId, getComputedStyles, insertStylesheet, isPlainObject, joinClassNames } from "./utils"
 import type { CSSProperties,ReactElement } from "react" 
@@ -52,9 +52,10 @@ export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSS
 export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSSRuleObject<Props>, CombindStyles extends StyledObject[]=StyledObject[]>():any{
     let FC:StyledComponent<Props> | undefined=undefined,styleData:CSSRuleObject<Props>
     let opts:Required<StyledOptions> = {
-        className:generateClassName(), 
-        id:generateStyleId(),
-        rootVars : false
+        className: generateClassName(), 
+        id       : generateStyleId(),
+        asRoot   : false,
+        varPrefix: ''
     }    
     let combindStyledObjects:StyledObject[] =  []          // 需要合并的样式对象
     // 参数处理
@@ -88,7 +89,7 @@ export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSS
     insertStylesheet(style.css,opts.id)  
 
     const combindVars  = Object.assign(style.vars,...combindStyledObjects.map(s=>s.vars))
-
+    
     // 3. 创建样式对象
     const createStyledObject = (fcProps?:any) =>{
         const computedStyles = [...combindStyledObjects.map(s=>s.computedStyles), style.computedStyles]
@@ -127,32 +128,4 @@ export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSS
     } 
     
 } 
- 
-
-// const theme1 = createStyled({
-//     border:1,
-//     "--primary-color":"red",
-//     "--secondary-color-1":"blue"
-// })  
-
-
-// theme1.vars.primaryColor = 'green'
-// theme1.vars['primary-color']
-// theme1.vars.primaryColor
-// theme1.vars
-
-// const theme2 = createStyled({
-//     color:'red',
-//     "--primary-bgcolor":"red",
-//     "--secondary-bgcolor":"blue"
-// }) 
-// theme2.vars
-
-
-// const themes= createStyled({
-//     border:1,
-//     "--theme-color":"red"
-// },[theme1,theme2])
-
-// themes.vars.themeColor
-
+  

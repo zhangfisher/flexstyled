@@ -43,7 +43,8 @@ useInsertionEffect
 
 export * from "./styled"
 export * from "./types"
-export { useStyled as useStyle } from "./hooks"
-export { insertStylesheet } from "./utils"
 export * from "./tag"
 export * from "./keyframes"
+export * from "./theme"
+export { useStyled } from "./hooks"
+export { insertStylesheet } from "./utils"

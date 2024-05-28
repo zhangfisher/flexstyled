@@ -87,14 +87,6 @@ export function joinClassNames(...classNames:(string|undefined)[]):string{
 }
 
 
-/**
-* 将驼峰命名转换为css样式命名样式，如borderRadius => border-radius
-* @param camelCaseString 
-* @returns 
-*/
-export function toCssStyleName(camelCaseString: string): string {  
-    return camelCaseString.replace(/([a-z])([A-Z])/g, (match, p1, p2) => p1 + '-' + p2.toLowerCase());  
-}  
 
  
 /**
@@ -144,17 +136,26 @@ export function toCssStyleName(camelCaseString: string): string {
 // }
 
 
-
+export function toCssRuleName(camelCase:string){
+    return camelCase.replace(/([a-z])([A-Z])/g, (match, p1, p2) => p1 + '-' + p2.toLowerCase())
+}
 
 /**
  * 将一个驼峰命名转换为CSS变量命名样式，如borderRadius => --border-radius
- * @param name 
+ * 
+ * 如果指定了 prefix，则会被移除
+ * 
+ * @param camelCase 
  * @returns 
  */
-export function toCssVariableName(name:string){
-    return `--${name.replace(/([a-z])([A-Z])/g, (match, p1, p2) => p1 + '-' + p2.toLowerCase())}`
+export function toCssVarName(camelCase:string,prefix?:string){
+    let r=  `--${camelCase.replace(/([a-z])([A-Z])/g, (match, p1, p2) => p1 + '-' + p2.toLowerCase())}`
+    if(prefix && prefix.trim()!==''){
+        r = r.replace("--",`--${prefix.toLowerCase()}-`)
+    }
+    return r
 }
-
+  
 /**
  *  从 CSS 变量名转换为驼峰命名，比如--border-radius => borderRadius
  * 
@@ -162,11 +163,18 @@ export function toCssVariableName(name:string){
  *   --custom-property-name
  * 需要转换为驼峰命名 customPropertyName
  * 
- * @param name 
+ * @param cssVarName 
+ * @param prefix  如果指定前缀，是移除
  * @returns 
  */
-export function fromCssVariableName(name:string){ 
-    return name.replace(/^--([a-z])([A-Z]?)/g, (match, p1, p2) => p1.toLowerCase()+ p2.toLowerCase())
+export function fromCssVarName(cssVarName:string,prefix?:string){ 
+    if(prefix && prefix.length>0){
+        cssVarName = cssVarName.replace(`--${prefix}-`,"--")
+    }
+    return  cssVarName.replace(/^--([a-z])([A-Z]?)/g, (match, p1, p2) => p1.toLowerCase()+ p2.toLowerCase())
         .replace(/-([a-z])([A-Z]?)/g, (match, p1, p2) => p1.toUpperCase() + p2)
+    
+
 }
- 
+
+
