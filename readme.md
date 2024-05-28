@@ -2,7 +2,7 @@
 
 FlexStyled is a simple runtime `css-in-js` library for react component
 
-[中文](./readme_CN.md)
+[中文](https://zhangfisher.github.io/flexstyled/)
 
 - zero dependencies. 
 - runtime css generation.
@@ -381,28 +381,4 @@ export interface StyledOptions{
 }
 ```
 
-
-## API
-
-```tsx
-export interface StyledOptions{
-    // stylesheet id, if not provided, it will be generated automatically
-    styleId?:string                          
-    // generated className, if not provided, it will be generated automatically
-    className?:string                       
-}
-export type StyledComponentParams ={
-    // generated css class name
-    className:string
-    // generated css style id
-    styleId:string
-    vars:Record<string,string | number> 
-    // get the css style object，only use when use props dynamic css
-    getStyle : ()=>Record<string,string | number>
-}
-
-export type StyledComponent<Props> = (props:React.PropsWithChildren<Props>,params:StyledComponentParams)=>React.ReactElement
-
-styled<Props>(FC: StyledComponent<Props>,styles:CSSObject,options?:StyledOptions)
-
-```
+ 
