@@ -49,9 +49,9 @@
  * 
  */
 
-import { CSSRuleObject, ComputedStyles, StyledOptions, CSSVars } from './types';
+import { CSSRuleObject, ComputedStyles, StyledOptions, CSSVars, ComputedStyleDefine } from './types';
 import { shortHash } from "./hash"
-import { toCssVarName, fromCssVarName, toCssRuleName } from './utils';
+import { toCssVarName, fromCssVarName, toCssRuleName, generateClassName } from './utils';
  
 
 
@@ -69,7 +69,7 @@ function isIfRule(ruleName:string){
 
 
 
-export function parseStyles<T extends CSSRuleObject = CSSRuleObject>(styles:T,options?:StyledOptions){
+export function parseObjectStyles<T extends CSSRuleObject = CSSRuleObject>(styles:T,options?:StyledOptions){
     const opts = Object.assign({},options) as Required<StyledOptions> 
     const { className,asRoot,varPrefix} = opts
     const rules:string[] = []
@@ -159,24 +159,13 @@ export function parseStyles<T extends CSSRuleObject = CSSRuleObject>(styles:T,op
 }
 
 
-
-// const d= parseStyles({
-//     "--primary-color": "red",
-// })
-// d.vars["color1"]
-// d.vars["primaryColor"]
-
-// d.vars.primaryColor
-
-
-
-// function theme<T extends CSSRuleObject = CSSRuleObject>(styles:T){
-//     return parseStyles(styles)
+/**
+ * 
+ * 用来解析css模板字符串中的样式
+ * 
+ * css模板字符串不好解决嵌套子元素问题，需要进行复杂的字符串解析，暂不处理
+ * 
+ *  
+ */
+// export function parseTemplateStringsStyles(style: TemplateStringsArray, ...values:(ComputedStyleDefine<any> | string | number)[]){
 // }
-
-// const t= theme({
-//     "--primary-color": "red",
-//     "--secondary-color": "blue",
-// })
-// t.vars.primaryColor
-// t.vars.secondaryColor

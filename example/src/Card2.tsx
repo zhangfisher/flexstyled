@@ -7,7 +7,7 @@ import { CardProps, cardStyle } from "./cardStyle"
 export const Card2:React.FC<React.PropsWithChildren<CardProps>> = ((props:CardProps)=>{
     const { title } = props
     const [titleColor,setTitleColor] = useState("blue")
-    const {className,getStyle} =  useStyled(cardStyle,{id:"mycard2"})
+    const {className,getStyle} =  useStyled(cardStyle)
     return (
       <div className={className} style={getStyle({"--title-color":titleColor},props)}>
         <div className="title">            

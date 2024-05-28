@@ -40,20 +40,22 @@
  * 
  */
 
-import { CSSRuleObject, ComponentStyledObject, StyledComponent, StyledObject, StyledOptions, CSSVars } from './types';
-import { parseStyles } from "./parse"
+import { CSSRuleObject, ComponentStyledObject, StyledComponent, StyledObject, StyledOptions, CSSVars, ComputedStyleDefine } from './types';
+import { parseObjectStyles } from "./parse"
 import { generateClassName, generateStyleId, getComputedStyles, insertStylesheet, isPlainObject, joinClassNames } from "./utils"
 import type { CSSProperties,ReactElement } from "react" 
 
-export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSSRuleObject<Props>, CombindStyles extends StyledObject[]=StyledObject[]>(styles:Styles,options?:StyledOptions):StyledObject<CSSVars<Styles>> 
-export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSSRuleObject<Props>, CombindStyles extends StyledObject[]=StyledObject[]>(styles:Styles,combindStyles:CombindStyles,options?:StyledOptions):StyledObject<CSSVars<Styles>>
-export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSSRuleObject<Props>, CombindStyles extends StyledObject[]=StyledObject[]>(FC: StyledComponent<Props>,styles:Styles,options?:StyledOptions):(props:Props)=>ReactElement
-export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSSRuleObject<Props>, CombindStyles extends StyledObject[]=StyledObject[]>(FC: StyledComponent<Props>,styles:Styles,combindStyles:CombindStyles,options?:StyledOptions):(props:Props)=>ReactElement
-export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSSRuleObject<Props>, CombindStyles extends StyledObject[]=StyledObject[]>():any{
+
+
+export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSSRuleObject<Props>>(styles:Styles,options?:StyledOptions):StyledObject<Styles> 
+export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSSRuleObject<Props>>(styles:Styles,combindStyles:StyledObject[],options?:StyledOptions):StyledObject<Styles>
+export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSSRuleObject<Props>>(FC: StyledComponent<Props>,styles:Styles,options?:StyledOptions):(props:Props)=>ReactElement
+export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSSRuleObject<Props>>(FC: StyledComponent<Props>,styles:Styles,combindStyles:StyledObject[],options?:StyledOptions):(props:Props)=>ReactElement
+export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSSRuleObject<Props>>():any{
     let FC:StyledComponent<Props> | undefined=undefined,styleData:CSSRuleObject<Props>
     let opts:Required<StyledOptions> = {
         className: generateClassName(), 
-        id       : generateStyleId(),
+        id       : null,
         asRoot   : false,
         varPrefix: ''
     }    
@@ -70,7 +72,7 @@ export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSS
             }else{
                 Object.assign(opts,arguments[1])
             }
-        }else{ // 封装组件时            
+        }else{ // 封装组件时                        
             FC = arguments[0]
             styleData = arguments[1]
             if(arguments.length>=3 && Array.isArray(arguments[1])){
@@ -83,10 +85,12 @@ export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSS
     } 
 
     // 1. 创建样式字符串
-    const style = parseStyles(styleData,opts)
+    const style = parseObjectStyles(styleData,opts)
 
     // 2. 生成样式插入到页面中
-    insertStylesheet(style.css,opts.id)  
+    const id =opts.id ?  opts.id : 'flexstyled-classs'
+    const mode = opts.id ? 'replace' : 'append'
+    insertStylesheet(style.css,id,{mode})  
 
     const combindVars  = Object.assign(style.vars,...combindStyledObjects.map(s=>s.vars))
     
@@ -125,7 +129,8 @@ export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSS
             const params:ComponentStyledObject = createStyledObject(props)
             return FC!(props,params)
         }
-    } 
-    
+    }  
 } 
-  
+
+
+ 

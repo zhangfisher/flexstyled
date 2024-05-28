@@ -1,5 +1,5 @@
 import { useCallback,  useRef, useState,useInsertionEffect } from "react";
-import { parseStyles } from "./parse";
+import { parseObjectStyles } from "./parse";
 import { insertStylesheet, removeStylesheet } from "./utils";
 import type { CSSRuleObject, StyledObject } from "./types";
 import { createStyled, type StyledOptions } from ".";
@@ -25,7 +25,7 @@ export function useStyled<Props=any>(styles: CSSRuleObject<Props> | (()=>CSSRule
     });
     const updateStyle = useCallback(()=>{
         // 1. 创建样式字符串
-        const style = parseStyles(typeof(styles)=='function' ? styles() : styles,{className:styledObj.className,id:styledObj.id})
+        const style = parseObjectStyles(typeof(styles)=='function' ? styles() : styles,{className:styledObj.className,id:styledObj.id})
         computedStyles.current = style.computedStyles
         // 2. 生成样式插入到页面中
         insertStylesheet(style.css,styledObj.id)

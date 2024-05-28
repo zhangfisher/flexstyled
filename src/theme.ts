@@ -82,7 +82,7 @@ export type ThemeOptions = {
 export function createTheme<T extends CSSVariables = CSSVariables>(define:T,options?:ThemeOptions){
     const context = Object.assign({
         vars : new Map<string,number | string | undefined>(Object.entries(define)) ,
-        id:"flexstyled-theme-vars"
+        id:"flexstyled-theme"
     },options) as Required<ThemeContext<ThemeOptions>>
     
     const { prefix:varPrefix} = context

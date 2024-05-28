@@ -1,5 +1,5 @@
 export interface StyledOptions{
-    id?         : string                          // 样式表的ID
+    id?          : string  | null                         // 样式表的ID
     className?  : string                          // 生成的样式类名，如果没有指定则自动生成 
     asRoot?     : boolean                         // 使用CSS变量
     varPrefix?  : string                          // 为所有css变量指定一个前缀，如varPrefix="v",则--primary-color --v-primary-color
@@ -7,24 +7,24 @@ export interface StyledOptions{
 
 export type StyledResult = { className:string,style:CSSProperties}
 
-export type ComputedStyleDefine  = (props?:any,vars?:Dict)=>any
+export type ComputedStyleDefine<Props=any>  = (props:Props,vars?:Dict)=>any
 export type ComputedStyles  = Record<string,ComputedStyleDefine>
 
 
 
  
-export interface IStyledObject<Vars extends Dict =  Dict >{
+export interface IStyledObject<Styles extends CSSRuleObject =  CSSRuleObject  >{
     id            : string
     className     : string    
-    vars          : Vars    
+    vars          : CSSVars<Styles>
     computedStyles: ComputedStyles
     getStyle      : (css?:CSSRuleObject,props?:any)=>CSSProperties
     getProps      : (params?:{style?:CSSRuleObject,props?:any,className?:string})=>StyledResult
 }
 
-export type StyledObject<Vars extends Dict =  Dict >= IStyledObject<Vars>
+export type StyledObject<Styles extends CSSRuleObject =  CSSRuleObject >= IStyledObject<Styles>
 
-// 当创建高阶样式组件时，不需要额外传递props
+// 传递给组件时，不需要额外传递props，并且getStyle的签名也需要做相应调整
 export type ComponentStyledObject = Omit<StyledObject,'props' | 'getStyle'> & {
     getStyle : (css?:CSSRuleObject)=>CSSProperties
     getProps :(params?:{style?:CSSRuleObject,className?:string})=>StyledResult

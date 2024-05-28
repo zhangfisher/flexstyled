@@ -11,7 +11,7 @@
  * 
  */
 
-import { parseStyles } from './parse';
+import { parseObjectStyles } from './parse';
 import { CSSKeyframes, ComputedStyles } from './types';
 import { insertStylesheet } from './utils';
 import { test } from 'vitest';
@@ -42,7 +42,7 @@ export type KeyframesObject = {
  */
 export function parseKeyframes(name:string,keyframes: CSSKeyframes){
      
-    return parseStyles({
+    return parseObjectStyles({
         [`@keyframes ${name}`]:keyframes
     } as any,{
         className:''

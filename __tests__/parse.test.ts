@@ -1,5 +1,5 @@
 import { test ,describe, expect} from 'vitest';
-import { parseStyles } from '../src/parse';
+import { parseObjectStyles } from '../src/parse';
 import { keyframes, parseKeyframes } from '../src/keyframes';
 
 
@@ -7,7 +7,7 @@ import { keyframes, parseKeyframes } from '../src/keyframes';
 
 describe('Parse styles', () => {
     test('解析媒体查询', () => {
-        const  result = parseStyles({
+        const  result = parseObjectStyles({
             "@media screen and (max-width: 600px)": {
                 color: 'red',
                 fontSize: '12px',
