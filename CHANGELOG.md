@@ -1,5 +1,11 @@
 # flexstyled
 
+## 2.0.0
+
+### Major Changes
+
+- 9cf0343: 全面升级，新增加 theme/keyframes/types 等特性
+
 ## 1.2.0
 
 ### Minor Changes

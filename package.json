@@ -1,16 +1,16 @@
 {
   "name": "flexstyled",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "sample css-in-js for react component",
-  "homepage": "https://github.com/zhangfisher/styledfc",
+  "homepage": "https://github.com/zhangfisher/flexstyled",
   "publisher": "zhangfisher",
   "repository": {
     "type": "git",
-    "url": "git@github.com:zhangfisher/styledfc.git"
+    "url": "git@github.com:zhangfisher/flexstyled.git"
   },
   "main": "src/index.tsx",
   "publishConfig": {
-    "main": "dist/index.umd.js",
+    "main": "dist/index.js",
     "module": "dist/index.mjs",
     "types": "dist/index.d.ts"
   },
