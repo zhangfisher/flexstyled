@@ -4,6 +4,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "FlexStyled",
   description: "Flex CSS-IN-JS For React",
+  base : '/flexstyled/',
   themeConfig: {
     outline:{
       label:"目录",
