@@ -3,6 +3,7 @@ export interface StyledOptions{
     className?  : string                          // 生成的样式类名，如果没有指定则自动生成 
     asRoot?     : boolean                         // 使用CSS变量
     varPrefix?  : string                          // 为所有css变量指定一个前缀，如varPrefix="v",则--primary-color --v-primary-color
+    inject?     : boolean                         // 是否立即注入样式
 }
 
 export type StyledResult = { className:string,style:CSSProperties}
@@ -14,6 +15,7 @@ export type ComputedStyles  = Record<string,ComputedStyleDefine>
 
  
 export interface IStyledObject<Styles extends CSSRuleObject =  CSSRuleObject  >{
+    css           : string
     id            : string
     className     : string    
     vars          : CSSVars<Styles>

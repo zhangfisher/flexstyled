@@ -40,9 +40,9 @@
  * 
  */
 
-import { CSSRuleObject, ComponentStyledObject, StyledComponent, StyledObject, StyledOptions, CSSVars, ComputedStyleDefine } from './types';
+import { CSSRuleObject, ComponentStyledObject, StyledComponent, StyledObject, StyledOptions, CSSVars } from './types';
 import { parseObjectStyles } from "./parse"
-import { generateClassName, generateStyleId, getComputedStyles, insertStylesheet, isPlainObject, joinClassNames } from "./utils"
+import { generateClassName, getComputedStyles, insertStylesheet, isPlainObject, joinClassNames } from "./utils"
 import type { CSSProperties,ReactElement } from "react" 
 
 
@@ -57,7 +57,8 @@ export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSS
         className: generateClassName(), 
         id       : null,
         asRoot   : false,
-        varPrefix: ''
+        varPrefix: '',
+        inject   : true
     }    
     let combindStyledObjects:StyledObject[] =  []          // 需要合并的样式对象
     // 参数处理
@@ -90,7 +91,7 @@ export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSS
     // 2. 生成样式插入到页面中
     const id =opts.id ?  opts.id : 'flexstyled-classs'
     const mode = opts.id ? 'replace' : 'append'
-    insertStylesheet(style.css,id,{mode})  
+    if(opts.inject) insertStylesheet(style.css,id,{mode})  
 
     const combindVars  = Object.assign(style.vars,...combindStyledObjects.map(s=>s.vars))
     
@@ -108,6 +109,7 @@ export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSS
         const className = joinClassNames(style.className,...combindStyledObjects.map(s=>s.className))
         return {
             __flexstyled__: true,
+            css           : style.css,
             id            : style.id,
             vars          : combindVars,  
             computedStyles: style.computedStyles,

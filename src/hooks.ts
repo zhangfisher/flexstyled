@@ -1,8 +1,8 @@
-import { useCallback,  useRef, useState,useInsertionEffect } from "react";
-import { parseObjectStyles } from "./parse";
-import { insertStylesheet, removeStylesheet } from "./utils";
+import { useCallback,  useRef, useState,useInsertionEffect, useLayoutEffect, useEffect } from "react";
+import { generateStyleId, insertStylesheet, removeStylesheet } from "./utils";
 import type { CSSRuleObject, StyledObject } from "./types";
 import { createStyled, type StyledOptions } from ".";
+
 
 
 /**
@@ -15,33 +15,35 @@ import { createStyled, type StyledOptions } from ".";
  * @param name 
  * @param value 
  */
-export function useStyled<Props=any>(styles: CSSRuleObject<Props> | (()=>CSSRuleObject<Props>),options?:StyledOptions):StyledObject {
-    const firstRef = useRef<boolean>(false);
-    const computedStyles = useRef<any>(null);
+export function useStyled<Props=any>(styles: CSSRuleObject<Props> | (()=>CSSRuleObject<Props>),options?:Omit<StyledOptions,'id'>):StyledObject {
+    const firstRef = useRef<boolean>(false); 
+    const styleId = useRef<string>(''); 
+ 
+    const createStyle = useCallback(()=>{    
+        const styleData = typeof(styles)=='function' ? styles() : styles
+        if(styleId.current=='') styleId.current = generateStyleId()
+        const opts = Object.assign({ inject:false, id: styleId.current }, options) as unknown  as StyledOptions        
+        return createStyled(styleData,opts)
+    },[])
 
-    const [styledObj] = useState(()=>{
-        const findStyles = typeof(styles)=='function' ? styles() : styles
-        return createStyled(findStyles,options)
-    });
-    const updateStyle = useCallback(()=>{
-        // 1. 创建样式字符串
-        const style = parseObjectStyles(typeof(styles)=='function' ? styles() : styles,{className:styledObj.className,id:styledObj.id})
-        computedStyles.current = style.computedStyles
-        // 2. 生成样式插入到页面中
-        insertStylesheet(style.css,styledObj.id)
-    },[styles])
-
-
-    if (firstRef.current === false) {        
-        updateStyle()
-        firstRef.current =true 
+    let styledObj
+    const injectStyle = useCallback(()=>{    
+        insertStylesheet(styledObj!.css,styledObj!.id)
+    },[])
+    
+    if(!firstRef.current) {        
+        styledObj = createStyle()
+        firstRef.current = true
     }
     
-    useInsertionEffect(() => {   
-        return ()=>{
+    useEffect (() => {    
+        injectStyle() 
+        firstRef.current = true
+        return ()=>{ 
             firstRef.current =false 
-            removeStylesheet(styledObj.id)
+            removeStylesheet(styledObj!.id)            
         }
     }, []);
-    return styledObj
+
+    return styledObj!
 }
