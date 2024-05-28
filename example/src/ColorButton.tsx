@@ -1,8 +1,7 @@
 /**
  * 显示颜色按钮
  */
-
-import React from 'react';
+ 
 import { styled } from "../../src"
 
 

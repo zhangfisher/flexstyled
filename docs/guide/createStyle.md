@@ -6,11 +6,12 @@
 
 ```ts
 type StyledObject ={
-    className: string
-    styleId  : string
-    vars     : Record<string,string | number> 
-    getStyle : (css?:CSSRuleObject,props?:any)=>CSSProperties
-    props    : (css?:CSSRuleObject,options?:{props?:any,className?:string})=>{ className:string,style  : CSSProperties}
+    id            : string
+    className     : string    
+    vars          : Vars    
+    computedStyles: ComputedStyles
+    getStyle      : (css?:CSSRuleObject,props?:any)=>CSSProperties
+    getProps      : (params?:{style?:CSSRuleObject,props?:any,className?:string})=>StyledResult
 }
 ```
 
@@ -40,7 +41,7 @@ interface StyledButtonProps {
 }
 const StyledButton:React:FC = (props)=>{ 
     // 没使用到动态样式和CSS变量时
-    return <button className={btnStyle.className}} /> 
+    return <button className={btnStyle.className} /> 
     // 用到动态样式时需要传入
     return <button className={btnStyle.className} style={btnStyle.getStyle({props})} /> 
     // 用到动态样式时或传入CSS变量

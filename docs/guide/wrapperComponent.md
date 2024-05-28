@@ -35,8 +35,8 @@ const StyledButton = styled<StyledButtonProps>((props,{className,getStyle})=>{
 也可以使用 `styled` 的简化方式给 `StyledButton` 组件的根元素添加`className`和`style`属性。
 
 ```tsx
-const StyledButton = styled<StyledButtonProps>((props,{props:styleProps})=>{ 
-    return <button  {...styleProps({props})} />
+const StyledButton = styled<StyledButtonProps>((props,{getProps})=>{ 
+    return <button  {...getProps({props})} />
 },{...})
 ```
 

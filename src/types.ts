@@ -19,28 +19,24 @@ export interface IStyledObject<Vars extends Dict =  Dict >{
     vars          : Vars    
     computedStyles: ComputedStyles
     getStyle      : (css?:CSSRuleObject,props?:any)=>CSSProperties
-    props         : (params?:{style?:CSSRuleObject,props?:any,className?:string})=>StyledResult
+    getProps      : (params?:{style?:CSSRuleObject,props?:any,className?:string})=>StyledResult
 }
-
-
-
-
 
 export type StyledObject<Vars extends Dict =  Dict >= IStyledObject<Vars>
 
 // 当创建高阶样式组件时，不需要额外传递props
 export type ComponentStyledObject = Omit<StyledObject,'props' | 'getStyle'> & {
     getStyle : (css?:CSSRuleObject)=>CSSProperties
-    props    :(params?:{style?:CSSRuleObject,className?:string})=>StyledResult
+    getProps :(params?:{style?:CSSRuleObject,className?:string})=>StyledResult
 }
 
 
 export type StyledComponentProps<Props> = Props & {
-    className: string
     id       : string
+    className: string    
 }
 
-export type StyledComponent<Props> = (props:Props,params:ComponentStyledObject)=>ReactElement
+export type StyledComponent<Props> = (props:Props,params:ComponentStyledObject)=>ReactElement<Props> 
 
 
 import type { CSSProperties, ReactElement } from "react";

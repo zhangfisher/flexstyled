@@ -13,7 +13,7 @@ function useStyled<Props=any>(styles: CSSRuleObject<Props> | (()=>CSSRuleObject<
 ```tsx
 import { useStyled } from "flexstyled"
 
-export const Card:React.FC<React.PropsWithChildren<CardProps>> = ((props:CardProps)=>{
+export const Card:React.FC<React.PropsWithChildren<CardProps>> = (props:CardProps)=>{
     const { title } = props
     const [titleColor,setTitleColor] = useState("blue")
     const {className,getStyle } =  useStyled(
@@ -42,7 +42,7 @@ export const Card:React.FC<React.PropsWithChildren<CardProps>> = ((props:CardPro
         <div className="footer">{props.footer}</div>
       </div>
     )
-  })
+  }
 ```
 
 **说明：**

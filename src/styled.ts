@@ -109,7 +109,7 @@ export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSS
             computedStyles: style.computedStyles,
             getStyle, 
             className, 
-            props:(params) =>{
+            getProps:(params) =>{
                 return {
                     className: joinClassNames(params?.className,className),
                     style    : getStyle(params?.style,fcProps ? fcProps : params?.props)

@@ -11,8 +11,7 @@ interface CardProps{
 const Card = styled<CardProps>((props,{className,getStyle})=>{
     const { title,children,footer} =props
     return (
-      <div className={className} style={getStyle(
-          style:{                       //   [!code ++]
+      <div className={className} style={getStyle({  
             "--padding":props.padding   //   [!code ++]   // 重载css变量
             color:'red'                 //  [!code ++]    // 额外的内联样式
           }                             //   [!code ++]

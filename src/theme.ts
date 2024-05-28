@@ -14,9 +14,9 @@ import { fromCssVarName, toCssVarName } from './utils';
 
 
 export type Theme<T extends CSSVariables>  = T & {
-    load(define:Partial<T>):void
-    update(define:Partial<T>):void
-    save(fn:(define:T)=>void):void
+    load(vars:Partial<T>):void
+    update(vars:Partial<T>):void
+    save(fn:(vars:T)=>void):void
     reset():void
 } 
 
@@ -84,7 +84,9 @@ export function createTheme<T extends CSSVariables = CSSVariables>(define:T,opti
         vars : new Map<string,number | string | undefined>(Object.entries(define)) ,
         id:"flexstyled-theme-vars"
     },options) as Required<ThemeContext<ThemeOptions>>
+    
     const { prefix:varPrefix} = context
+
     // 转换为 css 变量名形式
     const cssVars:Dict = {} 
     Object.entries(define).forEach( ([key,value])=>{
