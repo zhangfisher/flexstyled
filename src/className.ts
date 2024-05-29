@@ -20,7 +20,7 @@ import { createStyled } from "./styled";
 import { CSSRuleObject, StyledObject, StyledOptions } from "./types";
 import { isStyledObject } from "./utils";
 
-export type StyledClassName = (...args:string[])=>string
+export type StyledClassName = (...args:(string | undefined)[])=>string
 
 export function className(styles:CSSRuleObject,options?:StyledOptions): StyledClassName
 export function className(styles:CSSRuleObject,combindStyles?:(StyledObject | StyledClassName)[],options?:StyledOptions):StyledClassName
@@ -31,11 +31,11 @@ export function className(){
         typeof(arguments[1])=='object' ?  arguments[1] : Object.assign({},arguments[2])
     ) : {}
     const combindClasss = (combindStyles || []).map(item=>{
-        if(typeof item === "function"){
-            return item()
-        }else if(isStyledObject(item)){
-            return item.className
-        }        
+        try{
+           return typeof item === "function" ? item() : (isStyledObject(item) ? item.className : '')
+        }catch{
+            return ''
+        }
     }).join(" ")
     const styleObject = createStyled(styles,options)
     return (...args:string[])=>{

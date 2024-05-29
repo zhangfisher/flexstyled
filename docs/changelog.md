@@ -1,5 +1,11 @@
 # flexstyled
 
+## 2.0.8
+
+### Patch Changes
+
+- 0d5b3c6: [特性]: 更新`StyledClassName`的入参类型，从`string[]`变更为`(string | undefined)[]`提高容错性
+
 ## 2.0.7
 
 ### Patch Changes
