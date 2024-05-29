@@ -1,5 +1,11 @@
 # flexstyled
 
+## 2.0.4
+
+### Patch Changes
+
+- 87194cb: 修复当样式声明存在并列（如& > div , & > .primary)时生成样式不准确的问题
+
 ## 2.0.3
 
 ### Patch Changes
