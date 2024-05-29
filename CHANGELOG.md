@@ -1,5 +1,11 @@
 # flexstyled
 
+## 2.0.3
+
+### Patch Changes
+
+- 2c47ecb: 新增加 className 用于创建仅返回类型的函数
+
 ## 2.0.2
 
 ### Patch Changes
