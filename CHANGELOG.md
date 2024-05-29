@@ -1,5 +1,11 @@
 # flexstyled
 
+## 2.0.6
+
+### Patch Changes
+
+- 9e68b45: className 增加重载签名`className(styles:CSSRuleObject,options?:StyledOptions)`
+
 ## 2.0.5
 
 ### Patch Changes
