@@ -1,5 +1,26 @@
 # flexstyled
 
+## 2.0.2
+
+### Patch Changes
+
+- cdb33cf: 使用`styled.div`等创建样式组件时，允许在第二个参数传入需要合并的样式对象，请参考以下示例：
+
+  ```tsx
+  const Block = styled({
+    width: "100%",
+  });
+
+  const MyBtn = styled.button(
+    {
+      //
+    },
+    [Block]
+  );
+  ```
+
+- 6af5789: [BUG]: 修复当封装组件时如何传入组合样式不生效的问题
+
 ## 2.0.1
 
 ### Patch Changes
