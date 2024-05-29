@@ -13,8 +13,7 @@
 
 import { parseObjectStyles } from './parse';
 import { CSSKeyframes, ComputedStyles } from './types';
-import { insertStylesheet } from './utils';
-import { test } from 'vitest';
+import { insertStylesheet } from './utils'; 
 
 export type KeyframesObject = {
     __keyframes__ : true

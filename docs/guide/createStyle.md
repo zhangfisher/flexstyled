@@ -11,7 +11,8 @@ type StyledObject ={
     vars          : Vars    
     computedStyles: ComputedStyles
     getStyle      : (css?:CSSRuleObject,props?:any)=>CSSProperties
-    getProps      : (params?:{style?:CSSRuleObject,props?:any,className?:string})=>StyledResult
+    getProps      : (params?:{style?:CSSRuleObject,props?:any,className?:string})=>StyledResult   
+    css           :  string           // 生成的css字符串
 }
 ```
 

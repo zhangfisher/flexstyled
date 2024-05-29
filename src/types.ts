@@ -1,9 +1,10 @@
 export interface StyledOptions{
-    id?          : string  | null                         // 样式表的ID
+    id?          : string  | null                 // 样式表的ID
     className?  : string                          // 生成的样式类名，如果没有指定则自动生成 
     asRoot?     : boolean                         // 使用CSS变量
     varPrefix?  : string                          // 为所有css变量指定一个前缀，如varPrefix="v",则--primary-color --v-primary-color
     inject?     : boolean                         // 是否立即注入样式
+    tag?        : string                          // 指定一个标签，将被追加到生成的类名，如tag="column",则生成的类名为"column-xxxxx"，当指定类名时，tag无效
 }
 
 export type StyledResult = { className:string,style:CSSProperties}

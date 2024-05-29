@@ -49,9 +49,9 @@
  * 
  */
 
-import { CSSRuleObject, ComputedStyles, StyledOptions, CSSVars, ComputedStyleDefine } from './types';
+import { CSSRuleObject, ComputedStyles, StyledOptions, CSSVars } from './types';
 import { shortHash } from "./hash"
-import { toCssVarName, fromCssVarName, toCssRuleName, generateClassName } from './utils';
+import { fromCssVarName, toCssRuleName, generateClassName } from './utils';
  
 
 
@@ -71,7 +71,7 @@ function isIfRule(ruleName:string){
 
 export function parseObjectStyles<T extends CSSRuleObject = CSSRuleObject>(styles:T,options?:StyledOptions){
     const opts = Object.assign({},options) as Required<StyledOptions> 
-    const { className,asRoot,varPrefix} = opts
+    let { className,tag,asRoot,varPrefix} = opts
     const rules:string[] = []
     const vars:CSSVars<T> = {}
     const computedStyles:ComputedStyles = {}                // 保存动态样式函数,如(props)=>{}
@@ -141,8 +141,11 @@ export function parseObjectStyles<T extends CSSRuleObject = CSSRuleObject>(style
         childRules.forEach(([rule,value])=>{
             parseStyle(value,rule,asClass)
         }) 
-    }
+    }    
 
+    // 自动生成类名
+    if(className.length==0) className = `${tag.length>0 ? `${tag}_` :''}${generateClassName()}`
+    
     parseStyle(styles,className)    
 
     let css = rules.join("\n").replace('__COMPUTED_VARS__',computedVars.join("\n"))
@@ -154,7 +157,8 @@ export function parseObjectStyles<T extends CSSRuleObject = CSSRuleObject>(style
         ...opts, 
         vars,
         computedStyles,
-        css
+        css,
+        className
     }
 }
 

@@ -54,11 +54,12 @@ export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSS
 export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSSRuleObject<Props>>():any{
     let FC:StyledComponent<Props> | undefined=undefined,styleData:CSSRuleObject<Props>
     let opts:Required<StyledOptions> = {
-        className: generateClassName(), 
+        className: '', 
         id       : null,
         asRoot   : false,
         varPrefix: '',
-        inject   : true
+        inject   : true,
+        tag      : ''
     }    
     let combindStyledObjects:StyledObject[] =  []          // 需要合并的样式对象
     // 参数处理

@@ -19,7 +19,9 @@ export const Card = styled<CardProps>((props,{className,getStyle})=>{
         <div className="footer">{props.footer}</div>
       </div>
     )
-  },cardStyle)
+  },cardStyle,{
+    tag:'card'
+  })
 
  
 
