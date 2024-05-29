@@ -21,7 +21,7 @@ export default defineConfig({
       { text: '关于', link: '/guide' },      
       { text: '安装', link: '/install' },
       { text: '快速入门', link: '/get-started' },
-      { text: '变更历史', link: '/CHANGELOG' },
+      { text: '变更历史', link: '/changelog' },
       {
         text: '指南',
         items: [                                  

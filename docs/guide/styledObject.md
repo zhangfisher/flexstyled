@@ -9,7 +9,7 @@ type StyledObject ={
     vars     : Record<string,string | number>     
     computedStyles:ComputedStyles
     getStyle : (css?:CSSRuleObject,props?:any)=>CSSProperties
-    props    : (params?:{style?:CSSRuleObject,props?:any,className?:string})=>StyledResult
+    getProps    : (params?:{style?:CSSRuleObject,props?:any,className?:string})=>StyledResult
 }
 ```
 
@@ -70,7 +70,7 @@ getStyle(css?:CSSRuleObject,props?:any):CSSProperties
 - 当样式声明中包含`动态样式`或`CSS变量`才需要使用`getStyle`函数，其返回值是一个`CSSProperties`对象，用来传递给组件的根元素`style`属性，如果没有样式中不包括`动态样式`或`CSS变量`，则可以不必传递。
 
 
-## props
+## getProps
 
 `props`函数用于生成`className`和`style`属性，用于简化组件传参。
 
@@ -90,8 +90,8 @@ const StyledButton = styled<StyledButtonProps>((props,{className,getStyle})=>{
 以上需要分别解构传入`className`和`getStyle`属性，如果使用`props`函数，可以简化为：
 
 ```tsx
-const StyledButton = styled<StyledButtonProps>((props,{props:styleProps})=>{ 
-    return <button  {...styleProps({props})} />
+const StyledButton = styled<StyledButtonProps>((props,{getProps})=>{ 
+    return <button  {...getProps()} />
 },{...})
 
 //  或者
@@ -99,7 +99,7 @@ const StyledButton = styled<StyledButtonProps>((props,{props:styleProps})=>{
 const myStyle = styled({...})
 
 const StyledButton = (props)=>{ 
-    return <button  {...myStyle.props({stype:{<样式或CSS变量>},props,className:"额外的样式类"})} />
+    return <button  {...myStyle.getProps({stype:{<样式或CSS变量>},props,className:"额外的样式类"})} />
 },{...})
 
 
