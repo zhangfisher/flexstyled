@@ -6,7 +6,7 @@ import { Card3 } from "./Card3"
 import { Card4 } from './Card4' 
 import { ColorButton } from './ColorButton'
 import { theme } from "./theme"
-import { styled } from '../../src'
+import { className, styled } from '../../src'
 
 const Block = styled({
   width: '100%',
@@ -16,12 +16,22 @@ const Block = styled({
   }
 },{tag:"block"})
 
+export const Fit = className({
+  position: "absolute",
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%"        
+},{tag:'fit'})
+
 const MyBtn = styled.button({
     background:"#eee",
     "&:hover":{
       border: "1px solid red",
     }
-},[Block])
+},[Fit,Block])
+
+
 
 function App() { 
   const [size,setSize] = useState<"small" | "middle" | "large">("middle")

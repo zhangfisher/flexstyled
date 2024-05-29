@@ -1,5 +1,11 @@
 # flexstyled
 
+## 2.0.7
+
+### Patch Changes
+
+- 734b30b: styled 的 combindStyle 参数现在支持传入 StyledClassName
+
 ## 2.0.6
 
 ### Patch Changes

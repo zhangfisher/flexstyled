@@ -34,7 +34,7 @@ export function insertStylesheet(css:string,id:string,options?:InsertStylesheetO
     }
 }
 
-export function isStyledObject(obj:any){
+export function isStyledObject(obj:any):boolean{
     return typeof(obj)=='object' && obj.__flexstyled__
 }
 
