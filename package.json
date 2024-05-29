@@ -1,6 +1,6 @@
 {
   "name": "flexstyled",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "sample css-in-js for react component",
   "homepage": "https://github.com/zhangfisher/flexstyled",
   "publisher": "zhangfisher",
@@ -21,7 +21,7 @@
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
-    "sync":"cnpm sync flexstyled"
+    "sync": "cnpm sync flexstyled"
   },
   "files": [
     "dist",
