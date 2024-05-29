@@ -42,15 +42,14 @@
 
 import { CSSRuleObject, ComponentStyledObject, StyledComponent, StyledObject, StyledOptions, CSSVars } from './types';
 import { parseObjectStyles } from "./parse"
-import { generateClassName, getComputedStyles, insertStylesheet, isPlainObject, joinClassNames } from "./utils"
+import { getComputedStyles, insertStylesheet, isPlainObject, joinClassNames } from "./utils"
 import type { CSSProperties,ReactElement } from "react" 
-
 
 
 export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSSRuleObject<Props>>(styles:Styles,options?:StyledOptions):StyledObject<Styles> 
 export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSSRuleObject<Props>>(styles:Styles,combindStyles:StyledObject[],options?:StyledOptions):StyledObject<Styles>
 export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSSRuleObject<Props>>(FC: StyledComponent<Props>,styles:Styles,options?:StyledOptions):(props:Props)=>ReactElement
-export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSSRuleObject<Props>>(FC: StyledComponent<Props>,styles:Styles,combindStyles:StyledObject[],options?:StyledOptions):(props:Props)=>ReactElement
+export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSSRuleObject<Props>>(FC: StyledComponent<Props>,styles:Styles,combindStyles?:StyledObject[],options?:StyledOptions):(props:Props)=>ReactElement
 export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSSRuleObject<Props>>():any{
     let FC:StyledComponent<Props> | undefined=undefined,styleData:CSSRuleObject<Props>
     let opts:Required<StyledOptions> = {
@@ -77,7 +76,7 @@ export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSS
         }else{ // 封装组件时                        
             FC = arguments[0]
             styleData = arguments[1]
-            if(arguments.length>=3 && Array.isArray(arguments[1])){
+            if(arguments.length>=3 && Array.isArray(arguments[2])){ // 有传入combindStyles 
                 combindStyledObjects = arguments[2]
                 Object.assign(opts,arguments[3])      
             }else{
@@ -122,7 +121,7 @@ export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSS
                     style    : getStyle(params?.style,fcProps ? fcProps : params?.props)
                 }
             }
-        } as StyledObject<CSSVars<typeof combindVars>>
+        } as StyledObject<CSSVars<typeof combindVars>>            
     }
 
     if(FC==undefined){          // 只创建建样式对象

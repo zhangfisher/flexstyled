@@ -95,10 +95,19 @@ export function parseObjectStyles<T extends CSSRuleObject = CSSRuleObject>(style
                     }                    
                     rules.push("}")
                 }else{
-                    // 以&开头的规则，表示子元素所以需要添加父元素作为前缀                    
-                    const pKey = ruleName.trim().startsWith("&") ? ruleName.substring(1) : ruleName
+                    const rs = ruleName.split(",").map((r)=>{
+                        const pKey = r.trim().startsWith("&") ? r.trim().substring(1) : r
+                        const pRule = `${parentRule}${pKey}`
+                        return pRule
+                    }).join(",")
+
+                    // 以&开头的规则，表示子元素所以需要添加父元素作为前缀                        
+                    
+                    // const pKey = ruleName.trim().startsWith("&") ? ruleName.substring(1) : ruleName
                     // 以@开头的规则，表示条件规则
-                    childRules.push([`${parentRule}${pKey}`,value])
+                    // childRules.push([`${parentRule}${pKey}`,value])
+
+                    childRules.push([rs,value])
                 }                
             }else if(typeof(value)=='function'){            // 动态样式函数,为动态样式生成一个css变量
                 // 处理动态样式，即通过(props)=>{}的方式生成样式，这种样式需要在组件渲染时动态计算，因此将之生成对应的组件级别的css变量
@@ -110,7 +119,7 @@ export function parseObjectStyles<T extends CSSRuleObject = CSSRuleObject>(style
                 rule += `${toCssRuleName(ruleName)}: var(${varName});\n`            
                 computedVars.push( `${varName}: unset;\n`)
                 computedStyles[varName] = value                     // 保存动态样式函数                
-            }else{                
+            }else{      // 字符串           
                 const isCssVar = ruleName.startsWith("--")
                 //注意： CSS变量只能在根样式中定义，将CSS变量转换为JS变量保存起来
                 if(isCssVar){  
@@ -161,15 +170,4 @@ export function parseObjectStyles<T extends CSSRuleObject = CSSRuleObject>(style
         className
     }
 }
-
-
-/**
- * 
- * 用来解析css模板字符串中的样式
- * 
- * css模板字符串不好解决嵌套子元素问题，需要进行复杂的字符串解析，暂不处理
- * 
- *  
- */
-// export function parseTemplateStringsStyles(style: TemplateStringsArray, ...values:(ComputedStyleDefine<any> | string | number)[]){
-// }
+ 

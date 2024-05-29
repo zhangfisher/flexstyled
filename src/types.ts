@@ -15,14 +15,15 @@ export type ComputedStyles  = Record<string,ComputedStyleDefine>
 
 
  
-export interface IStyledObject<Styles extends CSSRuleObject =  CSSRuleObject  >{
+export interface IStyledObject<Styles extends CSSRuleObject =  CSSRuleObject> {
     css           : string
     id            : string
     className     : string    
     vars          : CSSVars<Styles>
     computedStyles: ComputedStyles
     getStyle      : (css?:CSSRuleObject,props?:any)=>CSSProperties
-    getProps      : (params?:{style?:CSSRuleObject,props?:any,className?:string})=>StyledResult
+    getProps      : (params?:{style?:CSSRuleObject,props?:any,className?:string})=>StyledResult;
+   
 }
 
 export type StyledObject<Styles extends CSSRuleObject =  CSSRuleObject >= IStyledObject<Styles>
@@ -48,9 +49,8 @@ import type { CSSProperties, ReactElement } from "react";
 export type CSSSelector = `${'@' | '&' | ':' | '>' | '~' | '+' | '.' | '^' | '#' | '*'}${string}` | `[${string}]`  
 export type CSSVarName = `--${string}`;
 
+
 export type ComputedStyledAttr<Props=any> = (props:Props)=> string | number
-
-
 
 export type CSSRuleValue<Props=any> = ComputedStyledAttr<Props> | string | number
 
@@ -59,7 +59,7 @@ export type CSSRuleObject<Props=any> ={
 } & {
     [varName: CSSVarName]: string | number 
 } &   {
-    [attrName in keyof CSSProperties]: CSSProperties[attrName] | ComputedStyledAttr<Props> 
+    [attrName in keyof CSSProperties]: CSSProperties[attrName] | `${CSSProperties[attrName]}!important` | ComputedStyledAttr<Props> 
 }  
  
  

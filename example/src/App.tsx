@@ -6,7 +6,22 @@ import { Card3 } from "./Card3"
 import { Card4 } from './Card4' 
 import { ColorButton } from './ColorButton'
 import { theme } from "./theme"
+import { styled } from '../../src'
 
+const Block = styled({
+  width: '100%',
+  "& > div, & > button":{
+    color:"red",
+    textAlign:"center!important",
+  }
+},{tag:"block"})
+
+const MyBtn = styled.button({
+    background:"#eee",
+    "&:hover":{
+      border: "1px solid red",
+    }
+},[Block])
 
 function App() { 
   const [size,setSize] = useState<"small" | "middle" | "large">("middle")
@@ -14,6 +29,7 @@ function App() {
   const [showCard2,setShowCard2] = useState(true)
   return (
     <div style={{width:"100%"}}>
+      <MyBtn>确认</MyBtn>
       <div style={{display:'flex',flexDirection:"row",alignItems:'center'}}>
         主题:
         <ColorButton color="red" onClick={()=>theme.backgroundColor = 'red'}/>        

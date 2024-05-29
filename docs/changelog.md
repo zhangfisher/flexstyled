@@ -1,5 +1,51 @@
 # flexstyled
 
+## 2.0.6
+
+### Patch Changes
+
+- 9e68b45: className 增加重载签名`className(styles:CSSRuleObject,options?:StyledOptions)`
+
+## 2.0.5
+
+### Patch Changes
+
+- 31e7b14: 修复当声明样式值时，某些属性值如果以!important 结尾会产生类型错误提示
+- 37e0d94: 修复 tag 中的类型引用错误
+
+## 2.0.4
+
+### Patch Changes
+
+- 87194cb: 修复当样式声明存在并列（如& > div , & > .primary)时生成样式不准确的问题
+
+## 2.0.3
+
+### Patch Changes
+
+- 2c47ecb: 新增加 className 用于创建仅返回类型的函数
+
+## 2.0.2
+
+### Patch Changes
+
+- cdb33cf: 使用`styled.div`等创建样式组件时，允许在第二个参数传入需要合并的样式对象，请参考以下示例：
+
+  ```tsx
+  const Block = styled({
+    width: "100%",
+  });
+
+  const MyBtn = styled.button(
+    {
+      //
+    },
+    [Block]
+  );
+  ```
+
+- 6af5789: [BUG]: 修复当封装组件时如何传入组合样式不生效的问题
+
 ## 2.0.1
 
 ### Patch Changes

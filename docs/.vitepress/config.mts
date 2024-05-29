@@ -34,6 +34,7 @@ export default defineConfig({
             { text: '组合样式', link: '/guide/combind' },          
             { text: 'keyframes', link: '/guide/keyframes' },   
             { text: 'useStyled', link: '/guide/useStyled' },            
+            { text: 'className', link: '/guide/className' },     
             { text: 'StyledObject', link: '/guide/styledObject' },             
             { text: '主题', link: '/guide/theme' }, 
         ]

@@ -20,7 +20,8 @@
     "release": "pnpm build && changeset version && changeset publish && copy /Y CHANGELOG.md docs\\CHANGELOG.md",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "sync":"cnpm sync flexstyled"
   },
   "files": [
     "dist",

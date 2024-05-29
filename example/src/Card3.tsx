@@ -5,6 +5,7 @@ import { CardProps, cardStyle } from "./cardStyle"
 
 
 const style = styled(cardStyle)
+ 
 
 export const Card3:React.FC<React.PropsWithChildren<CardProps>> = ((props:CardProps)=>{
     const { title } = props

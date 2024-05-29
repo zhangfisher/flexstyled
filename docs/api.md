@@ -129,3 +129,19 @@ type KeyframesObject = {
 }
 ```
 
+## className
+
+`styled`的快捷方式，用于只生成样式类名，不生成样式对象。
+
+注: 仅在不需要动态样式和CSS变量时使用
+
+```tsx
+
+type StyledClassName = (...args:string[])=>string
+
+function className(styles:CSSRuleObject,options?:StyledOptions): StyledClassName
+function className(styles:CSSRuleObject,combindStyles?:(StyledObject | StyledClassName)[],options?:StyledOptions):StyledClassName
+
+```
+
+

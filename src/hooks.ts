@@ -1,4 +1,4 @@
-import { useCallback,  useRef, useState,useInsertionEffect, useLayoutEffect, useEffect, EffectCallback, useMemo } from "react";
+import { useCallback,  useRef, useInsertionEffect, useEffect, EffectCallback, useMemo } from "react";
 import { generateStyleId, insertStylesheet, removeStylesheet } from "./utils";
 import type { CSSRuleObject, StyledObject } from "./types";
 import { createStyled, type StyledOptions } from ".";

@@ -34,6 +34,10 @@ export function insertStylesheet(css:string,id:string,options?:InsertStylesheetO
     }
 }
 
+export function isStyledObject(obj:any){
+    return typeof(obj)=='object' && obj.__flexstyled__
+}
+
 export function removeStylesheet(id:string){
     const style = document.getElementById(id)
     if(style){

@@ -13,7 +13,7 @@
 
 
 import { createStyled } from "./styled"
-import { CSSRuleObject,StyledOptions } from './types';
+import { CSSRuleObject,StyledObject,StyledOptions } from './types';
 import React from "react"
  
 
@@ -22,10 +22,11 @@ const VALID_HTML_TAGS = [
 ];
 
 export interface StyledComponentCreatorOptions extends StyledOptions{
+    combined?:StyledObject[]
 }
 
 
-export type StyledComponentCreator =<Props=any>(style:CSSRuleObject,options?:StyledComponentCreatorOptions)=> React.FC<React.PropsWithChildren<
+export type StyledComponentCreator =<Props=any>(style:CSSRuleObject,combindStyles?:StyledObject[],options?:StyledComponentCreatorOptions)=> React.FC<React.PropsWithChildren<
 React.HTMLAttributes<HTMLElement>> & Props> 
 
 export type FlexStyledObject = typeof createStyled & {
@@ -36,14 +37,14 @@ export type FlexStyledObject = typeof createStyled & {
 export const styled = new Proxy<FlexStyledObject>(createStyled  as FlexStyledObject,{
     get(target: typeof createStyled, key: string | symbol, receiver: any){
         if(typeof(key) == 'string' && VALID_HTML_TAGS.includes(key)){
-            return (style:CSSRuleObject,options?:StyledComponentCreatorOptions)=>{
+            return (style:CSSRuleObject,combindStyles?:StyledObject[],options?:StyledComponentCreatorOptions)=>{
                 return createStyled((props,{className,getStyle})=>{
                     return React.createElement(key,{
                         ...props,
                         className,
                         style:getStyle(),                        
                     },props.children)
-                },style,options)
+                },style,combindStyles,options)
             }
         }else{
             return Reflect.get(target,key,receiver) 
@@ -51,4 +52,4 @@ export const styled = new Proxy<FlexStyledObject>(createStyled  as FlexStyledObj
     }
 })
 
- 
+  
