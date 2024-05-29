@@ -1,5 +1,12 @@
 # flexstyled
 
+## 2.0.5
+
+### Patch Changes
+
+- 31e7b14: 修复当声明样式值时，某些属性值如果以!important 结尾会产生类型错误提示
+- 37e0d94: 修复 tag 中的类型引用错误
+
 ## 2.0.4
 
 ### Patch Changes
