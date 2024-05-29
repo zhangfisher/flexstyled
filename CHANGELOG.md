@@ -1,5 +1,11 @@
 # flexstyled
 
+## 2.0.1
+
+### Patch Changes
+
+- 5a9413f: fix: 修复 useStyled 重复注入样式的问题
+
 ## 2.0.0
 
 ### Major Changes
