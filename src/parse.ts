@@ -95,9 +95,9 @@ export function parseObjectStyles<T extends CSSRuleObject = CSSRuleObject>(style
                     }                    
                     rules.push("}")
                 }else{
-                    const rs = ruleName.split(",").map((r)=>{
+                    const rs = ruleName.split(",").map((r,i)=>{
                         const pKey = r.trim().startsWith("&") ? r.trim().substring(1) : r
-                        const pRule = `${parentRule}${pKey}`
+                        const pRule = `${i>0 ? '.':''}${parentRule}${pKey}`
                         return pRule
                     }).join(",")
 
@@ -139,9 +139,9 @@ export function parseObjectStyles<T extends CSSRuleObject = CSSRuleObject>(style
         
         // 只在根元素中采集动态样式变量
         if(rule.length>0){
-            if(asClass){
+            if(asClass){ // 生成类
                 rules.push(`\n.${parentRule} {\n${rules.length==0 ? rule+"\n__COMPUTED_VARS__" : rule}\n}`)
-            }else{
+            }else{ //
                 rules.push(`\n${parentRule} {\n${rules.length==0 ? rule+"\n__COMPUTED_VARS__" : rule}\n}`)
             }            
         }
@@ -150,6 +150,7 @@ export function parseObjectStyles<T extends CSSRuleObject = CSSRuleObject>(style
         childRules.forEach(([rule,value])=>{
             parseStyle(value,rule,asClass)
         }) 
+
     }    
 
     // 自动生成类名
