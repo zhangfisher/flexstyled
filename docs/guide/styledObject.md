@@ -5,14 +5,13 @@
 ```ts
 type StyledObject ={
     className: string
-    styleId  : string
+    id  : string
     vars     : Record<string,string | number>     
     computedStyles:ComputedStyles
     getStyle : (css?:CSSRuleObject,props?:any)=>CSSProperties
     getProps    : (params?:{style?:CSSRuleObject,props?:any,className?:string})=>StyledResult
 }
 ```
-
 
 `StyledObject`各个属性的含义如下：
 
@@ -28,13 +27,13 @@ const myStyle = styled({...},{
 })
 ```
  
-## styleId
+## id
 
-生成的`styleId`，用于给元素添加样式ID。默认情况下，该值也是随机生成的`HASH`字符串，但是也可以在创建样式对手动指定。
+指定创建的样式表的`id`。默认情况下，该值也是随机生成的`HASH`字符串，但是也可以在创建样式对手动指定。
 
 ```ts
 const myStyle = styled({...},{
-    styleId:'my-class'
+    id:'xxxxxxxx'
 })
 ```
 

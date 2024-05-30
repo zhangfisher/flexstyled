@@ -62,7 +62,7 @@ export const Card = styled<CardProps>((props,{className})=>{
 -The above code will create a `Card` component, generate a style class (with a randomly generated name) for the style, and insert it into the `head` tag.
 -Then pass the `className` prop to the component, which will use this class name to apply the style.
 
-You can find a CSS style similar to this in the `head`, where the `className` and `style.id` are both automatically generated. You can also specify `styleId` and `className` through the `options` parameter.
+You can find a CSS style similar to this in the `head`, where the `className` and `style.id` are both automatically generated. You can also specify `id` and `className` through the `options` parameter.
 
 ```html
 <style id="6rxqfu">
@@ -332,7 +332,7 @@ export const Card2:React.FC<React.PropsWithChildren<CardProps>> = ((props:CardPr
 
 - The `useStyle` hook returns `className` and `getStyle`, which are used to inject style class names and dynamic styles.
 - The `getStyle` function returns a `css` style object that can be passed directly to the `style` attribute.
-- The `useStyle` hook supports passing `options` parameters to configure `styleId` and `className`.
+- The `useStyle` hook supports passing `options` parameters to configure `id` and `className`.
 - The `useStyle` hook is the same as the `styled` function, the only difference is that the `style` sheet injected into the `head` will be automatically removed when the component is uninstalled.
 
 ### Create Styled component
@@ -375,7 +375,7 @@ export style3 = styled({...})
 
 export interface StyledOptions{
     // The ID of the style sheet, if not specified, will be automatically generated
-    styleId?:string                          
+    id?:string                          
     // The generated class name, if not specified, will be automatically generated
     className?:string                        
 }

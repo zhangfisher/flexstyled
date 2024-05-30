@@ -57,7 +57,7 @@ export const Card = styled<CardProps>((props,{className})=>{
 ```
 
 ::: tip
-**注**：`类名`和`style.id`也可以通过`options`参数来指定`styleId`和`className`。
+**注**：`类名`和`style.id`也可以通过`options`参数来指定。
 :::
 
 ## 第2步：嵌套样式
