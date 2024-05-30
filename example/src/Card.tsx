@@ -8,7 +8,7 @@ export const Card = styled<CardProps>((props,{className,getStyle})=>{
     const [titleColor,setTitleColor] = useState("blue")
 
     return (
-      <div className={className} style={getStyle({"--title-color":titleColor})}>
+      <div className={className} style={getStyle({},{"--title-color":titleColor})}>
         <div className="title">            
             <span>{title}</span>
             <span className="tools"><button onClick={()=>setTitleColor(getRandColor())}>Change</button></span>

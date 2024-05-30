@@ -10,7 +10,7 @@ type StyledObject ={
     className     : string    
     vars          : Vars    
     computedStyles: ComputedStyles
-    getStyle      : (css?:CSSRuleObject,props?:any)=>CSSProperties
+    getStyle      : (props?:any,style?:CSSRuleObject)=>CSSProperties
     getProps      : (params?:{style?:CSSRuleObject,props?:any,className?:string})=>StyledResult   
     css           :  string           // 生成的css字符串
 }
@@ -44,11 +44,13 @@ const StyledButton:React:FC = (props)=>{
     // 没使用到动态样式和CSS变量时
     return <button className={btnStyle.className} /> 
     // 用到动态样式时需要传入
-    return <button className={btnStyle.className} style={btnStyle.getStyle({props})} /> 
+    return <button className={btnStyle.className} style={btnStyle.getStyle(props)} /> 
     // 用到动态样式时或传入CSS变量
-    return <button className={btnStyle.className} style={btnStyle.getStyle({style:{
-        "--my-color":'blue'
-    },props})} /> 
+    return <button className={btnStyle.className} 
+        style={btnStyle.getStyle(props,{
+                "--my-color":'blue'
+            })}
+        /> 
 }
 
 ```

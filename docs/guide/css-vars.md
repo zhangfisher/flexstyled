@@ -11,10 +11,12 @@ interface CardProps{
 const Card = styled<CardProps>((props,{className,getStyle})=>{
     const { title,children,footer} =props
     return (
-      <div className={className} style={getStyle({  
-            "--padding":props.padding   //   [!code ++]   // 重载css变量
-            color:'red'                 //  [!code ++]    // 额外的内联样式
-          }                             //   [!code ++]
+      <div className={className} style={getStyle({
+          // 这里可以传递一些额外的参数给动态样式
+        },{  
+              "--padding":props.padding   //   [!code ++]   // 重载css变量
+              color:'red'                 //  [!code ++]    // 额外的内联样式
+            }                             //   [!code ++]
         )}>  
         <div className="header">  {title} </div>
         <div className="body">{children}</div>

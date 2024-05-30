@@ -11,13 +11,13 @@ interface StyledButtonProps {
 }
 const StyledButton = styled<StyledButtonProps>((props,{className,getStyle})=>{ 
      // 没使用到动态样式和CSS变量时
-    return <button className={btnStyle.className}} />  //   [!code ++]
+    return <button className={btnStyle.className} />  //   [!code ++]
     // 用到动态样式时需要传入
-    return <button className={btnStyle.className} style={btnStyle.getStyle({props})} /> //   [!code ++]
+    return <button className={btnStyle.className} style={btnStyle.getStyle(props)} /> //   [!code ++]
     // 用到动态样式时或传入CSS变量
-    return <button className={btnStyle.className} style={btnStyle.getStyle({style:{  //   [!code ++]
+    return <button className={btnStyle.className} style={btnStyle.getStyle(props,{  //   [!code ++]
         "--my-color":'blue'                                                             //   [!code ++]
-    },props})} /> //   [!code ++]
+    })} /> //   [!code ++]
 },{
     display        : 'inline-block',
     padding        : '0 10px',

@@ -46,9 +46,10 @@ const btnStyle = styled({
 ```
 
 如果是封装高阶组件，可以使用`styled`的简化方式：
+
 ```tsx
 const Button = styled((props,({className,getStyle}))=>{
-    return <button className={className} style={getStyle({props})} />
+    return <button className={className} style={getStyle(props)} />
 },{
     borderRadius: 4,
     padding: 10,
@@ -60,11 +61,11 @@ const Button = styled((props,({className,getStyle}))=>{
 
 ## 第3步：使用组件
 
+
 ```tsx
 const Button = (props)=>{
-    return <button className={btnStyle.className} style={btnStyle.getStyle({props})} />
+    return <button className={btnStyle.className} style={btnStyle.getStyle(props)} />
 }
-
 ```
 
 ## 小结

@@ -40,7 +40,7 @@
  * 
  */
 
-import { CSSRuleObject, ComponentStyledObject, StyledComponent, StyledObject, StyledOptions, CSSVars } from './types';
+import { CSSRuleObject, ComponentStyledObject, StyledComponent, StyledObject, StyledOptions, CSSVars, IStyledObject } from './types';
 import { parseObjectStyles } from "./parse"
 import { getComputedStyles, insertStylesheet, isPlainObject, isStyledObject, joinClassNames } from "./utils"
 import type { CSSProperties,ReactElement } from "react" 
@@ -99,11 +99,11 @@ export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSS
     // 3. 创建样式对象
     const createStyledObject = (fcProps?:any) =>{
         const computedStyles = [...combindStyledObjects.map(s=>isStyledObject(s) ? (s as StyledObject).computedStyles : {}), style.computedStyles]
-        const getStyle =fcProps ?  (css?:CSSRuleObject)=>{
-                return Object.assign({},getComputedStyles(computedStyles,fcProps,combindVars),css) as CSSProperties
+        const getStyle :IStyledObject['getStyle']  = fcProps ?  (props,style)=>{
+                return Object.assign({},getComputedStyles(computedStyles,Object.assign({},fcProps,props),combindVars),style) as CSSProperties
             } :
-            (css?:CSSRuleObject,props?:any)=>{
-                return Object.assign({},getComputedStyles(computedStyles,props,combindVars),css) as CSSProperties
+            (props,style)=>{   
+                return Object.assign({},getComputedStyles(computedStyles,props,combindVars),style) as CSSProperties
             }
 
         // 连接类名，使得合并进来的样式类可以应用到当前组件
@@ -121,7 +121,7 @@ export function createStyled<Props=any,Styles extends CSSRuleObject<Props> = CSS
             getProps:(params) =>{
                 return {
                     className: joinClassNames(params?.className,className),
-                    style    : getStyle(params?.style,fcProps ? fcProps : params?.props)
+                    style    : getStyle(fcProps ? fcProps : params?.props,params?.style)
                 }
             }
         } as StyledObject<CSSVars<typeof combindVars>>            

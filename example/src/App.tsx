@@ -29,7 +29,7 @@ const MyBtn = styled.button({
     "&:hover":{
       border: "1px solid red",
     }
-},[Fit,Block])
+},[Block])
 
 
 
@@ -65,7 +65,7 @@ function App() {
 
       </Card>
       
-     <button onClick={()=>setShowCard2(!showCard2)} >{showCard2 ? 'Hide Card' : 'Show Card'}</button>
+  <button onClick={()=>setShowCard2(!showCard2)} >{showCard2 ? 'Hide Card' : 'Show Card'}</button>
       
       { showCard2 && <Card2 title="Card2 - useStyle" footer="Copyright 2024" size={size} bgColor={bgColor}>
         Use useStyle in components to automatically destroy the style sheet when the component is hidden
@@ -102,7 +102,7 @@ function App() {
         <button onClick={()=>setBgColor("red")}>red</button>
         <button onClick={()=>setBgColor("yellow")}>yellow</button>
         <button onClick={()=>setBgColor("gray")}>gray</button>       
-      </Card4> 
+      </Card4>
     </div>
   )
 }

@@ -35,7 +35,7 @@ const frames = keyframes("mymove",{
 
 const Button = styled((props,{getStyle})=>{
     // 由于keyframes用到了动态样式，所以需要传入getStyle({props})
-    return <button style={getStyle({props})} />  [!code ++]  // 注入样式 
+    return <button style={getStyle(props)} />  [!code ++]  // 注入样式 
 },{
   animation: `${frames} 2s linear`  // 声明动画
 },[

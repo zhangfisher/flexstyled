@@ -27,14 +27,14 @@ function styled<Props=any,Styles extends CSSRuleObject<Props> = CSSRuleObject<Pr
 ### StyledObject
 
 ```ts
-interface StyledObject<Styles extends CSSRuleObject =  CSSRuleObject  >{
+interface StyledObject<Styles extends CSSRuleObject =  CSSRuleObject>{
     // 生成的css字符串
     css           : string
     id            : string
     className     : string    
     vars          : CSSVars<Styles>                 
     computedStyles: ComputedStyles
-    getStyle      : (css?:CSSRuleObject,props?:any)=>CSSProperties
+    getStyle      : (props?:any,css?:CSSRuleObject)=>CSSProperties
     getProps      : (params?:{style?:CSSRuleObject,props?:any,className?:string})=>StyledResult
 }
 

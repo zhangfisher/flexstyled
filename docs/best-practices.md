@@ -19,13 +19,13 @@ import { styled } from 'flexstyled'
 
 const StyledButton:React:FC = (props)=>{ 
     const btnStyle = styled({....})    
-    return <button className={btnStyle.className} style={btnStyle.getStyle({},props)} />
+    return <button className={btnStyle.className} style={btnStyle.getStyle(props)} />
 }
 
 // 或者
 const StyledButton:React:FC = (props)=>{ 
     const btnStyle = useStyled({....})    
-    return <button className={btnStyle.className} style={btnStyle.getStyle({},props)} />
+    return <button className={btnStyle.className} style={btnStyle.getStyle(props)} />
 }
 ```
 
@@ -44,7 +44,7 @@ import { styled } from 'flexstyled'
 const btnStyle = styled({....})    
 
 const StyledButton:React:FC = (props)=>{ 
-    return <button className={btnStyle.className} style={btnStyle.getStyle({},props)} />
+    return <button className={btnStyle.className} style={btnStyle.getStyle(props)} />
 }
 
 ```
@@ -60,7 +60,7 @@ import { styled } from 'flexstyled'
 
 
 const StyledButton:React:FC = styled((props,{className,getStyle})=>{ 
-    return <button className={className} style={getStyle({},props)} />
+    return <button className={className} style={getStyle(props)} />
 },{
     // css
 })
