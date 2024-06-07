@@ -21,8 +21,8 @@ export interface IStyledObject<Styles extends CSSRuleObject =  CSSRuleObject> {
     className     : string    
     vars          : CSSVars<Styles>
     computedStyles: ComputedStyles
-    getStyle      : (props?:any,style?:CSSRuleObject)=>CSSProperties
-    getProps      : (params?:{style?:CSSRuleObject,props?:any,className?:string})=>StyledResult;
+    getStyle      : (props?:any,style?:CSSProperties)=>CSSProperties
+    getProps      : (params?:{style?:CSSProperties,props?:any,className?:string})=>StyledResult;
    
 }
 
@@ -30,8 +30,8 @@ export type StyledObject<Styles extends CSSRuleObject =  CSSRuleObject >= IStyle
 
 // 传递给组件时，不需要额外传递props，并且getStyle的签名也需要做相应调整
 export type ComponentStyledObject = Omit<StyledObject,'props' | 'getStyle'> & {
-    getStyle : (props?:any,style?:CSSRuleObject)=>CSSProperties
-    getProps :(params?:{style?:CSSRuleObject,className?:string})=>StyledResult
+    getStyle : (props?:any,style?:CSSProperties)=>CSSProperties
+    getProps :(params?:{style?:CSSProperties,className?:string})=>StyledResult
 }
 
 
