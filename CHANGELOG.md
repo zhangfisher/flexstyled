@@ -1,5 +1,11 @@
 # flexstyled
 
+## 2.1.1
+
+### Patch Changes
+
+- 776f359: 修改`getStyle`的`style`参数类型为`CSSProperties`
+
 ## 2.1.0
 
 ### Minor Changes
