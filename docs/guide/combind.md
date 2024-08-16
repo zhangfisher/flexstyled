@@ -57,7 +57,8 @@ const Button = styled((props,({className,getStyle}))=>{
 },
     [Primary,Border]    //   [!code ++]
 )
-···
+
+```
 
 ## 第3步：使用组件
 
