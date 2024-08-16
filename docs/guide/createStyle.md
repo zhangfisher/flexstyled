@@ -2,7 +2,8 @@
 
 `styled`函数也可以只用来创建一个样式对象`StyledObject`,**执行该函数时会将CSS样式注入到Head中**。
 
-`StyledObject`类型声明如下：
+
+返回的`StyledObject`类型声明如下：
 
 ```ts
 type StyledObject ={
@@ -58,7 +59,7 @@ const StyledButton:React:FC = (props)=>{
 ## 说明
 
 - 无论使用何种方式，执行`styled`函数均会将创建的`CSS样式`注入到`DOM Head`中。
-- 比起封装高阶样式组件，创建样式对象`StyledObject`可以更便于复用样式。
+- 比起封装高阶样式组件，创建样式对象`StyledObject`可以便于复用样式。
 
 
 

@@ -2,6 +2,10 @@
 
 `flexstyled`也支持直接通过`styled`函数来创建基于标准`HTML Tag`的样式组件。
 
+```ts
+(style:CSSRuleObject,combindStyles?:(StyledObject | StyledClassName)[],options?:StyledComponentCreatorOptions)
+```
+
 ```tsx
 import { styled } from "flexstyled"
 
@@ -23,9 +27,10 @@ const MyCard = styled.div<MyCardProps>({
     "& > .body": {
         color: "green"
     }
-}
-},{
-
+},[
+    // 合并复用其他样式对象    
+]{
+    // 配置参数
 })
 
 <MyCard>

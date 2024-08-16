@@ -36,6 +36,7 @@ export default defineConfig({
             { text: 'useStyled', link: '/guide/useStyled' },            
             { text: 'className', link: '/guide/className' },     
             { text: 'StyledObject', link: '/guide/styledObject' },             
+            { text: 'styled', link: '/guide/styled' },             
             { text: '主题', link: '/guide/theme' }, 
         ]
       },

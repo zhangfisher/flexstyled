@@ -65,15 +65,15 @@ export const Card = styled<CardProps>((props,{className})=>{
 import { theme } from "./theme"
 
 // 具有类型提示，直接修改主题变量
-theme.primaryColor = "red"               // ![code ++]
+theme.primaryColor = "red"               // ![code++]
 
 // 也可以直接批量修改主题变量
-theme.update({                                  // ![code ++]
-    primaryColor   : "#007bff",                 // ![code ++]
-    secondaryColor : "blue",                    // ![code ++]
-    backgroundColor: "#e8f8ff",                 // ![code ++]
-    textColor      : "333",                     // ![code ++]
-    fontSize       : "16px",                    // ![code ++]
+theme.update({                                  // ![code++]
+    primaryColor   : "#007bff",                 // ![code++]
+    secondaryColor : "blue",                    // ![code++]
+    backgroundColor: "#e8f8ff",                 // ![code++]
+    textColor      : "333",                     // ![code++]
+    fontSize       : "16px",                    // ![code++]
 })
 
 ```
@@ -95,10 +95,10 @@ theme.update({
     fontSize       : "16px",
 })
 
-theme.save((data)=>{             // ![code ++]
-    // ![code ++] // 保存主题到   
-    localStorage.setItem("theme",JSON.stringify(data))   // ![code ++]
-} )  // ![code ++]
+theme.save((data)=>{             // ![code++ ]
+    // ![code++] // 保存主题到   
+    localStorage.setItem("theme",JSON.stringify(data))   // ![code++]
+} )  // ![code++]
 
 ```
 
@@ -108,7 +108,7 @@ theme.save((data)=>{             // ![code ++]
 ```tsx
 import { theme } from "./theme"
 
-theme.load(JSON.parse(localStorage.getItem("theme"))   // ![code ++]
+theme.load(JSON.parse(localStorage.getItem("theme"))   // ![code++]
 
 ```
 

@@ -1,7 +1,6 @@
-# 包装组件
+# 封装组件
 
 `styled`可以用于封装`React`组件，返回一个`styled`的`React`高阶组件。
-
  
 ```tsx {6,9-17}
 import { styled } from 'flexstyled'
