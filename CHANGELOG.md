@@ -1,5 +1,11 @@
 # flexstyled
 
+## 2.1.2
+
+### Patch Changes
+
+- cda6600: 修复当`getStyle`函数时如包含`css`变量时的类型提示错误的问题
+
 ## 2.1.1
 
 ### Patch Changes
